@@ -1,0 +1,24 @@
+{
+  "name": "deanslamajr.com",
+  "version": "1.0.0",
+  "description": "a blog",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deanslamajr/deanslamajr.com.git"
+  },
+  "author": "Dean Slama Jr",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/deanslamajr/deanslamajr.com/issues"
+  },
+  "homepage": "https://github.com/deanslamajr/deanslamajr.com#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0"
+  }
+}

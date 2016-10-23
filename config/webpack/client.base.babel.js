@@ -7,11 +7,7 @@ module.exports = {
       './src/client/index.js',
     ],
   },
-  output: {
-    publicPath: '/assets',
-    path: './public/assets',
-    filename: '[name].js',
-  },
+  
   module: {
     loaders: [
       {
@@ -23,11 +19,19 @@ module.exports = {
       }
     ]
   },
+
+  output: {
+    publicPath: '/assets/',
+    path: './public/assets',
+    filename: '[name].js',
+  },
+  
   plugins: [
     new HtmlWebpackPlugin({
       template: __dirname + '/../../src/client/index.ejs',
-      filename: '../index.html',
-      inject: 'body'
+      filename: '../index.ejs',
+      inject: 'body',
+      markupTarget: '<%- markup -%>'
     })
   ]
 };

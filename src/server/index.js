@@ -1,15 +1,19 @@
-'use strict';
+import path from 'path';
 
-const express = require('express');
-const path = require('path');
-const bodyParser = require('body-parser');
-const router = require('./routes');
+import express from 'express';
+
+import bodyParser from 'body-parser';
+
+import router from './routes';
 
 const app = express();
 
+app.set('view engine', 'ejs');
+app.set('views', __dirname);
+
 app.set('port', (process.env.PORT || 1986))
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 

@@ -1,4 +1,5 @@
 const nodeExternals = require('webpack-node-externals');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   externals: [
@@ -29,9 +30,19 @@ module.exports = {
         loaders: [
           'babel',
         ],
+      },
+      { 
+        test: /\.css$/, 
+        loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]')
       }
     ]
   },
+
+  plugins: [
+    new ExtractTextPlugin('styles.css', {
+      allChunks: true
+    })
+  ],
 
   node: {
     console: false,

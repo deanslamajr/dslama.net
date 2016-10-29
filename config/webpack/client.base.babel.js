@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin  = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -16,6 +17,11 @@ module.exports = {
         loaders: [
           'babel',
         ],
+      },
+
+      { 
+        test: /\.css$/, 
+        loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]')
       }
     ]
   },
@@ -32,6 +38,10 @@ module.exports = {
       filename: '../index.ejs',
       inject: 'body',
       markupTarget: '<%- markup -%>'
+    }),
+
+    new ExtractTextPlugin('styles.css', {
+      allChunks: true
     })
   ]
 };

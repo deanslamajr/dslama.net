@@ -14,7 +14,7 @@
 
 .middle-container {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 
 .inner-container {
@@ -46,5 +46,9 @@
 
   .link {
     display: block;
+  }
+
+  .show {
+    display: inline;
   }
 }

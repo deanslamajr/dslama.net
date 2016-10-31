@@ -7,15 +7,18 @@ import styles from './navbar.css';
 class NavBar extends React.Component {
   render() {
     return (
-      <div styleName='flex outer-container'>
-        <span>Dean H. Slama Jr.</span>
-        <span styleName='flex inner-container'>
+      <div styleName='outer-container'>
+        <span styleName='middle-container'>
+          <span>Dean H. Slama Jr.</span>
+          <span styleName='mobile'>Menu</span>
+        </span>
+        <span styleName='inner-container'>
           <span styleName='link'>Posts</span>
           <span styleName='link'>
-            <Link to="/stuff">Stuff</Link>
+            <Link to="/about">Projects</Link>
           </span>
           <span styleName='link'>
-            <Link to="/about">Projects</Link>
+            <Link to="/stuff">Stuff</Link>
           </span>
           <span styleName='link'>
             <Link to="/blogs">Others</Link>

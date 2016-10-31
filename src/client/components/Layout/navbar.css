@@ -1,17 +1,24 @@
 @import url('https://fonts.googleapis.com/css?family=Handlee');
 
-.flex {
-  display: flex;
-}
-
 .outer-container {
+  display: flex;
+  justify-content: space-between;
   font-family: Handlee;
   font-size: 2.25rem;
   background-color: #5b6b7c;
-  justify-content: space-between;
+}
+
+.mobile {
+  display: none;
+}
+
+.middle-container {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .inner-container {
+  display: flex;
   justify-content: flex-end;
 }
 
@@ -21,4 +28,23 @@
 
 .link a {
   text-decoration: none;
+}
+
+@media (max-width: 800px) {
+  .outer-container {
+    flex-direction: column;
+  }
+
+  .inner-container {
+    display: none;
+    flex-direction: column;
+  }
+
+  .mobile {
+    display: inline;
+  }
+
+  .link {
+    display: block;
+  }
 }

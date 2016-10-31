@@ -7,15 +7,23 @@ import styles from './navbar.css';
 class NavBar extends React.Component {
   render() {
     return (
-      <div styleName='container'>
-        <h1>Dean H. Slama Jr.</h1>
-        <span>Posts</span>
-        <span><Link to="/stuff">Stuff</Link></span>
-        <span><Link to="/about">Projects</Link></span>
-        <span><Link to="/blogs">Others</Link></span>
+      <div styleName='flex outer-container'>
+        <span>Dean H. Slama Jr.</span>
+        <span styleName='flex inner-container'>
+          <span styleName='link'>Posts</span>
+          <span styleName='link'>
+            <Link to="/stuff">Stuff</Link>
+          </span>
+          <span styleName='link'>
+            <Link to="/about">Projects</Link>
+          </span>
+          <span styleName='link'>
+            <Link to="/blogs">Others</Link>
+          </span>
+        </span>
       </div>
     );
   }
 };
 
-export default cssModules(NavBar, styles);
+export default cssModules(NavBar, styles, { allowMultiple: true });

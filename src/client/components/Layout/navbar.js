@@ -10,25 +10,65 @@ class NavBar extends React.Component {
     super();
 
     this._onMenuClick = this._onMenuClick.bind(this);
-    this._onLinkClick = this._onLinkClick.bind(this);
+
+    this.menuItems = [
+      'Posts',
+      'Projects',
+      'Stuff',
+      'Others'
+    ];
 
     this.state = {
       expanded: false
     };
   }
 
+  componentWillMount() {
+    let { path } = this.props;
+
+    // get the base pathname 
+    // e.g. '/Posts/12' => 'posts'
+    path = path.split('/')[1].toLowerCase();
+
+    this.setState({ path })
+  }
+
   _onMenuClick() {
     this.setState({ expanded: !this.state.expanded });
   }
 
-  _onLinkClick() {
-    this.setState({ expanded: false })
+  _onLinkClick(item) {
+    this.setState({ 
+      expanded: false,
+      path: item.toLowerCase()
+    });
+  }
+
+  generateItemClasses(items) {
+    const itemSelected = {};
+
+    items.forEach(item => {
+      itemSelected[item] = classNames('link', { 'active': this.state.path === item.toLowerCase() });
+    });
+
+    return itemSelected;
+  }
+
+  renderMenuItem(item, styleName) {
+    return (
+      <span key={item} onClick={this._onLinkClick.bind(this, item)} styleName={styleName}>
+        <Link to={`/${item.toLowerCase()}`}>{item}</Link>
+      </span>
+    );
   }
 
   render() {
     const conditionalShow = classNames({
       [styles['show']]: this.state.expanded
     });
+
+    const itemsClasses = this.generateItemClasses(this.menuItems);
+    const menuItems = this.menuItems.map(item => this.renderMenuItem(item, itemsClasses[item]))
 
     return (
       <div styleName='outer-container'>
@@ -37,18 +77,7 @@ class NavBar extends React.Component {
           <span onClick={this._onMenuClick} styleName='mobile'>Menu</span>
         </span>
         <span styleName='inner-container' className={conditionalShow}>
-          <span onClick={this._onLinkClick} styleName='link'>
-            <Link to="/posts">Posts</Link>
-          </span>
-          <span onClick={this._onLinkClick} styleName='link'>
-            <Link to="/projects">Projects</Link>
-          </span>
-          <span onClick={this._onLinkClick} styleName='link'>
-            <Link to="/stuff">Stuff</Link>
-          </span>
-          <span onClick={this._onLinkClick} styleName='link'>
-            <Link to="/others">Others</Link>
-          </span>
+          { menuItems }
         </span>
       </div>
     );

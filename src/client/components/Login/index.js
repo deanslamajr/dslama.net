@@ -1,5 +1,6 @@
 import React from 'react';
 import cssModules from 'react-css-modules';
+import axios from 'axios';
 
 import styles from './login.css';
 
@@ -21,6 +22,17 @@ class Login extends React.Component {
 
   handleSubmit() {
     console.log('state:', this.state);
+    this.submitCredentials(this.state.username, this.state.password)
+      .then(response => {
+      
+      })
+      .catch(error => {
+
+      });
+  }
+
+  submitCredentials(username, password) {
+    return axios.post('/login', { username, password });
   }
 
   render() {

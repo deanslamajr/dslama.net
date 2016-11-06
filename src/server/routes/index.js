@@ -9,24 +9,27 @@ import routes from '../../client/components/routes'
 
 const router = express.Router();
 
-router.get('*', (request, response) => {
-  match({ routes, location: request.originalUrl }, (error, redirectLocation, renderProps) => {
+router.post('/login', (req, res) => {
+})
+
+router.get('*', (req, res) => {
+  match({ routes, location: req.originalUrl }, (error, redirectLocation, renderProps) => {
     if (error) {
-      response
+      res
         .status(500)
         .send(error.message);
     } 
     else if (redirectLocation) {
-      response.redirect(302, redirectLocation.pathname + redirectLocation.search);
+      res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     } 
     else if (renderProps) {
       const markup = renderToString(<RouterContext {...renderProps} />);
-      response
+      res
         .status(200)
         .render('index', { markup });
     } 
     else {
-      response
+      res
         .status(404)
         .send('Not found');
     }

@@ -15,7 +15,7 @@ app.set('port', (process.env.PORT || 1986))
 
 app.use(express.static(__dirname));
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // define routes
 app.use(router);

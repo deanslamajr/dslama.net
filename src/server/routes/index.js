@@ -6,10 +6,23 @@ import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
 
 import routes from '../../client/components/routes'
+import queryUsername from '../lib/queryUsername';
 
 const router = express.Router();
 
 router.post('/login', (req, res) => {
+  queryUsername(req.body.username)
+    .then(response => {
+      console.log('response', response);
+      // username does not exist
+      if (!response) {
+
+      }
+      // verify that password matches
+    })
+    .catch(error => {
+      console.log('error', error);
+    });
 })
 
 router.get('*', (req, res) => {

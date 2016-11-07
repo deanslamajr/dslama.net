@@ -7,3 +7,6 @@ public
 
 # project management
 pm
+
+# constants
+config/constants.json

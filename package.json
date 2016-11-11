@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node public/server.js",
+    "dev": "node --inspect public/server.js",
     "build:back": "webpack --config config/webpack/server.base.babel.js --progress --colors --display-error-details",
     "build:front": "webpack --config config/webpack/client.base.babel.js --progress --colors --display-error-details",
     "prebuild": "rimraf public",

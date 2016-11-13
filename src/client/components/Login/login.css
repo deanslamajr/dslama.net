@@ -9,6 +9,10 @@
   margin: 1rem auto;
 }
 
+.login-state {
+  text-align: center;
+}
+
 @media (max-width: 800px) {
   .form-element {
     width: 30%;

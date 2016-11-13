@@ -16,5 +16,6 @@ export default (
     <Route path='stuff' component={Stuff} />
     <Route path='others' component={Others} />
     <Route path='babylou' component={Login} />
+  {/* @todo: add /404 path */}
   </Route>
 );

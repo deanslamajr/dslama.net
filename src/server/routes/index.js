@@ -5,7 +5,7 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
 
-import routes from '../../client/components/routes'
+import routes from '../../client/components/routes';
 import queryUsername from '../lib/queryUsername';
 
 const router = express.Router();
@@ -13,17 +13,23 @@ const router = express.Router();
 router.post('/login', (req, res) => {
   queryUsername(req.body.username)
     .then(response => {
-      console.log('response', response);
-      // username does not exist
+      // username does not exist in DB
       if (!response) {
-
+        res.sendStatus(418);
+        return;
       }
-      // verify that password matches
+      // incorrect password
+      if (req.body.password !== response.password) {
+        res.sendStatus(418);
+        return;
+      }
+      // create authToken
+      res.sendStatus(200);
     })
     .catch(error => {
       console.log('error', error);
     });
-})
+});
 
 router.get('*', (req, res) => {
   match({ routes, location: req.originalUrl }, (error, redirectLocation, renderProps) => {
@@ -42,6 +48,7 @@ router.get('*', (req, res) => {
         .render('index', { markup });
     } 
     else {
+      // @todo: replace with 302 redirect to /404
       res
         .status(404)
         .send('Not found');

@@ -11,7 +11,7 @@ const db = dynamodb.ddb({
 
 export default (username) => {
   // need to sanitize 'username' so that HTTP header injection doesn't occur in dynamodb library
-  const username = username.replace(/:/g,'')
+  username = username.replace(/:/g,'');
 
   return new Promise((resolve, reject) => {
     db.getItem(constants.get('table'), username, null, {}, (err, res, cap) => {

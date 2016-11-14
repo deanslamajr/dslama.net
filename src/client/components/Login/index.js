@@ -6,6 +6,8 @@ import styles from './login.css';
 
 const SUCCESS = 'success';
 const FAILURE = 'failure';
+const AUTHENTICATED = 'authenticated';
+const NOTAUTHENTICATED = 'notauthenticated';
 
 class Login extends React.Component {
   constructor(props) {
@@ -14,10 +16,12 @@ class Login extends React.Component {
     this.state = {
       username: '',
       password: '',
-      loginResult: ''
+      loginResult: '',
+      authenticated: ''
     }
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.checkAuthentication = this.checkAuthentication.bind(this);
   }
 
   handleChange(type, event) {
@@ -37,14 +41,37 @@ class Login extends React.Component {
       });
   }
 
-  renderSuccessDiv(loginResult) {
-    const makeLoginResultMarkup = message => (<div styleName='form-element login-state'>{message}!</div>);
+  renderLoginResultDiv() {
+    const makeLoginResultMarkup = message => (<a styleName='form-element login-state' onClick={this.checkAuthentication}>{message}!</a>);
 
-    switch (loginResult) {
+    switch (this.state.loginResult) {
       case SUCCESS:
-        return makeLoginResultMarkup('Success');
+        return makeLoginResultMarkup(SUCCESS);
       case FAILURE:
-        return makeLoginResultMarkup('Wrong');
+        return makeLoginResultMarkup(FAILURE);
+      default:
+        return null
+    }
+  }
+
+  checkAuthentication() {
+    axios.get('/authenticationCheck')
+      .then(res => {
+        this.setState({ authenticated: AUTHENTICATED });
+      })
+      .catch(err => {
+        this.setState({ authenticated: NOTAUTHENTICATED });
+      });
+  }
+
+  renderAuthenticationCheckDiv() {
+    const makeAuthenticationCheckMarkup = message => (<div styleName='form-element login-state'>{message}!</div>);
+
+    switch (this.state.authenticated) {
+      case AUTHENTICATED:
+        return makeAuthenticationCheckMarkup(AUTHENTICATED);
+      case NOTAUTHENTICATED:
+        return makeAuthenticationCheckMarkup(NOTAUTHENTICATED);
       default:
         return null
     }
@@ -56,7 +83,8 @@ class Login extends React.Component {
         <input type='text' onChange={this.handleChange.bind(this, 'username')} placeholder='username' styleName='form-element' />
         <input type='password' onChange={this.handleChange.bind(this, 'password')} placeholder='password' styleName='form-element' />
         <input type='submit' value='Login' styleName='form-element' />
-        { this.renderSuccessDiv(this.state.loginResult) }
+        { this.renderLoginResultDiv() }
+        { this.renderAuthenticationCheckDiv() }
       </form>
     );
   }

@@ -10,6 +10,8 @@ import queryUsername from '../lib/queryUsername';
 
 const router = express.Router();
 
+const ACCESSTOKEN = 'accessToken';
+
 router.post('/login', (req, res) => {
   queryUsername(req.body.username)
     .then(response => {
@@ -23,12 +25,35 @@ router.post('/login', (req, res) => {
         res.sendStatus(418);
         return;
       }
-      // create authToken
+      // create JWT
+      // set cookie to JWT
+      res.cookie(ACCESSTOKEN, 'JWT', 
+        { 
+          // 10 second expiration !!TESTING ONLY!!
+          expires: new Date(Date.now() + 1000 * 10), 
+          httpOnly: true 
+        });
+      // send OK response
       res.sendStatus(200);
     })
     .catch(error => {
       console.log('error', error);
+      res.sendStatus(500);
     });
+});
+
+router.get('/authenticationCheck', (req, res) => {
+  // @todo: after JWT logic is completed, 
+  // change this to verify JWT is valid
+  const hasAuthentication = req.cookies[ACCESSTOKEN];
+
+  let code;
+
+  hasAuthentication
+    ? code = 200
+    : code = 418;
+
+  res.sendStatus(code);
 });
 
 router.get('*', (req, res) => {

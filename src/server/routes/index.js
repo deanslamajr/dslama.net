@@ -1,6 +1,10 @@
 import path from 'path';
 
+import nconf from 'nconf';
+
 import express from 'express';
+import jwt from 'jsonwebtoken';
+
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
@@ -8,9 +12,12 @@ import { match, RouterContext } from 'react-router';
 import routes from '../../client/components/routes';
 import queryUsername from '../lib/queryUsername';
 
+const constants = nconf.file(`${__dirname}/../config/constants.json`);
+
 const router = express.Router();
 
-const ACCESSTOKEN = 'accessToken';
+const ACCESSTOKENCOOKIE = 'jeer';
+const SECRET = constants.get('secret')
 
 router.post('/login', (req, res) => {
   queryUsername(req.body.username)
@@ -26,34 +33,46 @@ router.post('/login', (req, res) => {
         return;
       }
       // create JWT
+      const accessToken = jwt.sign({
+        // 3 hours
+        exp: Math.floor(Date.now() / 1000) + (60 * 60 * 3)
+      }, SECRET);
+
       // set cookie to JWT
-      res.cookie(ACCESSTOKEN, 'JWT', 
+      res.cookie(ACCESSTOKENCOOKIE, accessToken, 
         { 
-          // 10 second expiration !!TESTING ONLY!!
-          expires: new Date(Date.now() + 1000 * 10), 
+          // 3 hours
+          expires: new Date(Date.now() + 1000 * 60 * 60 * 3), 
           httpOnly: true 
         });
       // send OK response
       res.sendStatus(200);
     })
     .catch(error => {
-      console.log('error', error);
       res.sendStatus(500);
     });
 });
 
 router.get('/authenticationCheck', (req, res) => {
-  // @todo: after JWT logic is completed, 
-  // change this to verify JWT is valid
-  const hasAuthentication = req.cookies[ACCESSTOKEN];
+  let decoded;
+  let status;
 
-  let code;
+  const jWT = req.cookies[ACCESSTOKENCOOKIE];
 
-  hasAuthentication
-    ? code = 200
-    : code = 418;
+  if (!jWT) {
+    status = 418;
+  }
+  else {
+    try {
+      jwt.verify(jWT, SECRET);
+      status = 200;
+    } 
+    catch(err) {
+      status = 418;
+    }
+  }
 
-  res.sendStatus(code);
+  res.sendStatus(status);
 });
 
 router.get('*', (req, res) => {

@@ -39,6 +39,7 @@
     "extract-text-webpack-plugin": "^1.0.1",
     "html-webpack-plugin": "^2.24.1",
     "dynamodb": "^0.3.6",
+    "jsonwebtoken": "^7.1.9",
     "nconf": "^0.8.4",
     "react": "^15.3.2",
     "react-css-modules": "^3.7.10",

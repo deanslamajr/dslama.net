@@ -18,6 +18,11 @@ const router = express.Router();
 const ACCESSTOKENCOOKIE = 'jeer';
 const SECRET = constants.get('secret');
 
+router.post('/logout', (req, res) => {
+  res.clearCookie(ACCESSTOKENCOOKIE, {});
+  res.sendStatus(200);
+});
+
 router.post('/login', (req, res) => {
   queryUsername(req.body.username)
     .then(response => {

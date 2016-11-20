@@ -6,8 +6,9 @@ import styles from './login.css';
 
 const SUCCESS = 'success';
 const FAILURE = 'failure';
+const LOGGEDOUT = 'logged out'
 const AUTHENTICATED = 'authenticated';
-const NOTAUTHENTICATED = 'notauthenticated';
+const NOTAUTHENTICATED = 'not authenticated';
 
 class Login extends React.Component {
   constructor(props) {
@@ -22,6 +23,7 @@ class Login extends React.Component {
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.checkAuthentication = this.checkAuthentication.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
   handleChange(type, event) {
@@ -34,7 +36,10 @@ class Login extends React.Component {
 
     axios.post('/login', { username: this.state.username, password: this.state.password })
       .then(res => {
-        this.setState({ loginResult: SUCCESS });
+        this.setState({ 
+          loginResult: SUCCESS,
+          authenticated: AUTHENTICATED 
+        });
       })
       .catch(err => {
         this.setState({ loginResult: FAILURE });
@@ -42,13 +47,15 @@ class Login extends React.Component {
   }
 
   renderLoginResultDiv() {
-    const makeLoginResultMarkup = message => (<a styleName='form-element login-state' onClick={this.checkAuthentication}>{message}!</a>);
+    const makeLoginResultMarkup = message => (<a styleName='form-element form-text' onClick={this.checkAuthentication}>{message}!</a>);
 
     switch (this.state.loginResult) {
       case SUCCESS:
         return makeLoginResultMarkup(SUCCESS);
       case FAILURE:
         return makeLoginResultMarkup(FAILURE);
+      case LOGGEDOUT:
+        return makeLoginResultMarkup(LOGGEDOUT);
       default:
         return null
     }
@@ -65,26 +72,47 @@ class Login extends React.Component {
   }
 
   renderAuthenticationCheckDiv() {
-    const makeAuthenticationCheckMarkup = message => (<div styleName='form-element login-state'>{message}!</div>);
+    const authState = this.state.authenticated;
+    return (
+      <div styleName='form-element form-text auth-div'>
+        <div>{authState}</div>
+        {
+          authState === AUTHENTICATED
+            ? <button onClick={this.logout}>Logout</button>
+            : null
+        }
+      </div>
+    );
+  }
 
-    switch (this.state.authenticated) {
-      case AUTHENTICATED:
-        return makeAuthenticationCheckMarkup(AUTHENTICATED);
-      case NOTAUTHENTICATED:
-        return makeAuthenticationCheckMarkup(NOTAUTHENTICATED);
-      default:
-        return null
-    }
+  logout() {
+    // revert login&auth state
+    this.setState({ 
+      loginResult: '',
+      authenticated: '' 
+    });
+
+    axios.post('/logout')
+      .then(res => {
+        this.setState({ loginResult: LOGGEDOUT });
+      })
+      .catch(err => {
+        this.setState({ loginResult: FAILURE });
+      });
+  }
+
+  componentDidMount() {
+    this.checkAuthentication();
   }
 
   render() {
     return (
       <form styleName='container' onSubmit={this.handleSubmit}>
+        { this.renderAuthenticationCheckDiv() }
         <input type='text' onChange={this.handleChange.bind(this, 'username')} placeholder='username' styleName='form-element' />
         <input type='password' onChange={this.handleChange.bind(this, 'password')} placeholder='password' styleName='form-element' />
         <input type='submit' value='Login' styleName='form-element' />
         { this.renderLoginResultDiv() }
-        { this.renderAuthenticationCheckDiv() }
       </form>
     );
   }

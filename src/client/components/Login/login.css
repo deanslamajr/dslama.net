@@ -9,8 +9,12 @@
   margin: 1rem auto;
 }
 
-.login-state {
+.form-text {
   text-align: center;
+}
+
+.auth-div {
+  height: 3em;
 }
 
 @media (max-width: 800px) {

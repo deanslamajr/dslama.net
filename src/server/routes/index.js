@@ -1,9 +1,8 @@
-import path from 'path';
-
 import nconf from 'nconf';
 
 import express from 'express';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 import React from 'react';
 import { renderToString } from 'react-dom/server';
@@ -17,7 +16,7 @@ const constants = nconf.file(`${__dirname}/../config/constants.json`);
 const router = express.Router();
 
 const ACCESSTOKENCOOKIE = 'jeer';
-const SECRET = constants.get('secret')
+const SECRET = constants.get('secret');
 
 router.post('/login', (req, res) => {
   queryUsername(req.body.username)
@@ -27,11 +26,23 @@ router.post('/login', (req, res) => {
         res.sendStatus(418);
         return;
       }
+
+      return new Promise((resolve, reject) => {
+        bcrypt.compare(req.body.password, response.password, (error, result) => { 
+          if (error) {
+            reject(error);
+          }
+          resolve(result);
+        });
+      })
+    })
+    .then(result => {
       // incorrect password
-      if (req.body.password !== response.password) {
+      if (result != true) {
         res.sendStatus(418);
         return;
       }
+
       // create JWT
       const accessToken = jwt.sign({
         // 3 hours
@@ -45,6 +56,7 @@ router.post('/login', (req, res) => {
           expires: new Date(Date.now() + 1000 * 60 * 60 * 3), 
           httpOnly: true 
         });
+
       // send OK response
       res.sendStatus(200);
     })

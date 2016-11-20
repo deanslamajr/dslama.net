@@ -28,8 +28,7 @@ router.post('/login', (req, res) => {
     .then(response => {
       // username does not exist in DB
       if (!response) {
-        res.sendStatus(418);
-        return;
+        return Promise.reject(418);
       }
 
       return new Promise((resolve, reject) => {
@@ -66,12 +65,17 @@ router.post('/login', (req, res) => {
       res.sendStatus(200);
     })
     .catch(error => {
-      res.sendStatus(500);
+      let code;
+
+      error === 418
+        ? code = 418
+        : code = 500;
+
+      res.sendStatus(code);
     });
 });
 
 router.get('/authenticationCheck', (req, res) => {
-  let decoded;
   let status;
 
   const jWT = req.cookies[ACCESSTOKENCOOKIE];

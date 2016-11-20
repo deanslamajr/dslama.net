@@ -47,18 +47,9 @@ class Login extends React.Component {
   }
 
   renderLoginResultDiv() {
-    const makeLoginResultMarkup = message => (<a styleName='form-element form-text' onClick={this.checkAuthentication}>{message}!</a>);
-
-    switch (this.state.loginResult) {
-      case SUCCESS:
-        return makeLoginResultMarkup(SUCCESS);
-      case FAILURE:
-        return makeLoginResultMarkup(FAILURE);
-      case LOGGEDOUT:
-        return makeLoginResultMarkup(LOGGEDOUT);
-      default:
-        return null
-    }
+    return this.state.loginResult
+      ? ( <a styleName='form-element form-text' onClick={this.checkAuthentication}>{this.state.loginResult}!</a> )
+      : null;
   }
 
   checkAuthentication() {

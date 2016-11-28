@@ -1,6 +1,10 @@
 const HtmlWebpackPlugin  = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
+// Post CSS Plugins
+const cssNext   = require('postcss-cssnext');
+const cssImport = require('postcss-import');
+
 module.exports = {
   entry: {
     app: [
@@ -21,9 +25,16 @@ module.exports = {
 
       { 
         test: /\.css$/, 
-        loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]')
+        loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader')
       }
     ]
+  },
+
+  postcss: function (webpack) {
+    return [
+      cssImport,
+      cssNext
+    ];
   },
 
   output: {

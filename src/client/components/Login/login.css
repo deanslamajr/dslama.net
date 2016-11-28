@@ -1,3 +1,5 @@
+@import '../breakpoints.css';
+
 .container {
   display: flex;
   flex-direction: column;
@@ -17,7 +19,7 @@
   height: 3em;
 }
 
-@media (max-width: 800px) {
+@media (--phone-max-width) {
   .form-element {
     width: 30%;
   }

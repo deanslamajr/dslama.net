@@ -1,11 +1,14 @@
-@import url('https://fonts.googleapis.com/css?family=Handlee');
+@import '../breakpoints.css';
+
+@import url('https://fonts.googleapis.com/css?family=Economica');
 
 .outer-container {
   display: flex;
   justify-content: space-between;
-  font-family: Handlee;
+  font-family: Economica;
   font-size: 2.25rem;
-  background-color: #5b6b7c;
+  background-color: #004741;
+  color: white;
 }
 
 .mobile {
@@ -28,13 +31,14 @@
 
 .link a {
   text-decoration: none;
+  color: white;
 }
 
 .active {
   text-decoration: underline;
 }
 
-@media (max-width: 800px) {
+@media (--phone-max-width) {
   .outer-container {
     flex-direction: column;
   }

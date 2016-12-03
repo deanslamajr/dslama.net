@@ -14,8 +14,8 @@ class NavBar extends React.Component {
     this.menuItems = [
       'Posts',
       'Projects',
-      'Stuff',
-      'Others'
+      'Snippets',
+      'Neat'
     ];
 
     this.state = {

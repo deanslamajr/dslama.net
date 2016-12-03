@@ -1,8 +1,9 @@
 @import '../breakpoints.css';
 
 .container {
-  width: 80%;
+  width: 75%;
   margin: auto;
+  padding: 1% 1.5%;
   height: 100vh;
   background-color: #e7eeed;
 }
@@ -10,11 +11,7 @@
 @media (--tablet-landscape-max-width) {
   .container {
     width: 100%;
-  }
-}
-
-@media (--phone-max-width) {
-  .container {
-    width: 100%;
+    padding: 0;
+    margin: 0;
   }
 }

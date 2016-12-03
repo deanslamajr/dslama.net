@@ -97,28 +97,55 @@ router.get('/authenticationCheck', (req, res) => {
 });
 
 router.get('*', (req, res) => {
-  match({ routes, location: req.originalUrl }, (error, redirectLocation, renderProps) => {
-    if (error) {
+  matchRoutes(routes, req.originalUrl)
+    .then(({ redirect, props, data }) => {
+      if (redirect) {
+        res.redirect(302, redirect.pathname + redirect.search);
+      } 
+      else if (props) {
+        const markup = renderToString(
+          <RouterContext
+            {...props}
+            createElement={(Component, props) => {
+                return <Component taco={ data } {...props} />;
+            }}
+          />
+        );
+        
+
+        res
+          .status(200)
+          .render('index', { markup });
+      } 
+      else {
+        // @todo: replace with 302 redirect to /404
+        res
+          .status(404)
+          .send('Not found');
+      }
+    })
+    .catch(error => {
       res
         .status(500)
         .send(error.message);
-    } 
-    else if (redirectLocation) {
-      res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-    } 
-    else if (renderProps) {
-      const markup = renderToString(<RouterContext {...renderProps} />);
-      res
-        .status(200)
-        .render('index', { markup });
-    } 
-    else {
-      // @todo: replace with 302 redirect to /404
-      res
-        .status(404)
-        .send('Not found');
-    }
-  });
+    });
 });
+
+/**
+  * Perform server-side async data fetching in this function (according to path)
+  **/
+function matchRoutes(routes, location) {
+  return new Promise((resolve, reject) => {
+    match({ routes, location }, (err, redirect, props) => {
+      if (err) reject(err);
+      else {
+        // Make async request here
+        // return data in resolve
+        const mockData = 'taco'
+        resolve({ redirect, props, data: mockData });
+      }
+    });
+  });
+}
 
 export default router;

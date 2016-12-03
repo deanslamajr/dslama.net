@@ -13,8 +13,8 @@ export default (
     <IndexRoute component={Posts} />
     <Route path='posts' component={Posts} />
     <Route path='projects' component={Projects} />
-    <Route path='stuff' component={Stuff} />
-    <Route path='others' component={Others} />
+    <Route path='snippets' component={Stuff} />
+    <Route path='neat' component={Others} />
     <Route path='babylou' component={Login} />
   {/* @todo: add /404 path */}
   </Route>

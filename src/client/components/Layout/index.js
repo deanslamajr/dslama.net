@@ -1,7 +1,7 @@
 import React from 'react';
 import cssModules from 'react-css-modules';
 
-import NavBar from './navbar';
+import NavBar from './Navbar';
 
 import styles from './layout.css';
 

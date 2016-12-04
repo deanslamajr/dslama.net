@@ -73,7 +73,7 @@ class NavBar extends React.Component {
     return (
       <div styleName='outer-container'>
         <span styleName='middle-container'>
-          <span>Dean H. Slama Jr.</span>
+          <span>Dean Slama Jr.</span>
           <span onClick={this._onMenuClick} styleName='mobile'>Menu</span>
         </span>
         <span styleName='inner-container' className={conditionalShow}>

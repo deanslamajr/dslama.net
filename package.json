@@ -9,7 +9,9 @@
     "build:back": "webpack --config config/webpack/server.base.babel.js --progress --colors --display-error-details",
     "build:front": "webpack --config config/webpack/client.base.babel.js --progress --colors --display-error-details",
     "prebuild": "rimraf public",
-    "build": "npm run build:back && npm run build:front"
+    "build": "npm run build:back && npm run build:front",
+    "test": "jest",
+    "test:update": "jest --updateSnapshot"
   },
   "repository": {
     "type": "git",
@@ -40,6 +42,8 @@
     "express": "^4.14.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "html-webpack-plugin": "^2.24.1",
+    "identity-obj-proxy": "^3.0.0",
+    "jest-cli": "^17.0.3",
     "jsonwebtoken": "^7.1.9",
     "nconf": "^0.8.4",
     "postcss-cssnext": "^2.8.0",
@@ -53,5 +57,10 @@
     "style-loader": "^0.13.1",
     "webpack": "^1.13.2",
     "webpack-node-externals": "^1.5.4"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.(css)$": "identity-obj-proxy"
+    }
   }
 }

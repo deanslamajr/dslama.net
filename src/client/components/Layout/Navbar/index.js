@@ -28,9 +28,13 @@ class NavBar extends React.Component {
 
     // get the base pathname 
     // e.g. '/Posts/12' => 'posts'
-    path = path.split('/')[1].toLowerCase();
+    if (path) path = path.split('/')[1];
 
-    this.setState({ path })
+    if (path) {
+      path = path.toLowerCase()
+
+      this.setState({ path });
+    }
   }
 
   _onMenuClick() {
@@ -83,5 +87,9 @@ class NavBar extends React.Component {
     );
   }
 };
+
+NavBar.propTypes = {
+  path: React.PropTypes.string.isRequired
+}
 
 export default cssModules(NavBar, styles, { allowMultiple: true });

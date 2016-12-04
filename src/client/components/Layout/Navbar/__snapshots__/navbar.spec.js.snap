@@ -1,0 +1,55 @@
+exports[`test Navbar renders correctly 1`] = `
+<div
+  className="outer-container">
+  <span
+    className="middle-container">
+    <span>
+      Dean Slama Jr.
+    </span>
+    <span
+      className="mobile"
+      onClick={[Function]}>
+      Menu
+    </span>
+  </span>
+  <span
+    className="inner-container">
+    <span
+      className="link"
+      onClick={[Function]}>
+      <a
+        onClick={[Function]}
+        style={Object {}}>
+        Posts
+      </a>
+    </span>
+    <span
+      className="link"
+      onClick={[Function]}>
+      <a
+        onClick={[Function]}
+        style={Object {}}>
+        Projects
+      </a>
+    </span>
+    <span
+      className="link"
+      onClick={[Function]}>
+      <a
+        onClick={[Function]}
+        style={Object {}}>
+        Snippets
+      </a>
+    </span>
+    <span
+      className="link"
+      onClick={[Function]}>
+      <a
+        onClick={[Function]}
+        style={Object {}}>
+        Neat
+      </a>
+    </span>
+  </span>
+</div>
+`;

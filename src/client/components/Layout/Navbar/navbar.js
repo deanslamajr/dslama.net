@@ -5,7 +5,7 @@ import cssModules from 'react-css-modules';
 
 import styles from './navbar.css';
 
-class NavBarPresentation extends React.Component {
+class NavBar extends React.Component {
   generateItemClasses(items) {
     const { activeItem } = this.props;
 
@@ -34,6 +34,7 @@ class NavBarPresentation extends React.Component {
 
   render() {
     const {
+      title,
       menuItems,
       expanded,
       onMenuClick
@@ -49,7 +50,7 @@ class NavBarPresentation extends React.Component {
     return (
       <div styleName='outer-container'>
         <span styleName='middle-container'>
-          <span>Dean Slama Jr.</span>
+          <span>{title}</span>
           <span onClick={onMenuClick} styleName='mobile'>Menu</span>
         </span>
         <span styleName='inner-container' className={conditionalShow}>
@@ -60,11 +61,12 @@ class NavBarPresentation extends React.Component {
   }
 }
 
-NavBarPresentation.propTypes = {
+NavBar.propTypes = {
+  title: React.PropTypes.string.isRequired,
   menuItems: React.PropTypes.arrayOf(React.PropTypes.string),
   expanded: React.PropTypes.bool.isRequired,
   onMenuClick: React.PropTypes.func.isRequired,
   onLinkClick: React.PropTypes.func.isRequired
 }
 
-export default cssModules(NavBarPresentation, styles, { allowMultiple: true });
+export default cssModules(NavBar, styles, { allowMultiple: true });

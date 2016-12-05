@@ -1,27 +1,85 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 
-import Navbar from '.';
+import Navbar from './navbar';
+import NavbarContainer from '.';
 
-test('Navbar renders correctly', () => {
-  const tree = renderer.create(
-    <Navbar path={'somePath'}></Navbar>
-  ).toJSON();
+const title = 'test title';
+const menuItems = ['first', 'second', 'third'];
 
-  expect(tree).toMatchSnapshot();
-});
-
-test('Navbar expands/collapses on click', () => {
-  const navbar = shallow(
-    <Navbar path={'somePath'}></Navbar>
+describe('Navbar', () => {
+  const expanded = false;
+  const onMenuClick = jest.fn();
+  const onLinkClick = jest.fn();
+  const element = (
+    <Navbar
+      title={title}
+      menuItems={menuItems}
+      expanded={expanded}
+      onMenuClick={onMenuClick}
+      onLinkClick={onLinkClick}
+    />
   );
 
-  expect(navbar.find('.show').length).toBe(0);
+  let navbar;
 
-  navbar.find('.mobile').simulate('click');
-  expect(navbar.find('.show').length).toBe(1);
+  beforeEach(() => {
+    navbar = shallow(element);
 
-  navbar.find('.mobile').simulate('click');
-  expect(navbar.find('.show').length).toBe(0);
+    onMenuClick.mockReset();
+    onLinkClick.mockReset();
+  });
+
+  it('should render', () => {
+    const tree = renderer.create(element).toJSON();
+
+    expect(tree).toMatchSnapshot();
+  });
+
+  xit('should properly handle click events', () => {
+    navbar.find(`[key=${menuItems[0]}]`).simulate('click');
+    expect(onMenuClick.calledOnce).to.equal(true);
+
+    
+    expect(onLinkClick.calledOnce).to.equal(true);
+  });
+});
+
+describe('Navbar container', () => {
+  const currentPath = '/currentPath';
+
+  const element = (
+    <NavbarContainer
+      currentPath={currentPath}
+      title={title}
+      menuItems={menuItems}
+    />
+  );
+
+  let navbarContainer;
+
+  beforeEach(() => {
+    navbarContainer = mount(element);
+  });
+
+  it('should render', () => {
+    const tree = renderer.create(element).toJSON();
+
+    expect(tree).toMatchSnapshot();
+  });
+
+  it('should expand/collaps on click', () => {
+    expect(navbarContainer.find('.show').length).toBe(0);
+
+    navbarContainer.find('.mobile').simulate('click');
+    expect(navbarContainer.find('.show').length).toBe(1);
+
+    navbarContainer.find('.mobile').simulate('click');
+    expect(navbarContainer.find('.show').length).toBe(0);
+  });
+
+  xit('should make a clicked item active while inactivating all other items', () => {
+    navbarContainer.find(`[key=${menuItems[0]}]`).simulate('click');
+  });
 });

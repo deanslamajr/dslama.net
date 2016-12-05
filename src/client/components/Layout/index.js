@@ -1,7 +1,7 @@
 import React from 'react';
 import cssModules from 'react-css-modules';
 
-import NavBar from './Navbar';
+import NavbarContainer from './Navbar';
 
 import styles from './layout.css';
 
@@ -15,6 +15,8 @@ class Layout extends React.Component {
       'Snippets',
       'Neat'
     ];
+
+    this.title = 'Dean Slama Jr.';
   }
 
   render() {
@@ -22,8 +24,9 @@ class Layout extends React.Component {
 
     return (
       <div styleName='container'>
-        <NavBar 
+        <NavbarContainer 
           currentPath={pathname}
+          title={this.title}
           menuItems={this.menuItems}
         />
         {this.props.children}

@@ -1,10 +1,10 @@
-exports[`test Navbar renders correctly 1`] = `
+exports[`Navbar container should render 1`] = `
 <div
   className="outer-container">
   <span
     className="middle-container">
     <span>
-      Dean Slama Jr.
+      test title
     </span>
     <span
       className="mobile"
@@ -20,7 +20,7 @@ exports[`test Navbar renders correctly 1`] = `
       <a
         onClick={[Function]}
         style={Object {}}>
-        Posts
+        first
       </a>
     </span>
     <span
@@ -29,7 +29,7 @@ exports[`test Navbar renders correctly 1`] = `
       <a
         onClick={[Function]}
         style={Object {}}>
-        Projects
+        second
       </a>
     </span>
     <span
@@ -38,7 +38,36 @@ exports[`test Navbar renders correctly 1`] = `
       <a
         onClick={[Function]}
         style={Object {}}>
-        Snippets
+        third
+      </a>
+    </span>
+  </span>
+</div>
+`;
+
+exports[`Navbar should render 1`] = `
+<div
+  className="outer-container">
+  <span
+    className="middle-container">
+    <span>
+      test title
+    </span>
+    <span
+      className="mobile"
+      onClick={[Function]}>
+      Menu
+    </span>
+  </span>
+  <span
+    className="inner-container">
+    <span
+      className="link"
+      onClick={[Function]}>
+      <a
+        onClick={[Function]}
+        style={Object {}}>
+        first
       </a>
     </span>
     <span
@@ -47,7 +76,16 @@ exports[`test Navbar renders correctly 1`] = `
       <a
         onClick={[Function]}
         style={Object {}}>
-        Neat
+        second
+      </a>
+    </span>
+    <span
+      className="link"
+      onClick={[Function]}>
+      <a
+        onClick={[Function]}
+        style={Object {}}>
+        third
       </a>
     </span>
   </span>

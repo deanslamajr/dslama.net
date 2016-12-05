@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Presentation from './presentation';
+import Navbar from './navbar';
 
-export default class NavBar extends React.Component {
+export default class NavBarContainer extends React.Component {
   constructor(props) {
     super(props);
 
@@ -39,19 +39,22 @@ export default class NavBar extends React.Component {
   }
 
   render() {
+    const { title, menuItems } = this.props;
     return (
-      <Presentation 
+      <Navbar
+        title={title}
         activeItem={this.state.activeItem}
         expanded={this.state.expanded}
         onMenuClick={this.onMenuClick}
         onLinkClick={this.onLinkClick}
-        menuItems={this.props.menuItems}
+        menuItems={menuItems}
       />
     );
   }
 };
 
-NavBar.propTypes = {
+NavBarContainer.propTypes = {
   currentPath: React.PropTypes.string.isRequired,
+  title: React.PropTypes.string.isRequired,
   menuItems: React.PropTypes.arrayOf(React.PropTypes.string)
 }

@@ -6,19 +6,19 @@ export default class NavBarContainer extends React.Component {
   constructor(props) {
     super(props);
 
-    this.onMenuClick = this.onMenuClick.bind(this);
-    this.onLinkClick = this.onLinkClick.bind(this);
+    this._onMenuClick = this._onMenuClick.bind(this);
+    this._onLinkClick = this._onLinkClick.bind(this);
 
     this.state = {
       expanded: false
     };
   }
 
-  onMenuClick() {
+  _onMenuClick() {
     this.setState({ expanded: !this.state.expanded });
   }
 
-  onLinkClick(item) {
+  _onLinkClick(item) {
     this.setState({ 
       expanded: false,
       activeItem: item.toLowerCase()
@@ -45,8 +45,8 @@ export default class NavBarContainer extends React.Component {
         title={title}
         activeItem={this.state.activeItem}
         expanded={this.state.expanded}
-        onMenuClick={this.onMenuClick}
-        onLinkClick={this.onLinkClick}
+        onMenuClick={this._onMenuClick}
+        onLinkClick={this._onLinkClick}
         menuItems={menuItems}
       />
     );

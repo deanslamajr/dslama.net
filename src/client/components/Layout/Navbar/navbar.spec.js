@@ -37,12 +37,20 @@ describe('Navbar', () => {
     expect(tree).toMatchSnapshot();
   });
 
-  xit('should properly handle click events', () => {
-    navbar.find(`[key=${menuItems[0]}]`).simulate('click');
-    expect(onMenuClick.calledOnce).to.equal(true);
+  it('should properly handle menu click events', () => {
+    expect(onMenuClick.mock.calls.length).toBe(0);
 
+    navbar.find('.mobile').simulate('click');
+
+    expect(onMenuClick.mock.calls.length).toBe(1);
+  });
+
+  it('should properly handle link click events', () => {
+    expect(onLinkClick.mock.calls.length).toBe(0);
+
+    navbar.find('.inner-container').childAt(0).simulate('click');
     
-    expect(onLinkClick.calledOnce).to.equal(true);
+    expect(onLinkClick.mock.calls.length).toBe(1);
   });
 });
 
@@ -79,7 +87,11 @@ describe('Navbar container', () => {
     expect(navbarContainer.find('.show').length).toBe(0);
   });
 
-  xit('should make a clicked item active while inactivating all other items', () => {
-    navbarContainer.find(`[key=${menuItems[0]}]`).simulate('click');
+  it('should make a clicked item active while inactivating all other items', () => {
+    expect(navbarContainer.find('.inner-container').childAt(0).is('.active')).toBeFalsy();
+
+    navbarContainer.find('.inner-container').childAt(0).simulate('click');
+
+    expect(navbarContainer.find('.inner-container').childAt(0).is('.active')).toBeTruthy();
   });
 });

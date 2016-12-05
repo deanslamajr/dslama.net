@@ -6,7 +6,7 @@ import cssModules from 'react-css-modules';
 import styles from './navbar.css';
 
 class NavBar extends React.Component {
-  generateItemClasses(items) {
+  _generateItemClasses(items) {
     const { activeItem } = this.props;
 
     const itemSelected = {};
@@ -18,7 +18,7 @@ class NavBar extends React.Component {
     return itemSelected;
   }
 
-  renderMenuItem(item, styleName) {
+  _renderMenuItem(item, styleName) {
     const { onLinkClick } = this.props;
 
     function _onLinkClick(item) {
@@ -44,8 +44,8 @@ class NavBar extends React.Component {
       [styles['show']]: expanded
     });
 
-    const itemsClasses = this.generateItemClasses(menuItems);
-    const navbarItems = menuItems.map(item => this.renderMenuItem(item, itemsClasses[item]))
+    const itemsClasses = this._generateItemClasses(menuItems);
+    const navbarItems = menuItems.map(item => this._renderMenuItem(item, itemsClasses[item]))
 
     return (
       <div styleName='outer-container'>

@@ -21,7 +21,7 @@ class Snippets extends React.Component {
           href={cardData.URL} 
           target='_blank'
           style={{order}}>
-          <div styleName='card'>
+          <div styleName='card shadow'>
             <div styleName='title'>
               {cardData.Title}
             </div>
@@ -34,7 +34,7 @@ class Snippets extends React.Component {
           </div>
         </a>
         <div styleName='image'>
-          <img src={cardData.imagePath}/>
+          <img styleName='shadow' src={cardData.imagePath}/>
         </div>
       </div>
     );

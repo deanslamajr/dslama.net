@@ -1,11 +1,13 @@
 @import '../breakpoints.css';
 
 .container {
-  width: 75%;
-  margin: auto;
   padding: 1% 1.5%;
-  height: 100vh;
   background-color: #e7eeed;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 12%;
+  right: 12%;
 }
 
 @media (--tablet-landscape-max-width) {

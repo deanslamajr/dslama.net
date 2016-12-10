@@ -3,15 +3,16 @@
 @import url('https://fonts.googleapis.com/css?family=Averia+Serif+Libre');
 @import url('https://fonts.googleapis.com/css?family=Josefin+Sans');
 
-.flexContainer {
+.flex-container {
   display: flex;
   justify-content: space-between;
+  margin: 1rem 0;
 }
 
 .link {
   color: inherit;
   text-decoration: none;
-  margin: 1rem;
+  margin: auto 0;
 }
 
 .card {
@@ -35,6 +36,10 @@
 
 .quote {
   font-family: 'Josefin Sans', sans-serif;
+}
+
+.image {
+  order: 1;
 }
 
 .image img {

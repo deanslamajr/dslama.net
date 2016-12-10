@@ -1,14 +1,15 @@
 @import '../../breakpoints.css';
 
-@import url('https://fonts.googleapis.com/css?family=Economica');
+@import url('https://fonts.googleapis.com/css?family=Josefin+Sans');
 
 .outer-container {
   display: flex;
   justify-content: space-between;
-  font-family: Economica;
+  font-family: 'Josefin Sans', sans-serif;
   font-size: 2.25rem;
   background-color: #004741;
   color: white;
+  padding: .4rem .2rem .1rem;
 }
 
 .mobile {

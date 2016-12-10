@@ -1,0 +1,42 @@
+@import '../breakpoints.css';
+
+@import url('https://fonts.googleapis.com/css?family=Averia+Serif+Libre');
+@import url('https://fonts.googleapis.com/css?family=Josefin+Sans');
+
+.flexContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.link {
+  color: inherit;
+  text-decoration: none;
+  margin: 1rem;
+}
+
+.card {
+  background-color: white;
+  padding: .5rem 1rem;
+  width: 45rem;
+  margin: auto 0;
+}
+
+.title {
+  text-align: center;
+  font-family: 'Averia Serif Libre', cursive;
+  font-size: 1.5rem;
+}
+
+.author {
+  color: #b21a27;
+  font-family: 'Josefin Sans', sans-serif;
+  margin: .5rem 0;
+}
+
+.quote {
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+.image img {
+  height: 15rem;
+}

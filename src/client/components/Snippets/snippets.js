@@ -8,14 +8,19 @@ class Snippets extends React.Component {
     super(props);
   }
 
-  _renderCard(cardData) {
+  _renderCard(cardData, index) {
+    // alternate flex box ordering
+    const order = index % 2 === 0 
+      ? 1 
+      : 2;
+
     return (
-      <a 
-        key={cardData.ID} 
-        styleName='link'
-        href={cardData.URL} 
-        target='_blank'>
-        <div styleName='flexContainer'>
+      <div key={cardData.ID} styleName='flex-container'>
+        <a  
+          styleName='link'
+          href={cardData.URL} 
+          target='_blank'
+          style={{order}}>
           <div styleName='card'>
             <div styleName='title'>
               {cardData.Title}
@@ -27,11 +32,11 @@ class Snippets extends React.Component {
               {cardData.Quote}
             </div>
           </div>
-          <div styleName='image'>
-            <img src={cardData.imagePath}/>
-          </div>
+        </a>
+        <div styleName='image'>
+          <img src={cardData.imagePath}/>
         </div>
-      </a>
+      </div>
     );
   }
 

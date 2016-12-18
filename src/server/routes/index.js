@@ -75,29 +75,37 @@ router.post('/login', (req, res) => {
     });
 });
 
-router.get('/authenticationCheck', (req, res) => {
-  let status;
+function verifyJWT(req) {
+  return new Promise((resolve, reject) => {
+    const jWT = req.cookies[ACCESSTOKENCOOKIE];
 
-  const jWT = req.cookies[ACCESSTOKENCOOKIE];
-
-  if (!jWT) {
-    status = 418;
-  }
-  else {
-    try {
-      jwt.verify(jWT, SECRET);
-      status = 200;
-    } 
-    catch(err) {
-      status = 418;
+    if (!jWT) {
+      reject();
     }
-  }
+    else {
+      try {
+        jwt.verify(jWT, SECRET);
+        resolve();
+      } 
+      catch(err) {
+        reject();
+      }
+    }
+  });
+}
 
-  res.sendStatus(status);
+router.get('/authenticationCheck', (req, res) => {
+  verifyJWT(req)
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      res.sendStatus(418);
+    });
 });
 
 router.get('*', (req, res) => {
-  matchRoutes(routes, req.originalUrl)
+  matchRoutes(routes, req)
     .then(({ redirect, props, data }) => {
       if (redirect) {
         res.redirect(302, redirect.pathname + redirect.search);
@@ -134,15 +142,28 @@ router.get('*', (req, res) => {
 /**
   * Perform server-side async data fetching in this function (according to path)
   **/
-function matchRoutes(routes, location) {
+function matchRoutes(routes, req) {
+  const { originalUrl: location } = req;
+
   return new Promise((resolve, reject) => {
     match({ routes, location }, (err, redirect, props) => {
       if (err) reject(err);
       else {
-        // Make async request here
-        // return data in resolve
-        const mockData = 'taco'
-        resolve({ redirect, props, data: mockData });
+        // handle endpoints that require server-side async
+        switch(location) {
+          case '/snippets/add':
+            verifyJWT(req)
+              .then(() => {
+                // send data to app store to signify this check has already occured
+                const mockData = 'taco';
+                // remove the redirect for this isAuthenticated case i.e. the client should be able to pass through
+                resolve({ redirect: { pathname: '/snippets', search: '' }, props, data: mockData })
+              })
+              .catch(() => resolve({ redirect: { pathname: '/', search: '' }, props }));
+            break;
+          default:
+            resolve({ redirect, props });
+        }        
       }
     });
   });

@@ -157,7 +157,7 @@ function matchRoutes(routes, req) {
                 // send data to app store to signify this check has already occured
                 const mockData = 'taco';
                 // remove the redirect for this isAuthenticated case i.e. the client should be able to pass through
-                resolve({ redirect: { pathname: '/snippets', search: '' }, props, data: mockData })
+                resolve({ props, data: mockData })
               })
               .catch(() => resolve({ redirect: { pathname: '/', search: '' }, props }));
             break;

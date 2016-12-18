@@ -48,7 +48,7 @@ class NavBar extends React.Component {
     const navbarItems = menuItems.map(item => this._renderMenuItem(item, itemsClasses[item]))
 
     return (
-      <div styleName='outer-container'>
+      <div styleName='outer-container shadow'>
         <span styleName='middle-container'>
           <span>{title}</span>
           <span onClick={onMenuClick} styleName='mobile'>Menu</span>

@@ -4,6 +4,7 @@
 @import url('https://fonts.googleapis.com/css?family=Josefin+Sans');
 
 .outer-container {
+  margin-top: 1rem;
   display: flex;
   justify-content: space-between;
   font-family: 'Josefin Sans', sans-serif;
@@ -41,8 +42,15 @@
   text-decoration: underline;
 }
 
+@media (--tablet-portrait-max-width) {
+  .outer-container {
+    margin-top: 0;
+  }
+}
+
 @media (--phone-max-width) {
   .outer-container {
+    margin-top: 0;
     flex-direction: column;
   }
 

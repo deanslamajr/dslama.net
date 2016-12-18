@@ -5,7 +5,7 @@ import Layout from './Layout';
 import Posts from './Posts';
 import Projects from './About';
 import Snippets from './Snippets';
-import Others from './Blogs';
+import AddSnippet from './Snippets/Add';
 import Login from './Login';
 
 export default (
@@ -13,8 +13,9 @@ export default (
     <IndexRoute component={Posts} />
     <Route path='posts' component={Posts} />
     <Route path='projects' component={Projects} />
-    <Route path='snippets' component={Snippets} />
-    <Route path='neat' component={Others} />
+    <Route path='snippets' component={Snippets}>
+      <Route path='add' component={AddSnippet} />
+    </Route>
     <Route path='babylou' component={Login} />
   {/* @todo: add /404 path */}
   </Route>

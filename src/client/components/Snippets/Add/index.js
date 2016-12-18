@@ -1,10 +1,10 @@
 import React from 'react';
 
-export default class Blogs extends React.Component {
+export default class Add extends React.Component {
   render() {
     return (
       <div>
-        Here, a list of blogs
+        Add a snippet!
       </div>
     );
   }

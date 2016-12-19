@@ -2,6 +2,7 @@
   "accessKeyId": "",
   "secretAccessKey": "",
   "endpoint": "",
-  "table": "",
+  "loginTable": "",
+  "snippetsTable": "",
   "secret": ""
 }

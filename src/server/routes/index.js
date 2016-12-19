@@ -3,13 +3,14 @@ import nconf from 'nconf';
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import uuid from 'uuid/v4';
 
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
 
 import routes from '../../client/components/routes';
-import queryUsername from '../lib/queryUsername';
+import queryUsername, { addSnippet } from '../lib/db';
 
 const constants = nconf.file(`${__dirname}/../config/constants.json`);
 
@@ -21,6 +22,38 @@ const SECRET = constants.get('secret');
 router.post('/logout', (req, res) => {
   res.clearCookie(ACCESSTOKENCOOKIE, {});
   res.sendStatus(200);
+});
+
+router.post('/snippet', (req, res) => {
+  // convert image via tinypng
+  // upload to s3
+
+  // need to validate against empty strings (on frontend too!)
+  const snippetData = {
+    author: req.body.author,
+    foundDate: (new Date).getTime(),
+    publishDate: req.body.publishDate,
+    publication: req.body.publication,
+    quote: req.body.quote,
+    title: req.body.title,
+    url: req.body.url,
+    imagePath: req.body.imagePath,
+    id: uuid()
+  };
+
+  addSnippet(snippetData)
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch(error => {
+      let code;
+
+      error === 418
+        ? code = 418
+        : code = 500;
+
+      res.sendStatus(code);
+    });
 });
 
 router.post('/login', (req, res) => {
@@ -75,25 +108,6 @@ router.post('/login', (req, res) => {
     });
 });
 
-function verifyJWT(req) {
-  return new Promise((resolve, reject) => {
-    const jWT = req.cookies[ACCESSTOKENCOOKIE];
-
-    if (!jWT) {
-      reject();
-    }
-    else {
-      try {
-        jwt.verify(jWT, SECRET);
-        resolve();
-      } 
-      catch(err) {
-        reject();
-      }
-    }
-  });
-}
-
 router.get('/authenticationCheck', (req, res) => {
   verifyJWT(req)
     .then(() => {
@@ -120,7 +134,6 @@ router.get('*', (req, res) => {
           />
         );
         
-
         res
           .status(200)
           .render('index', { markup });
@@ -138,6 +151,11 @@ router.get('*', (req, res) => {
         .send(error.message);
     });
 });
+
+/**
+  * Utility functions
+  * @todo move these to lib/util.js
+  **/
 
 /**
   * Perform server-side async data fetching in this function (according to path)
@@ -166,6 +184,25 @@ function matchRoutes(routes, req) {
         }        
       }
     });
+  });
+}
+
+function verifyJWT(req) {
+  return new Promise((resolve, reject) => {
+    const jWT = req.cookies[ACCESSTOKENCOOKIE];
+
+    if (!jWT) {
+      reject();
+    }
+    else {
+      try {
+        jwt.verify(jWT, SECRET);
+        resolve();
+      } 
+      catch(err) {
+        reject();
+      }
+    }
   });
 }
 

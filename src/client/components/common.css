@@ -1,3 +1,27 @@
+@import './breakpoints.css';
+
 .shadow {
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16);
 }
+
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 5.5rem;
+}
+
+.form-element {
+  width: 10%;
+  margin: 1rem auto;
+}
+
+.form-text {
+  text-align: center;
+}
+
+@media (--phone-max-width) {
+  .form-element {
+    width: 30%;
+  }
+}
+

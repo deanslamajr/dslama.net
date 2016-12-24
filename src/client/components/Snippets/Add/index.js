@@ -7,15 +7,17 @@ export default class AddContainer extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
+    this.defaultState = {
       author: '',
       title: '',
       quote: '',
       publishDate: '',
       publication: '',
       url: '',
-      imagePath: ''
+      imagePath: 'http://assets.deanslamajr.com/test.jpg'
     }
+
+    this.state = this.defaultState;
 
     this._onSubmit = this._onSubmit.bind(this);
     this._onChange = this._onChange.bind(this);
@@ -42,6 +44,7 @@ export default class AddContainer extends React.Component {
       .then(res => {
         alert('success');
         // remove inputs
+        this.setState(this.defaultState);
         // display the result of the submission
       })
       .catch(err => {

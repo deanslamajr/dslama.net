@@ -15,21 +15,21 @@ class Snippets extends React.Component {
       : 2;
 
     return (
-      <div key={cardData.ID} styleName='flex-container'>
+      <div key={cardData.id} styleName='flex-container'>
         <a  
           styleName='link'
-          href={cardData.URL} 
+          href={cardData.url} 
           target='_blank'
           style={{order}}>
           <div styleName='card shadow'>
             <div styleName='title'>
-              {cardData.Title}
+              {cardData.title}
             </div>
             <div styleName='author'>
-              {`${cardData.Author} @ ${cardData.publication}`}
+              {`${cardData.author} @ ${cardData.publication}`}
             </div>
             <div styleName='quote'>
-              {cardData.Quote}
+              {cardData.quote}
             </div>
           </div>
         </a>

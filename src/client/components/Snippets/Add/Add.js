@@ -25,7 +25,7 @@ class Add extends React.Component {
         <input value={publishDate} type='text' onChange={changeHandler.bind(this, 'publishDate')} placeholder='publishDate' styleName='form-element' />
         <input value={publication} type='text' onChange={changeHandler.bind(this, 'publication')} placeholder='publication' styleName='form-element' />
         <input value={url} type='text' onChange={changeHandler.bind(this, 'url')} placeholder='url' styleName='form-element' />
-        <input value={imagePath} type='text' onChange={changeHandler.bind(this, 'imagePath')} placeholder='imagePath' styleName='form-element' />
+        { /*<input value={imagePath} type='text' onChange={changeHandler.bind(this, 'imagePath')} placeholder='imagePath' styleName='form-element' /> */ }
         <input type='submit' value='Add Snippet' styleName='form-element' />
       </form>
     );

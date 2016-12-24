@@ -1,7 +1,6 @@
 import dynamodb from 'dynamodb';
-import nconf from 'nconf';
 
-const constants = nconf.file(`${__dirname}/../config/constants.json`);
+import constants from '../../../config/constants';
 
 const db = dynamodb.ddb({ 
   accessKeyId: constants.get('accessKeyId'), 

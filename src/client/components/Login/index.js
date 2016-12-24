@@ -53,7 +53,7 @@ class Login extends React.Component {
   }
 
   checkAuthentication() {
-    axios.get('/authenticationCheck')
+    axios.get('/authstatus')
       .then(res => {
         this.setState({ authenticated: AUTHENTICATED });
       })

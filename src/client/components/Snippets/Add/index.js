@@ -38,7 +38,7 @@ export default class AddContainer extends React.Component {
       imagePath: this.state.imagePath
     };
 
-    axios.post('/snippet', snippetData)
+    axios.post('/api/snippets', snippetData)
       .then(res => {
         alert('success');
         // remove inputs

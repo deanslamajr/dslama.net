@@ -4,5 +4,6 @@
   "endpoint": "",
   "loginTable": "",
   "snippetsTable": "",
-  "secret": ""
+  "secret": "",
+  "accessTokenCookie": ""
 }

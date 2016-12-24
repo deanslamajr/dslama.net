@@ -1,10 +1,15 @@
 import React from 'react';
+import axios from 'axios';
 
 import Snippets from './Snippets';
 
 export default class SnippetsContainer extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      hasQueriedData: false
+    }
 
     this.mockData = [
       {
@@ -33,8 +38,18 @@ export default class SnippetsContainer extends React.Component {
   }
 
   componentDidMount() {
-    // check global state if DB has been queried, if it hasn't then query DB for data
-    // i.e. server rendered component just queried DB, we don't want to immediately query again from the client
+    // check global state if snippet data was queried during server rendering
+    // if it hasn't then query DB for data
+    if (!this.state.hasQueriedData) {
+      axios.get('/api/snippets')
+        .then(snippets => {
+          console.log('nacho for all!');
+          this.setState(snippets);
+        })
+        .catch(error => {
+          console.log('error', error.message);
+        });
+    }
   }
 
   componentWillUnmount() {

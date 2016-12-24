@@ -122,11 +122,6 @@ router.get('*', (req, res) => {
 });
 
 /**
-  * Utility functions
-  * @todo move these to lib/util.js
-  **/
-
-/**
   * Perform server-side async data fetching in this function (according to path)
   **/
 function matchRoutes(routes, req) {

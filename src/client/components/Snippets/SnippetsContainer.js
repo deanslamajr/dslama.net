@@ -42,9 +42,14 @@ export default class SnippetsContainer extends React.Component {
     // if it hasn't then query DB for data
     if (!this.state.hasQueriedData) {
       axios.get('/api/snippets')
-        .then(snippets => {
-          console.log('nacho for all!');
-          this.setState(snippets);
+        .then(res => {
+          if (res && res.data && res.data.snippets) {
+            console.log('snippetsArray:', res.data.snippets);
+            this.setState({ snippets: res.data.snippets });
+          }
+          else {
+            throw new Error('/api/snippets did not return expected data shape');
+          }
         })
         .catch(error => {
           console.log('error', error.message);

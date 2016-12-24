@@ -1,13 +1,18 @@
 import express from 'express';
 import uuid from 'uuid/v4';
 
-import { addSnippet } from '../lib/db';
+import { addSnippet, getSnippets } from '../lib/db';
 
 const router = express.Router();
 
 router.get('/snippets', (req, res) => {
-  console.log('taco nachos');
-  res.sendStatus(200);
+  getSnippets()
+    .then(snippets => {
+      res.status(200).json({ snippets });
+    })
+    .catch(err => {
+      res.sendStatus(500);
+    });
 });
 
 router.post('/snippets', (req, res) => {

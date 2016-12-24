@@ -21,6 +21,19 @@ export const addSnippet = (data) => {
   });
 };
 
+export const getSnippets = () => {
+  return new Promise((resolve, reject) => {
+    db.scan(constants.get('snippetsTable'), {}, (err, res) => {
+      if (err) {
+        reject(err);
+      } 
+      else {
+        resolve(res.items);
+      }
+    });
+  });
+}
+
 export default (username) => {
   // need to sanitize 'username' so that HTTP header injection doesn't occur in dynamodb library
   username = username.replace(/:/g,'');

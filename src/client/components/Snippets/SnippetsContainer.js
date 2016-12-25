@@ -33,13 +33,6 @@ export default class SnippetsContainer extends React.Component {
   }
 
   render() {
-    // from the test of how to pass data from backend, through react-router
-    const { children } = this.props;
-
-    return children
-      ? children
-      : <Snippets
-        cardData={this.state.snippets}
-      />
+    return <Snippets cardData={this.state.snippets} />
   }
 }

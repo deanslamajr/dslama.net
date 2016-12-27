@@ -51,7 +51,7 @@ module.exports = {
       markupTarget: '<%- markup -%>'
     }),
 
-    new ExtractTextPlugin('styles.css', {
+    new ExtractTextPlugin('[contenthash][name].css', {
       allChunks: true
     })
   ]

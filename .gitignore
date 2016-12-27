@@ -5,6 +5,12 @@ npm-debug.log
 # build artifacts
 public
 
+# deploy artifacts
+deploy
+deploy2
+deploy_stuff
+build_packages
+
 # project management
 pm
 

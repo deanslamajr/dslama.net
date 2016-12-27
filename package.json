@@ -4,6 +4,7 @@
   "description": "a blog",
   "main": "app.js",
   "scripts": {
+    "prestart": "npm run build:back",
     "start": "node public/server.js",
     "dev": "node --inspect public/server.js",
     "build:back": "webpack --config config/webpack/server.base.babel.js --progress --colors --display-error-details",
@@ -35,7 +36,7 @@
     "babel-preset-es2017": "^6.16.0",
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-0": "^6.16.0",
-    "bcrypt": "^0.8.7",
+    "bcrypt": "^1.0.1",
     "body-parser": "^1.15.2",
     "classnames": "^2.2.5",
     "compression-webpack-plugin": "^0.3.2",

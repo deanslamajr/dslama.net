@@ -1,10 +1,10 @@
-const HtmlWebpackPlugin  = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const DefinePlugin = require('webpack/lib/DefinePlugin');
+import HtmlWebpackPlugin  from 'html-webpack-plugin';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import DefinePlugin from 'webpack/lib/DefinePlugin';
 
 // Post CSS Plugins
-const cssNext   = require('postcss-cssnext');
-const cssImport = require('postcss-import');
+import cssNext from 'postcss-cssnext';
+import cssImport from 'postcss-import';
 
 // App constants
 import constants from '../constants';

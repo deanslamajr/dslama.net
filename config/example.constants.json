@@ -6,5 +6,6 @@
   "snippetsTable": "",
   "secret": "",
   "accessTokenCookie": "",
-  "PICS_DOMAIN": ""
+  "PICS_DOMAIN": "",
+  "ASSETS_DOMAIN": ""
 }

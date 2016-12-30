@@ -1,9 +1,9 @@
-const nodeExternals = require('webpack-node-externals');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+import nodeExternals from 'webpack-node-externals';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
 
 // Post CSS Plugins
-const cssNext   = require('postcss-cssnext');
-const cssImport = require('postcss-import');
+import cssNext from 'postcss-cssnext';
+import cssImport from 'postcss-import';
 
 module.exports = {
   externals: [

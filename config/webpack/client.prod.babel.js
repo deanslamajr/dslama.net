@@ -1,15 +1,18 @@
-const merge = require('webpack-merge');
+import merge from 'webpack-merge';
 
-const client = require('./client.base.babel')
+import client from './client.base.babel';
 
-const DedupePlugin = require('webpack/lib/optimize/DedupePlugin');
-const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
-const DefinePlugin = require('webpack/lib/DefinePlugin');
-const CompressionPlugin = require('compression-webpack-plugin');
+import DedupePlugin from 'webpack/lib/optimize/DedupePlugin';
+import UglifyJsPlugin from 'webpack/lib/optimize/UglifyJsPlugin';
+import DefinePlugin from 'webpack/lib/DefinePlugin';
+import CompressionPlugin from 'compression-webpack-plugin';
+
+// App constants
+import constants from '../constants';
 
 module.exports = merge(client, {
   output: {
-    publicPath: 'http://assets.deanslamajr.com/',
+    publicPath: constants.get('ASSETS_DOMAIN') + '/',
     path: './public/assets',
     filename: '[hash][name].js',
   },

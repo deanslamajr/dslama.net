@@ -4,6 +4,7 @@ const client = require('./client.base.babel')
 
 const DedupePlugin = require('webpack/lib/optimize/DedupePlugin');
 const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
+const DefinePlugin = require('webpack/lib/DefinePlugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 
 module.exports = merge(client, {
@@ -13,6 +14,13 @@ module.exports = merge(client, {
     filename: '[hash][name].js',
   },
   plugins: [
+    // needed for react to be put in production mode
+    // @see https://facebook.github.io/react/docs/optimizing-performance.html#use-the-production-build
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      }
+    }),
     new DedupePlugin(),
     new UglifyJsPlugin({
       compress: {

@@ -14,7 +14,7 @@ export default class AddContainer extends React.Component {
       publishDate: '',
       publication: '',
       url: '',
-      imagePath: 'http://assets.deanslamajr.com/test.jpg'
+      imagePath: process.env.PICS_DOMAIN + '/test.jpg'
     }
 
     this.state = this.defaultState;

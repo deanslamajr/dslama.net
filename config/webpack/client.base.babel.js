@@ -1,9 +1,21 @@
 const HtmlWebpackPlugin  = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const DefinePlugin = require('webpack/lib/DefinePlugin');
 
 // Post CSS Plugins
 const cssNext   = require('postcss-cssnext');
 const cssImport = require('postcss-import');
+
+// App constants
+import constants from '../constants';
+
+// Mapping of build-time replacements for DefinePlugin
+const PICS_DOMAIN = 'PICS_DOMAIN';
+const replacements =  {
+  'process.env': {
+    [PICS_DOMAIN]: JSON.stringify(constants.get(PICS_DOMAIN))
+  }
+};
 
 module.exports = {
   entry: {
@@ -44,13 +56,13 @@ module.exports = {
   },
   
   plugins: [
+    new DefinePlugin(replacements),
     new HtmlWebpackPlugin({
       template: __dirname + '/../../src/client/index.ejs',
       filename: '../index.ejs',
       inject: 'body',
       markupTarget: '<%- markup -%>'
     }),
-
     new ExtractTextPlugin('[contenthash][name].css', {
       allChunks: true
     })

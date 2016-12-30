@@ -16,7 +16,7 @@ module.exports = merge(client, {
   plugins: [
     // needed for react to be put in production mode
     // @see https://facebook.github.io/react/docs/optimizing-performance.html#use-the-production-build
-    new webpack.DefinePlugin({
+    new DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify('production')
       }

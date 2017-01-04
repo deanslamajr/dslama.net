@@ -10,7 +10,7 @@ import Login from './Login';
 
 export default (
   <Route path='/' component={Layout}>
-    <IndexRoute component={Posts} />
+    <IndexRoute component={Snippets} />
     <Route path='posts' component={Posts} />
     <Route path='projects' component={Projects} />
     <Route path='snippets' component={Snippets}>

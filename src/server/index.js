@@ -4,10 +4,14 @@ import express from 'express';
 
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
+import helmet from 'helmet';
 
 import router from './routes';
 
 const app = express();
+
+// helps secure Express with various HTTP headers
+app.use(helmet());
 
 app.use(cookieParser());
 

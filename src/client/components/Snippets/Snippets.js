@@ -11,8 +11,8 @@ class Snippets extends React.Component {
   _renderCard(cardData, index) {
     // alternate flex box ordering
     const order = index % 2 === 0 
-      ? 1 
-      : 2;
+      ? 'left'
+      : 'right';
 
     return (
       <div key={cardData.id} styleName='flex-container'>
@@ -20,7 +20,7 @@ class Snippets extends React.Component {
           styleName='link'
           href={cardData.url} 
           target='_blank'
-          style={{order}}>
+          className={styles[order]}>
           <div styleName='card shadow'>
             <div styleName='title'>
               {cardData.title}

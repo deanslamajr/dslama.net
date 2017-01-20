@@ -19,8 +19,23 @@
 .card {
   background-color: white;
   padding: .5rem 1rem;
-  width: 45rem;
-  margin: auto 0;
+  border-radius: 2px;
+}
+
+.left {
+  order: 1;
+}
+
+.left .card {
+  margin: auto 1.5rem auto 0;
+}
+
+.right {
+  order: 2;
+}
+
+.right .card {
+  margin: auto 0 auto 1.5rem;
 }
 
 .title {
@@ -44,7 +59,22 @@
 }
 
 .image img {
+  border-radius: 2px;
   height: 15rem;
+}
+
+@media (--tablet-portrait-max-width) {
+  .flex-container {
+    margin: 4rem .75rem;
+  }
+
+  .image {
+    margin: auto 0;
+  }
+
+  .image img {
+    height: 13rem;
+  }
 }
 
 @media (--phone-max-width) {
@@ -58,6 +88,10 @@
     margin: 0;
   }
 
+  .left .card, .right .card {
+    margin: 0;
+  }
+
   .author {
     margin: 0;
     padding: .5rem;
@@ -67,6 +101,4 @@
     padding: .5rem;
     text-align: justify;
   }
-
-
 }

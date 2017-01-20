@@ -11,6 +11,7 @@
   font-size: 2.25rem;
   background-color: #004741;
   color: white;
+  border-radius: 2px;
 }
 
 .mobile {
@@ -45,6 +46,7 @@
 @media (--tablet-portrait-max-width) {
   .outer-container {
     margin-top: 0;
+    border-radius: 0;
   }
 }
 

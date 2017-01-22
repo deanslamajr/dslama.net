@@ -1,5 +1,11 @@
 @import '../common.css';
 
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 5.5rem;
+}
+
 .auth-div {
   height: 3em;
 }

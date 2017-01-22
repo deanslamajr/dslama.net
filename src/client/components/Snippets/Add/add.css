@@ -1,9 +1,31 @@
 @import '../../common.css';
 
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1.5rem;
+}
+
+textarea.form-element {
+  height: 10em;
+}
+
+.server-message {
+  width: 25%;
+  height: 1em;
+  margin: .25rem auto;
+}
+
 .error {
   color: red;
 }
 
 .success {
   color: green;
+}
+
+@media (--phone-max-width) {
+  .server-message {
+    width: 45%;
+  }
 }

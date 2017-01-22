@@ -21,6 +21,7 @@ export default class AddContainer extends React.Component {
 
     this._onSubmit = this._onSubmit.bind(this);
     this._onChange = this._onChange.bind(this);
+    this._onPublishChange = this._onPublishChange.bind(this);
   }
 
   _onSubmit(event) {
@@ -53,6 +54,16 @@ export default class AddContainer extends React.Component {
       });
   }
 
+  _onPublishChange(event) {
+    const publishDate = new Date(event.target.value);
+    if (publishDate === 'Invalid Date') {
+      // @todo do validation
+    }
+    else {
+      this.setState({ publishDate: publishDate.valueOf() });
+    }
+  }
+
   _onChange(element, event) {
     this.setState({ [element]: event.target.value });
   }
@@ -60,6 +71,7 @@ export default class AddContainer extends React.Component {
   render() {
     return (
       <Add
+        publishDateHandler ={this._onPublishChange}
         submitHandler={this._onSubmit}
         changeHandler={this._onChange}
         author={this.state.author}

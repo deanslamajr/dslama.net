@@ -1,1 +1,9 @@
 @import '../../common.css';
+
+.error {
+  color: red;
+}
+
+.success {
+  color: green;
+}

@@ -7,7 +7,14 @@ export default class AddContainer extends React.Component {
   constructor(props) {
     super(props);
 
-    this.defaultState = {
+    this.defaultServerState = {
+      serverResult: {
+        message: '',
+        error: null
+      }
+    };
+
+    this.defaultFormState = {
       author: '',
       title: '',
       quote: '',
@@ -15,52 +22,63 @@ export default class AddContainer extends React.Component {
       publication: '',
       url: '',
       imagePath: process.env.PICS_DOMAIN + '/test.jpg'
-    }
+    };
 
+    this.defaultState = Object.assign({}, this.defaultFormState, this.defaultServerState);;
     this.state = this.defaultState;
 
     this._onSubmit = this._onSubmit.bind(this);
     this._onChange = this._onChange.bind(this);
-    this._onPublishChange = this._onPublishChange.bind(this);
   }
 
   _onSubmit(event) {
     // prevent page refresh
     event.preventDefault();
 
-    // do some data validation
-    // e.g. do not send empty strings to the /snippets endpoint
+    try {
+      // data validation
 
-    const snippetData = {
-      author: this.state.author,
-      title: this.state.title,
-      quote: this.state.quote,
-      publishDate: this.state.publishDate,
-      publication: this.state.publication,
-      url: this.state.url,
-      imagePath: this.state.imagePath
-    };
+      // - empty inputs
+      // @todo
 
-    axios.post('/api/snippets', snippetData)
-      .then(res => {
-        alert('success');
-        // remove inputs
-        this.setState(this.defaultState);
-        // display the result of the submission
-      })
-      .catch(err => {
-        alert('error');
-        // display details of the submission error
-      });
-  }
+      // - publish date incorrect format
+      const publishDate = new Date(this.state.publishDate).valueOf();
+      if (!publishDate) {
+        throw new Error('Invalid date!');
+      }
 
-  _onPublishChange(event) {
-    const publishDate = new Date(event.target.value);
-    if (publishDate === 'Invalid Date') {
-      // @todo do validation
+
+      // data to push to dynamoDB
+      const snippetData = {
+        author: this.state.author,
+        title: this.state.title,
+        quote: this.state.quote,
+        publishDate: publishDate,
+        publication: this.state.publication,
+        url: this.state.url,
+        imagePath: this.state.imagePath
+      };
+
+      // push data to dynamoDB
+      axios.post('/api/snippets', snippetData)
+        .then(res => {
+          this.setState({ serverResult: {
+            message: 'Success!',
+            error: null
+          }})
+          // clear form values
+          this.setState(this.defaultFormState);
+        })
+        .catch(err => {
+          throw err;
+        });
     }
-    else {
-      this.setState({ publishDate: publishDate.valueOf() });
+    catch(error) {
+      this.setState({ serverResult: {
+          message: error.message,
+          error 
+        }
+      });
     }
   }
 
@@ -71,7 +89,7 @@ export default class AddContainer extends React.Component {
   render() {
     return (
       <Add
-        publishDateHandler ={this._onPublishChange}
+        serverResult={this.state.serverResult}
         submitHandler={this._onSubmit}
         changeHandler={this._onChange}
         author={this.state.author}

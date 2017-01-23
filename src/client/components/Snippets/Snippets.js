@@ -3,9 +3,28 @@ import cssModules from 'react-css-modules';
 
 import styles from './snippets.css';
 
+function formatDate(date) {
+  const monthNames = [
+    'January', 'February', 'March',
+    'April', 'May', 'June', 'July',
+    'August', 'September', 'October',
+    'November', 'December'
+  ];
+
+  const day = date.getDate();
+  const monthIndex = date.getMonth();
+  const year = date.getFullYear();
+
+  const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
+
+  return formattedDate;
+}
+
 class Snippets extends React.Component {
   constructor(props) {
     super(props);
+
+    this._renderCard = this._renderCard.bind(this);
   }
 
   _renderCard(cardData, index) {
@@ -13,6 +32,9 @@ class Snippets extends React.Component {
     const order = index % 2 === 0 
       ? 'left'
       : 'right';
+
+    const date = new Date(cardData.publishDate);
+    const publishDate = formatDate(date);
 
     return (
       <div key={cardData.id} styleName='flex-container'>
@@ -25,8 +47,11 @@ class Snippets extends React.Component {
             <div styleName='title'>
               {cardData.title}
             </div>
-            <div styleName='author'>
+            <div styleName='details'>
               {`${cardData.author} @ ${cardData.publication}`}
+            </div>
+            <div styleName='details'>
+              {publishDate}
             </div>
             <div styleName='quote'>
               {cardData.quote}

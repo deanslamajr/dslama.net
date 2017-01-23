@@ -67,11 +67,16 @@ class Snippets extends React.Component {
 
   render() {
     const { cardData } = this.props;
+    let sortedData;
+
+    if (cardData) {
+      sortedData = cardData.sort((a, b) => b.foundDate - a.foundDate)
+    }
 
     return (
       <div>
-        { cardData
-            ? cardData.map(this._renderCard) 
+        { sortedData
+            ? sortedData.map(this._renderCard) 
             : null
         }
       </div>

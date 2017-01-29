@@ -68,6 +68,11 @@
 
   .link {
     display: block;
+    text-align: right;
+    padding-right: 2rem;
+    font-size: 1.8rem;
+    border-top: 1px solid #002e2a;
+    margin: 0;
   }
 
   .show {

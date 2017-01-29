@@ -3,6 +3,8 @@ import classNames from 'classnames';
 import { Link } from 'react-router';
 import cssModules from 'react-css-modules';
 
+import Hamburger from './Hamburger';
+
 import styles from './navbar.css';
 
 class NavBar extends React.Component {
@@ -51,7 +53,7 @@ class NavBar extends React.Component {
       <div styleName='outer-container shadow'>
         <span styleName='middle-container'>
           <span>{title}</span>
-          <span onClick={onMenuClick} styleName='mobile'>Menu</span>
+          <Hamburger onMenuClick={onMenuClick} expanded={expanded}></Hamburger>
         </span>
         <span styleName='inner-container' className={conditionalShow}>
           { navbarItems }

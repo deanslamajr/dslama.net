@@ -14,10 +14,6 @@
   border-radius: 2px;
 }
 
-.mobile {
-  display: none;
-}
-
 .middle-container {
   display: flex;
   justify-content: space-between;
@@ -51,9 +47,14 @@
 }
 
 @media (--phone-max-width) {
+  .middle-container {
+    padding: 0;
+  }
+
   .outer-container {
     margin-top: 0;
     flex-direction: column;
+    padding: .5rem .2rem 0;
   }
 
   .inner-container {

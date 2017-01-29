@@ -1,7 +1,7 @@
 import React from 'react';
 import cssModules from 'react-css-modules';
 
-import styles from './snippets.css';
+import styles from './readings.css';
 
 function formatDate(date) {
   const monthNames = [
@@ -20,7 +20,7 @@ function formatDate(date) {
   return formattedDate;
 }
 
-class Snippets extends React.Component {
+class Readings extends React.Component {
   constructor(props) {
     super(props);
 
@@ -84,4 +84,4 @@ class Snippets extends React.Component {
   }
 }
 
-export default cssModules(Snippets, styles, { allowMultiple: true });
+export default cssModules(Readings, styles, { allowMultiple: true });

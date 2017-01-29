@@ -28,10 +28,6 @@
 .link {
   margin-left: 2rem;
   padding: .4rem .2rem .1rem;
-}
-
-.link a {
-  text-decoration: none;
   color: white;
 }
 
@@ -69,8 +65,8 @@
   .link {
     display: block;
     text-align: right;
-    padding-right: 2rem;
-    font-size: 1.8rem;
+    padding-right: 1.25rem;
+    font-size: 1.75rem;
     border-top: 1px solid #002e2a;
     margin: 0;
   }

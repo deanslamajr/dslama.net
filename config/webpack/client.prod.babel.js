@@ -37,5 +37,6 @@ module.exports = merge(client, {
       threshold: 10240,
       minRatio: 0.8
     })
-  ]
+  ],
+  devtool: 'source-map',
 });

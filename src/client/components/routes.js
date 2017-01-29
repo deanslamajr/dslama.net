@@ -2,20 +2,21 @@ import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 
 import Layout from './Layout';
-import Posts from './Posts';
-import Projects from './About';
-import Snippets from './Snippets';
-import AddSnippet from './Snippets/Add';
+import About from './About';
+import Projects from './Projects';
+import Readings from './Readings';
+import AddReading from './Readings/Add';
 import Login from './Login';
 
 export default (
   <Route path='/' component={Layout}>
-    <IndexRoute component={Snippets} />
-    <Route path='posts' component={Posts} />
+    <IndexRoute component={About} />
+    <Route path='about' component={About} />
     <Route path='projects' component={Projects} />
-    <Route path='snippets' component={Snippets}>
-      <Route path='add' component={AddSnippet} />
+    <Route path='readings' component={Readings}>
+      <Route path='add' component={AddReading} />
     </Route>
+  {/* login path is purposefully obscured */}
     <Route path='babylou' component={Login} />
   {/* @todo: add /404 path */}
   </Route>

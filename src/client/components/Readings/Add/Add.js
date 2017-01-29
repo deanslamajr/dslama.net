@@ -36,7 +36,7 @@ class Add extends React.Component {
         <textarea value={url} onChange={changeHandler.bind(this, 'url')} placeholder='url' styleName='form-element' />
         { /*<input value={imagePath} type='text' onChange={changeHandler.bind(this, 'imagePath')} placeholder='imagePath' styleName='form-element' /> */ }
         <div styleName={serverResultClasses.join(' ')}>{serverResult.message}</div>
-        <input type='submit' value='Add Snippet' styleName='form-element' />
+        <input type='submit' value='Add Reading' styleName='form-element' />
       </form>
     );
   }

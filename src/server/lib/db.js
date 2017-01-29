@@ -8,7 +8,7 @@ const db = dynamodb.ddb({
   endpoint: constants.get('endpoint')
 });
 
-export const addSnippet = (data) => {
+export const addReading = (data) => {
   return new Promise((resolve, reject) => {
     db.putItem(constants.get('snippetsTable'), data, {}, (err, res, cap) => {
       if (err) {
@@ -21,7 +21,7 @@ export const addSnippet = (data) => {
   });
 };
 
-export const getSnippets = () => {
+export const getReadings = () => {
   return new Promise((resolve, reject) => {
     db.scan(constants.get('snippetsTable'), {}, (err, res) => {
       if (err) {

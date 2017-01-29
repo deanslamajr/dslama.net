@@ -49,7 +49,7 @@ export default class AddContainer extends React.Component {
 
 
       // data to push to dynamoDB
-      const snippetData = {
+      const readingData = {
         author: this.state.author,
         title: this.state.title,
         quote: this.state.quote,
@@ -60,7 +60,7 @@ export default class AddContainer extends React.Component {
       };
 
       // push data to dynamoDB
-      axios.post('/api/snippets', snippetData)
+      axios.post('/api/readings', readingData)
         .then(res => {
           this.setState({ serverResult: {
             message: 'Success!',

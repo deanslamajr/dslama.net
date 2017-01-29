@@ -1,26 +1,23 @@
 import express from 'express';
 import uuid from 'uuid/v4';
 
-import { addSnippet, getSnippets } from '../lib/db';
+import { addReading, getReadings } from '../lib/db';
 
 const router = express.Router();
 
-router.get('/snippets', (req, res) => {
-  getSnippets()
-    .then(snippets => {
-      res.status(200).json({ snippets });
+router.get('/readings', (req, res) => {
+  getReadings()
+    .then(readings => {
+      res.status(200).json({ readings });
     })
     .catch(err => {
       res.sendStatus(500);
     });
 });
 
-router.post('/snippets', (req, res) => {
-  // convert image via tinypng
-  // upload to s3
-
+router.post('/readings', (req, res) => {
   // need to validate against empty strings (on frontend too!)
-  const snippetData = {
+  const readingData = {
     author: req.body.author,
     foundDate: (new Date).getTime(),
     publishDate: req.body.publishDate,
@@ -32,7 +29,7 @@ router.post('/snippets', (req, res) => {
     id: uuid()
   };
 
-  addSnippet(snippetData)
+  addReading(readingData)
     .then(() => {
       res.sendStatus(200);
     })

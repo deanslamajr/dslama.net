@@ -133,7 +133,7 @@ function matchRoutes(routes, req) {
       else {
         // handle endpoints that require server-side async
         switch(location) {
-          case '/snippets/add':
+          case '/readings/add':
             verifyJWT(req)
               .then(() => {
                 // send data to app store to signify this check has already occured

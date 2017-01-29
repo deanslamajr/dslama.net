@@ -66,5 +66,7 @@ module.exports = {
     new ExtractTextPlugin('[contenthash][name].css', {
       allChunks: true
     })
-  ]
+  ],
+
+  devtool: 'eval-source-map',
 };

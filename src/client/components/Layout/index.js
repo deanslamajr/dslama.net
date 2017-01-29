@@ -15,7 +15,7 @@ class Layout extends React.Component {
       'Snippets'
     ];
 
-    this.title = 'Dean Slama Jr.';
+    this.title = 'Dean Slama';
   }
 
   render() {

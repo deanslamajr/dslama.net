@@ -28,7 +28,7 @@ class NavBar extends React.Component {
 
     return (
       <span key={item} onClick={_onLinkClick.bind(this, item)} styleName={styleName}>
-        <div>{item}</div>
+        {item}
       </span>
     );
   }

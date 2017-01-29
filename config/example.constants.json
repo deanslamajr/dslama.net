@@ -7,5 +7,6 @@
   "secret": "",
   "accessTokenCookie": "",
   "PICS_DOMAIN": "",
-  "ASSETS_DOMAIN": ""
+  "ASSETS_DOMAIN": "",
+  "SENTRY_DNS": ""
 }

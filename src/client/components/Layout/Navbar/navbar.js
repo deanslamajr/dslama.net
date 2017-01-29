@@ -1,6 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Link } from 'react-router';
 import cssModules from 'react-css-modules';
 
 import Hamburger from './Hamburger';
@@ -29,7 +28,7 @@ class NavBar extends React.Component {
 
     return (
       <span key={item} onClick={_onLinkClick.bind(this, item)} styleName={styleName}>
-        <Link to={`/${item.toLowerCase()}`}>{item}</Link>
+        <div>{item}</div>
       </span>
     );
   }

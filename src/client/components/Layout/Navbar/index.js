@@ -1,4 +1,5 @@
 import React from 'react';
+import { browserHistory } from 'react-router';
 
 import Navbar from './navbar';
 
@@ -19,10 +20,14 @@ export default class NavBarContainer extends React.Component {
   }
 
   _onLinkClick(item) {
+    const path = item.toLowerCase();
+
     this.setState({ 
       expanded: false,
-      activeItem: item.toLowerCase()
+      activeItem: path
     });
+
+    browserHistory.push(path);
   }
 
   componentWillMount() {

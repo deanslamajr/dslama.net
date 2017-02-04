@@ -35,12 +35,15 @@ export default class AddContainer extends React.Component {
     event.preventDefault();
 
     try {
-      // data validation
-
-      // - empty inputs
-      // @todo
-
-      // - publish date incorrect format
+      // data validations
+      //
+      // 1) No empty inputs
+      Object.keys(this.state).forEach(key => {
+        if (!this.state[key]) {
+          throw new Error(`Invalid Submission: '${key}' cannot be falsy`);
+        }
+      })
+      // 2) publish date must be in a correct format
       const publishDate = new Date(this.state.publishDate).valueOf();
       if (!publishDate) {
         throw new Error('Invalid date!');

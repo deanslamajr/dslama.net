@@ -15,7 +15,7 @@
 
 @media (--phone-max-width) {
   .form-element {
-    width: 45%;
+    width: 65%;
     margin: 0.5rem auto;
   }
 }

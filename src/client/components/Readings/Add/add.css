@@ -6,8 +6,12 @@
   margin-top: 1.5rem;
 }
 
-textarea.form-element {
-  height: 10em;
+textarea[placeholder="title"], textarea[placeholder="url"] {
+  height: 3em;
+}
+
+textarea[placeholder="quote"] {
+  height: 19em;
 }
 
 .server-message {
@@ -26,6 +30,11 @@ textarea.form-element {
 
 @media (--phone-max-width) {
   .server-message {
-    width: 45%;
+    width: 65%;
+    height: 2em;
+  }
+
+  textarea[placeholder="quote"] {
+    height: 15em;
   }
 }

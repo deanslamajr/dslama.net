@@ -28,11 +28,6 @@ class Readings extends React.Component {
   }
 
   _renderCard(cardData, index) {
-    // alternate flex box ordering
-    const order = index % 2 === 0 
-      ? 'left'
-      : 'right';
-
     const date = new Date(cardData.publishDate);
     const publishDate = formatDate(date);
 
@@ -41,26 +36,24 @@ class Readings extends React.Component {
         <a  
           styleName='link'
           href={cardData.url} 
-          target='_blank'
-          className={styles[order]}>
+          target='_blank'>
           <div styleName='card shadow'>
             <div styleName='title'>
               {cardData.title}
             </div>
             <div styleName='details'>
-              {`${cardData.author} @ ${cardData.publication}`}
-            </div>
-            <div styleName='details'>
-              {publishDate}
+              <div>
+                {`${cardData.author} @ ${cardData.publication}`}
+              </div>
+              <div>
+                {publishDate}
+              </div>
             </div>
             <div styleName='quote'>
               {cardData.quote}
             </div>
           </div>
         </a>
-        <div styleName='image'>
-          <img styleName='shadow' src={cardData.imagePath}/>
-        </div>
       </div>
     );
   }

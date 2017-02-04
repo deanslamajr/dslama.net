@@ -20,8 +20,7 @@ export default class AddContainer extends React.Component {
       quote: '',
       publishDate: '',
       publication: '',
-      url: '',
-      imagePath: process.env.PICS_DOMAIN + '/test.jpg'
+      url: ''
     };
 
     this.defaultState = Object.assign({}, this.defaultFormState, this.defaultServerState);;
@@ -55,8 +54,7 @@ export default class AddContainer extends React.Component {
         quote: this.state.quote,
         publishDate: publishDate,
         publication: this.state.publication,
-        url: this.state.url,
-        imagePath: this.state.imagePath
+        url: this.state.url
       };
 
       // push data to dynamoDB
@@ -98,7 +96,6 @@ export default class AddContainer extends React.Component {
         publishDate={this.state.publishDate}
         publication={this.state.publication}
         url={this.state.url}
-        imagePath={this.state.imagePath}
         />
     );
   }

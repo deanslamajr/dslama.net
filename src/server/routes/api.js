@@ -25,7 +25,6 @@ router.post('/readings', (req, res) => {
     quote: req.body.quote,
     title: req.body.title,
     url: req.body.url,
-    imagePath: req.body.imagePath,
     id: uuid()
   };
 

@@ -15,8 +15,7 @@ class Add extends React.Component {
       quote,
       publishDate,
       publication,
-      url,
-      imagePath } = this.props;
+      url } = this.props;
 
     const serverResultClasses = ['server-message'];
     if (serverResult.error) {
@@ -34,7 +33,6 @@ class Add extends React.Component {
         <input value={publishDate} type='text' onChange={changeHandler.bind(this, 'publishDate')} placeholder='publishDate' styleName='form-element' />
         <input value={publication} type='text' onChange={changeHandler.bind(this, 'publication')} placeholder='publication' styleName='form-element' />
         <textarea value={url} onChange={changeHandler.bind(this, 'url')} placeholder='url' styleName='form-element' />
-        { /*<input value={imagePath} type='text' onChange={changeHandler.bind(this, 'imagePath')} placeholder='imagePath' styleName='form-element' /> */ }
         <div styleName={serverResultClasses.join(' ')}>{serverResult.message}</div>
         <input type='submit' value='Add Reading' styleName='form-element' />
       </form>

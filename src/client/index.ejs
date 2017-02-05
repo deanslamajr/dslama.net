@@ -9,6 +9,9 @@
     }
     </style>
     <%= htmlWebpackPlugin.options.sentryCDN %>
+    <script>
+    window.__INITIAL_STATE__ = <%= htmlWebpackPlugin.options.initialState %>;
+    </script>
   </head>
   <body class="base">
     <div id="app-mount">

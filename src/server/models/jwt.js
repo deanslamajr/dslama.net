@@ -5,7 +5,7 @@ import constants from '../../../config/constants';
 const ACCESSTOKENCOOKIE = constants.get('accessTokenCookie');
 const SECRET = constants.get('secret');
 
-export const verifyJWT = (req) => {
+export const verify = (req) => {
   return new Promise((resolve, reject) => {
     const jWT = req.cookies[ACCESSTOKENCOOKIE];
 

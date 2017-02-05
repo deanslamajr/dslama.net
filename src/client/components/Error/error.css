@@ -1,0 +1,23 @@
+@import '../breakpoints.css';
+@import url('https://fonts.googleapis.com/css?family=Josefin+Sans');
+
+.container {
+  margin: 5rem;
+  text-align: center;
+  font-size: 2rem;
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+.message {
+  margin: 2rem;
+}
+
+@media (--phone-max-width) {
+  .container {
+    margin: 5rem 2rem;
+  }
+
+  .message {
+    margin: .5rem;
+  }
+}

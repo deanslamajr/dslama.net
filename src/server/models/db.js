@@ -34,7 +34,7 @@ export const getReadings = () => {
   });
 }
 
-export default (username) => {
+export const verifyUsername = (username) => {
   // need to sanitize 'username' so that HTTP header injection doesn't occur in dynamodb library
   username = username.replace(/:/g,'');
 

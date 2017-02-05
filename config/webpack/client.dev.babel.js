@@ -26,6 +26,7 @@ module.exports = merge(client, {
       filename: '../index.ejs',
       inject: 'body',
       markupTarget: '<%- markup -%>',
+      initialState: '<%- initialState -%>',
       sentryCDN: ''
     }),
   ],

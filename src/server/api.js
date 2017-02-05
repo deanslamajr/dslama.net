@@ -1,14 +1,14 @@
 import express from 'express';
 import uuid from 'uuid/v4';
 
-import { addReading, getReadings } from '../lib/db';
+import { addReading, getReadings } from './models/db';
 
 const router = express.Router();
 
 router.get('/readings', (req, res) => {
   getReadings()
     .then(readings => {
-      res.status(200).json({ readings });
+      res.status(200).json(readings);
     })
     .catch(err => {
       res.sendStatus(500);

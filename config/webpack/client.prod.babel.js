@@ -49,6 +49,7 @@ module.exports = merge(client, {
       filename: '../index.ejs',
       inject: 'body',
       markupTarget: '<%- markup -%>',
+      initialState: '<%- initialState -%>',
       sentryCDN: '<script src="https://cdn.ravenjs.com/3.9.2/raven.min.js"></script>'
     }),
   ],

@@ -1,38 +1,29 @@
 import React from 'react';
-import axios from 'axios';
+import { connect } from 'react-redux';
 
+import { fetchReadings } from '../../data/readings/actions';
 import Readings from './Readings';
 
-export default class ReadingsContainer extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      readings: [],
-      hasQueriedData: false
+const mapStateToProps = state => {
+  if (state.readings.isLoading) {
+    return {
+      isLoading: state.readings.isLoading
     }
   }
-
-  componentDidMount() {
-    // check global state if readings data was queried during server rendering
-    // if it hasn't then query DB for data
-    if (!this.state.hasQueriedData) {
-      axios.get('/api/readings')
-        .then(res => {
-          if (res && res.data && res.data.readings) {
-            this.setState({ readings: res.data.readings });
-          }
-          else {
-            throw new Error('/api/readings did not return expected data shape');
-          }
-        })
-        .catch(error => {
-          //@todo log error
-        });
+  else if (state.readings.error) {
+    // @todo log error
+    return {
+      error: true
     }
   }
-
-  render() {
-    return <Readings cardData={this.state.readings} />
+  else if (state.readings.isFetched) {
+    return {
+      readings: state.readings.data
+    };
   }
-}
+  else { 
+    return {};
+  }
+};
+
+export default connect(mapStateToProps, { fetchReadings })(Readings);

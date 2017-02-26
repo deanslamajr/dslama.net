@@ -12,10 +12,8 @@ import CompressionPlugin from 'compression-webpack-plugin';
 import constants from '../constants';
 
 // Mapping of build-time replacements for DefinePlugin
-const PICS_DOMAIN = 'PICS_DOMAIN';
 const replacements =  {
   'process.env': {
-    [PICS_DOMAIN]: JSON.stringify(constants.get(PICS_DOMAIN)),
     'NODE_ENV': JSON.stringify('production'),
     sentryDNS: JSON.stringify(constants.get('SENTRY_DNS'))
   }

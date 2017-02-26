@@ -9,10 +9,8 @@ import HtmlWebpackPlugin  from 'html-webpack-plugin';
 import constants from '../constants';
 
 // Mapping of build-time replacements for DefinePlugin
-const PICS_DOMAIN = 'PICS_DOMAIN';
 const replacements =  {
   'process.env': {
-    [PICS_DOMAIN]: JSON.stringify(constants.get(PICS_DOMAIN)),
     // JSON.stringify() renders in app as undefined, this is expected behavior
     sentryDNS: JSON.stringify()
   }

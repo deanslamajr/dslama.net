@@ -33,7 +33,7 @@ router.post('/login', (req, res) => {
       }
 
       return new Promise((resolve, reject) => {
-        bcrypt.compare(req.body.password, response.password, (error, result) => { 
+        bcrypt.compare(req.body.password, response, (error, result) => { 
           if (error) {
             reject(error);
           }

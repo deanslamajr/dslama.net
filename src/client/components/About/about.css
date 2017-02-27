@@ -1,0 +1,86 @@
+@import '../breakpoints.css';
+
+.about {
+  font-family: 'Averia Serif Libre', cursive;
+}
+
+.title {
+  margin: 1.5rem;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.image {
+  display: block;
+  margin: 2rem auto;
+  width: 40%;
+}
+
+.links {
+  font-size: 1.25rem;
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.link {
+  display: inline;
+  margin: 2rem;
+}
+
+.link a:link {
+  color: black;
+}
+
+.link a:visited {
+  color: black;
+}
+
+.bio {
+  text-align: justify;
+  margin-top: 2rem;
+  font-size: 1.15rem;
+}
+
+@media (--tablet-portrait-max-width) {
+  .title {
+    margin: 2rem;
+  }
+  
+  .image {
+    margin: 2rem auto;
+    width: 70%;
+  }
+
+  .link {
+    margin: 0 1.5rem;
+  }
+
+  .bio {
+    margin: 2rem 1.5rem;
+  }
+}
+
+@media (--phone-max-width) {
+  .image-container {
+    margin: 0 .75rem;
+  }
+
+  .image {
+    margin: 2rem auto;
+    width: 100%;
+  }
+
+  .links {
+    justify-content: space-around;
+  }
+
+  .link {
+    margin: .5rem;
+  }
+
+  .bio {
+    margin: 2rem .75rem;
+  }
+}

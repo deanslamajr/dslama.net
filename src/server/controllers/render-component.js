@@ -5,17 +5,30 @@ import { Provider } from 'react-redux';
 
 import createStore from '../../client/data/store';
 import { addReadings } from '../../client/data/readings/actions'
+import { addAbout } from '../../client/data/about/actions'
 
 import routes from '../../client/components/routes';
 import { verify as verifyJWT } from '../models/jwt';
 
-import { getReadings } from '../models/db';
+import { getReadings, getAbout } from '../models/db';
 
 function fetchDataByPath(req) {
   return new Promise((resolve, reject) => {
     const store = createStore();
 
     switch(req.originalUrl) {
+      case '/about':
+        getAbout()
+          .then(data => {
+            store.dispatch(addAbout(data));
+            resolve({ store });
+          })
+          .catch(err => {
+            console.error(err);
+            //@todo log error
+            resolve();
+          });
+        break;
       case '/readings':
         getReadings()
           .then(data => {

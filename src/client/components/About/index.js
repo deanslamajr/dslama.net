@@ -1,11 +1,11 @@
 import React from 'react';
 
-export default class About extends React.Component {
+import AboutContainer from './AboutContainer';
+
+export default class AboutParentContainer extends React.Component {
   render() {
-    return (
-      <div>
-        This is about me :)
-      </div>
-    );
+    const { children: editAboutComponent } = this.props;
+
+    return editAboutComponent || <AboutContainer/>
   }
 }

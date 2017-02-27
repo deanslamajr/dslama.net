@@ -1,49 +1,70 @@
-import dynamodb from 'dynamodb';
+import awsDynamoDB from 'aws-dynamodb';
 
 import constants from '../../../config/constants';
 
-const db = dynamodb.ddb({ 
-  accessKeyId: constants.get('accessKeyId'), 
-  secretAccessKey: constants.get('secretAccessKey'),
-  endpoint: constants.get('endpoint')
+const dynamoDB = awsDynamoDB({
+  accessKeyId: constants.get('DB_ACCESS_KEY_ID'), 
+  secretAccessKey: constants.get('DB_SECRET_ACCESS_KEY'),
+  region: constants.get('DB_REGION')
 });
 
-export const addReading = (data) => {
-  return new Promise((resolve, reject) => {
-    db.putItem(constants.get('snippetsTable'), data, {}, (err, res, cap) => {
-      if (err) {
-        reject(err);
-      }
-      else {
-        resolve();
-      }
-    });
-  });
-};
-
-export const getReadings = () => {
-  return new Promise((resolve, reject) => {
-    db.scan(constants.get('snippetsTable'), {}, (err, res) => {
-      if (err) {
-        reject(err);
-      } 
-      else {
-        resolve(res.items);
-      }
-    });
+function reverseSortResponseByVersion(res) {
+  return res.sort((a, b) => {
+    // if either item does not have a valid version property, sort that item as less important
+    if (!a.version || !Number.isInteger(a.version)) {
+      return 1;
+    }
+    if (!b.version || !Number.isInteger(b.version)) {
+      return -1;
+    }
+    return b.version - a.version;
   });
 }
 
-export const verifyUsername = (username) => {
-  // need to sanitize 'username' so that HTTP header injection doesn't occur in dynamodb library
-  username = username.replace(/:/g,'');
+function verifyResponse(res) {
+  if (!Array.isArray(res)) {
+    throw new Error('DB response was not the expected type: Array');
+  }
+  if (!res.length) {
+    throw new Error('DB returned an empty array.');
+  }
+}
 
-  return new Promise((resolve, reject) => {
-    db.getItem(constants.get('loginTable'), username, null, {}, (err, res, cap) => {
-      if (err) {
-        reject(err);
-      }
-      resolve(res);
+export const getAbout = () => {
+  return dynamoDB
+    .table(constants.get('DB_TABLE_ABOUT'))
+    .scan()
+    .then(res => {
+      verifyResponse(res);
+      // return the most recent version
+      return reverseSortResponseByVersion(res)[0];
     });
-  });
+};
+
+export const getReadings = () => {
+  return dynamoDB
+    .table(constants.get('DB_TABLE_READINGS'))
+    .scan()
+    .then(res => {
+      verifyResponse(res);
+      return res;
+    });
+};
+
+export const verifyUsername = (username) => {
+  return dynamoDB
+    .table(constants.get('DB_TABLE_USERS'))
+    .where('name').eq(username)
+    .get()
+    .then(res => {
+      return res && res.password
+        ? res.password
+        : null;
+    });
+};
+
+export const addReading = (data) => {
+  return dynamoDB
+    .table(constants.get('DB_TABLE_READINGS'))
+    .insert(data);
 };

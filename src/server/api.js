@@ -1,9 +1,20 @@
 import express from 'express';
 import uuid from 'uuid/v4';
 
-import { addReading, getReadings } from './models/db';
+import { addReading, getReadings, getAbout } from './models/db';
 
 const router = express.Router();
+
+router.get('/about', (req, res) => {
+  getAbout()
+    .then(data => {
+      res.status(200).json(data);
+    })
+    .catch(err => {
+      // @todo log error
+      res.sendStatus(500);
+    });
+});
 
 router.get('/readings', (req, res) => {
   getReadings()
@@ -11,6 +22,7 @@ router.get('/readings', (req, res) => {
       res.status(200).json(readings);
     })
     .catch(err => {
+      // @todo log error
       res.sendStatus(500);
     });
 });

@@ -27,7 +27,7 @@ export default class NavBarContainer extends React.Component {
       activeItem: path
     });
 
-    browserHistory.push(path);
+    browserHistory.push(`/${path}`);
   }
 
   componentWillMount() {

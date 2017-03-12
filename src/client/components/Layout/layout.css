@@ -9,11 +9,27 @@
   right: 12%;
 }
 
+.footer-container {
+  font-family: 'Averia Serif Libre', cursive;
+  padding: 5rem 0 3rem;
+  color: rgba(0, 0, 0, .4);
+  font-size: .75rem;
+  text-align: center;
+}
+
+.footer-link {
+  color: inherit;
+}
+
 @media (--tablet-portrait-max-width) {
   .container {
     padding: 0;
     left: 0;
     right: 0;
+  }
+
+  .footer-container {
+    padding: 1rem .75rem 3rem;
   }
 }
 

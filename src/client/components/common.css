@@ -13,6 +13,13 @@
   text-align: center;
 }
 
+.card {
+  background-color: white;
+  padding: 1.25rem;
+  border-radius: 2px;
+  font-size: 1.3rem;
+}
+
 @media (--phone-max-width) {
   .form-element {
     width: 65%;

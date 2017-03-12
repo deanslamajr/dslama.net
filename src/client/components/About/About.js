@@ -33,7 +33,7 @@ function renderLinks(linksArray) {
 }
 
 function renderBio(bio) {
-  return <div styleName="bio">{bio}</div>;
+  return <div styleName="bio" dangerouslySetInnerHTML={{__html: bio }} />;
 }
 
 class About extends React.Component {

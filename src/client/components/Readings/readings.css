@@ -16,13 +16,6 @@
   margin: auto 1.5rem;
 }
 
-.card {
-  background-color: white;
-  padding: 1.25rem;
-  border-radius: 2px;
-  font-size: 1.3rem;
-}
-
 .title {
   text-align: center;
   font-family: 'Averia Serif Libre', cursive;

@@ -5,6 +5,16 @@ import NavbarContainer from './Navbar';
 
 import styles from './layout.css';
 
+function renderFooter() {
+  return (
+    <div styleName="footer-container">
+      This page is one part of a web application<br />
+      created by Dean Slama<br />
+      Feel free to <a styleName="footer-link" href="https://github.com/deanslamajr/deanslamajr.com" target="_blank">fork the codes</a> and host your own! 
+    </div>
+  )
+}
+
 class Layout extends React.Component {
   constructor(props) {
     super(props);
@@ -22,13 +32,14 @@ class Layout extends React.Component {
     const { location: { pathname }} = this.props;
 
     return (
-      <div styleName='container'>
+      <div styleName="container">
         <NavbarContainer 
           currentPath={pathname}
           title={this.title}
           menuItems={this.menuItems}
         />
         {this.props.children}
+        {renderFooter()}
       </div>
     );
   }

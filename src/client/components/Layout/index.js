@@ -10,9 +10,9 @@ class Layout extends React.Component {
     super(props);
 
     this.menuItems = [
-      'About',
-      'Projects',
-      'Readings'
+      'about',
+      'projects',
+      'readings'
     ];
 
     this.title = 'dean slama';

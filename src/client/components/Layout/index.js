@@ -15,7 +15,7 @@ class Layout extends React.Component {
       'Readings'
     ];
 
-    this.title = 'Dean Slama';
+    this.title = 'dean slama';
   }
 
   render() {

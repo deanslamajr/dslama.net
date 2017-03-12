@@ -52,9 +52,7 @@ class Readings extends React.Component {
                 {publishDate}
               </div>
             </div>
-            <div styleName='quote'>
-              {cardData.quote}
-            </div>
+            <div styleName='quote' dangerouslySetInnerHTML={{__html: cardData.quote }} />
           </div>
         </a>
       </div>

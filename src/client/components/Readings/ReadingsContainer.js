@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { fetchReadings } from '../../data/readings/actions';
-import Readings from './Readings';
+import ReadingsList from './ReadingsList';
 
 const mapStateToProps = state => {
   if (state.readings.isLoading) {
@@ -26,4 +26,4 @@ const mapStateToProps = state => {
   }
 };
 
-export default connect(mapStateToProps, { fetchReadings })(Readings);
+export default connect(mapStateToProps, { fetchReadings })(ReadingsList);

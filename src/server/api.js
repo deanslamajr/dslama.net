@@ -10,7 +10,7 @@ const router = express.Router();
 router.get('/posts', (req, res) => {
   getPosts()
     .then(data => {
-      console.log('data:' + JSON.stringify(data));
+      res.status(200).json(data);
     })
     .catch(err => {
       // @todo log error

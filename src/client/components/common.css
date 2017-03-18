@@ -1,5 +1,8 @@
 @import './breakpoints.css';
 
+@import url('https://fonts.googleapis.com/css?family=Averia+Serif+Libre');
+@import url('https://fonts.googleapis.com/css?family=Josefin+Sans');
+
 .shadow {
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16);
 }

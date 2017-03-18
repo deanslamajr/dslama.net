@@ -1,9 +1,6 @@
 @import '../breakpoints.css';
 @import '../common.css';
 
-@import url('https://fonts.googleapis.com/css?family=Averia+Serif+Libre');
-@import url('https://fonts.googleapis.com/css?family=Josefin+Sans');
-
 .flex-container {
   display: flex;
   justify-content: space-between;

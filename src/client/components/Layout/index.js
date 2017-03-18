@@ -21,6 +21,7 @@ class Layout extends React.Component {
 
     this.menuItems = [
       'about',
+      'posts',
       'projects',
       'readings'
     ];

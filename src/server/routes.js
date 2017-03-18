@@ -7,7 +7,7 @@ import React from 'react';
 import api from './api';
 import renderComponent from './controllers/render-component';
 
-import { verifyUsername } from './models/db';
+import { getHashedPassword as getUsersHashedPassword } from './models/user';
 import { verify as verifyJWT } from './models/jwt';
 
 import constants from '../../config/constants';
@@ -25,7 +25,7 @@ router.post('/logout', (req, res) => {
 });
 
 router.post('/login', (req, res) => {
-  verifyUsername(req.body.username)
+  getUsersHashedPassword(req.body.username)
     .then(response => {
       // username does not exist in DB
       if (!response) {

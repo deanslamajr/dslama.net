@@ -1,9 +1,23 @@
 import express from 'express';
 import uuid from 'uuid/v4';
 
-import { addReading, getReadings, getAbout } from './models/db';
+import { add as addReading, get as getReadings } from './models/readings';
+import { get as getAbout } from './models/about';
+import { get as getPosts } from './models/posts';
 
 const router = express.Router();
+
+router.get('/posts', (req, res) => {
+  getPosts()
+    .then(data => {
+      console.log('data:' + JSON.stringify(data));
+    })
+    .catch(err => {
+      // @todo log error
+      console.error(err);
+      res.sendStatus(500);
+    });
+});
 
 router.get('/about', (req, res) => {
   getAbout()

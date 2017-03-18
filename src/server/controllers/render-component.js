@@ -10,7 +10,8 @@ import { addAbout } from '../../client/data/about/actions'
 import routes from '../../client/components/routes';
 import { verify as verifyJWT } from '../models/jwt';
 
-import { getReadings, getAbout } from '../models/db';
+import { get as getReadings } from '../models/readings';
+import { get as getAbout } from '../models/about';
 
 function fetchDataByPath(req) {
   return new Promise((resolve, reject) => {

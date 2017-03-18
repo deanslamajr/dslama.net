@@ -31,16 +31,16 @@ export default class NavBarContainer extends React.Component {
   }
 
   componentWillMount() {
-    // set the activeItem
-    // e.g. '/Posts/12' => path = 'posts'
-    const { currentPath } = this.props;
+    // set the activeItem i.e. active view
+    const { currentPath, menuItems } = this.props;
 
     let activeItem = currentPath.split('/')[1];
 
-    if (activeItem) {
-      activeItem = activeItem.toLowerCase()
-      this.setState({ activeItem });
-    }
+    activeItem = activeItem
+      ? activeItem.toLowerCase()
+      : menuItems[0].toLowerCase();
+
+    this.setState({ activeItem });
   }
 
   render() {

@@ -4,12 +4,15 @@ import { match, RouterContext } from 'react-router';
 import { Provider } from 'react-redux';
 
 import createStore from '../../client/data/store';
-import { addReadings } from '../../client/data/readings/actions'
-import { addAbout } from '../../client/data/about/actions'
+
+import { addReadings } from '../../client/data/readings/actions';
+import { addAbout } from '../../client/data/about/actions';
+import { addPosts } from '../../client/data/posts/actions';
 
 import routes from '../../client/components/routes';
 import { verify as verifyJWT } from '../models/jwt';
 
+import { get as getPosts } from '../models/posts';
 import { get as getReadings } from '../models/readings';
 import { get as getAbout } from '../models/about';
 
@@ -18,6 +21,18 @@ function fetchDataByPath(req) {
     const store = createStore();
 
     switch(req.originalUrl) {
+      case '/posts':
+        getPosts()
+          .then(data => {
+            store.dispatch(addPosts(data));
+            resolve({ store });
+          })
+          .catch(err => {
+            console.error(err);
+            //@todo log error
+            resolve();
+          });
+        break;
       case '/about':
         getAbout()
           .then(data => {

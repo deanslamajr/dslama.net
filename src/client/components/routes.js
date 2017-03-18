@@ -7,6 +7,8 @@ import Layout from './Layout';
 import About from './About';
 import EditAbout from './About/Edit';
 
+import Posts from './Posts';
+
 import Projects from './Projects';
 
 import Readings from './Readings';
@@ -20,6 +22,7 @@ export default (
     <Route path='about' component={About}>
       <Route path='edit' component={EditAbout} />
     </Route>
+    <Route path='posts' component={Posts} />
     <Route path='projects' component={Projects} />
     <Route path='readings' component={Readings}>
       <Route path='add' component={AddReading} />

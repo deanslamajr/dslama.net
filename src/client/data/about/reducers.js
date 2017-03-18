@@ -1,6 +1,5 @@
 import { 
-  ABOUT_ADD,
-  ABOUT_FETCH, 
+  ABOUT_ADD, 
   ABOUT_FETCH_PENDING,
   ABOUT_FETCH_FULFILLED, 
   ABOUT_FETCH_REJECTED } from './constants';

@@ -15,7 +15,8 @@ import constants from '../constants';
 const replacements =  {
   'process.env': {
     'NODE_ENV': JSON.stringify('production'),
-    sentryDNS: JSON.stringify(constants.get('SENTRY_DNS'))
+    sentryDNS: JSON.stringify(constants.get('SENTRY_DNS')),
+    mediumUser: JSON.stringify(constants.get('MEDIUM_USERNAME'))
   }
 };
 

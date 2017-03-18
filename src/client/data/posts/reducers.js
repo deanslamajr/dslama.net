@@ -1,26 +1,26 @@
 import { 
-  READINGS_ADD,
-  READINGS_FETCH_PENDING,
-  READINGS_FETCH_FULFILLED, 
-  READINGS_FETCH_REJECTED } from './constants';
+  POSTS_FETCH_PENDING,
+  POSTS_FETCH_FULFILLED, 
+  POSTS_FETCH_REJECTED,
+  POSTS_ADD } from './constants';
 
 const reducers = {
-  [READINGS_ADD]: (state, payload) => ({
+  [POSTS_ADD]: (state, payload) => ({
     ...state,
     data: payload,
     isFetched: true
   }),
-  [READINGS_FETCH_PENDING]: (state, payload) => ({
+  [POSTS_FETCH_PENDING]: (state, payload) => ({
     ...state,
     isLoading: true
   }),
-  [READINGS_FETCH_FULFILLED]: (state, payload) => ({
+  [POSTS_FETCH_FULFILLED]: (state, payload) => ({
     ...state,
     data: payload.data,
     isLoading: false,
     isFetched: true
   }),
-  [READINGS_FETCH_REJECTED]: (state, payload) => ({
+  [POSTS_FETCH_REJECTED]: (state, payload) => ({
     ...state,
     error: payload.response.data,
     isLoading: false

@@ -12,7 +12,8 @@ import constants from '../constants';
 const replacements =  {
   'process.env': {
     // JSON.stringify() renders in app as undefined, this is expected behavior
-    sentryDNS: JSON.stringify()
+    sentryDNS: JSON.stringify(),
+    mediumUser: JSON.stringify(constants.get('MEDIUM_USERNAME'))
   }
 };
 

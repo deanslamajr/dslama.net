@@ -33,6 +33,7 @@ function fetchDataByPath(req) {
             resolve();
           });
         break;
+      case '/':
       case '/about':
         getAbout()
           .then(data => {

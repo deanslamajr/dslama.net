@@ -1,64 +1,64 @@
-import React from 'react';
-import classNames from 'classnames';
-import cssModules from 'react-css-modules';
+import React from 'react'
+import classNames from 'classnames'
+import cssModules from 'react-css-modules'
 
-import Hamburger from './Hamburger';
+import Hamburger from './Hamburger'
 
-import styles from './navbar.css';
+import styles from './navbar.css'
 
 class NavBar extends React.Component {
-  _generateItemClasses(items) {
-    const { activeItem } = this.props;
+  _generateItemClasses (items) {
+    const { activeItem } = this.props
 
-    const itemSelected = {};
+    const itemSelected = {}
 
     items.forEach(item => {
-      itemSelected[item] = classNames('link', { 'active': activeItem === item.toLowerCase() });
-    });
+      itemSelected[item] = classNames('link', { 'active': activeItem === item.toLowerCase() })
+    })
 
-    return itemSelected;
+    return itemSelected
   }
 
-  _renderMenuItem(item, styleName) {
-    const { onLinkClick } = this.props;
+  _renderMenuItem (item, styleName) {
+    const { onLinkClick } = this.props
 
-    function _onLinkClick(item) {
-      onLinkClick(item);
+    function _onLinkClick (item) {
+      onLinkClick(item)
     }
 
     return (
       <span key={item} onClick={_onLinkClick.bind(this, item)} styleName={styleName}>
         {item}
       </span>
-    );
+    )
   }
 
-  render() {
+  render () {
     const {
       title,
       menuItems,
       expanded,
       onMenuClick
-    } = this.props;
+    } = this.props
 
     const conditionalShow = classNames({
       [styles['show']]: expanded
-    });
+    })
 
-    const itemsClasses = this._generateItemClasses(menuItems);
+    const itemsClasses = this._generateItemClasses(menuItems)
     const navbarItems = menuItems.map(item => this._renderMenuItem(item, itemsClasses[item]))
 
     return (
       <div styleName='outer-container shadow'>
         <span styleName='middle-container'>
           <span>{title}</span>
-          <Hamburger onMenuClick={onMenuClick} expanded={expanded}></Hamburger>
+          <Hamburger onMenuClick={onMenuClick} expanded={expanded} />
         </span>
         <span styleName='inner-container' className={conditionalShow}>
           { navbarItems }
         </span>
       </div>
-    );
+    )
   }
 }
 
@@ -70,4 +70,4 @@ NavBar.propTypes = {
   onLinkClick: React.PropTypes.func.isRequired
 }
 
-export default cssModules(NavBar, styles, { allowMultiple: true });
+export default cssModules(NavBar, styles, { allowMultiple: true })

@@ -1,11 +1,11 @@
-import React from 'react';
+import React from 'react'
 
 export default class Edit extends React.Component {
-  render() {
+  render () {
     return (
       <div>
         Editing the about page!!
       </div>
-    );
+    )
   }
 }

@@ -1,8 +1,8 @@
-import { 
+import {
   POSTS_FETCH_PENDING,
-  POSTS_FETCH_FULFILLED, 
+  POSTS_FETCH_FULFILLED,
   POSTS_FETCH_REJECTED,
-  POSTS_ADD } from './constants';
+  POSTS_ADD } from './constants'
 
 const reducers = {
   [POSTS_ADD]: (state, payload) => ({
@@ -25,9 +25,9 @@ const reducers = {
     error: payload.response.data,
     isLoading: false
   })
-};
+}
 
 export default (state = {}, { type, payload }) => {
-  const actionReducer = reducers[type];
-  return typeof actionReducer === 'function' ? actionReducer(state, payload) : state;
-};
+  const actionReducer = reducers[type]
+  return typeof actionReducer === 'function' ? actionReducer(state, payload) : state
+}

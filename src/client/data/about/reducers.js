@@ -1,8 +1,8 @@
-import { 
-  ABOUT_ADD, 
+import {
+  ABOUT_ADD,
   ABOUT_FETCH_PENDING,
-  ABOUT_FETCH_FULFILLED, 
-  ABOUT_FETCH_REJECTED } from './constants';
+  ABOUT_FETCH_FULFILLED,
+  ABOUT_FETCH_REJECTED } from './constants'
 
 const reducers = {
   [ABOUT_ADD]: (state, payload) => ({
@@ -25,9 +25,9 @@ const reducers = {
     error: payload.response.data,
     isLoading: false
   })
-};
+}
 
 export default (state = {}, { type, payload }) => {
-  const actionReducer = reducers[type];
-  return typeof actionReducer === 'function' ? actionReducer(state, payload) : state;
-};
+  const actionReducer = reducers[type]
+  return typeof actionReducer === 'function' ? actionReducer(state, payload) : state
+}

@@ -1,11 +1,11 @@
-import React from 'react';
+import React from 'react'
 
 export default class Projects extends React.Component {
-  render() {
+  render () {
     return (
       <div>
         WIP: Current projects
       </div>
-    );
+    )
   }
 }

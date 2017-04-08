@@ -1,13 +1,13 @@
-import nodeExternals from 'webpack-node-externals';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import nodeExternals from 'webpack-node-externals'
+import ExtractTextPlugin from 'extract-text-webpack-plugin'
 
 // Post CSS Plugins
-import cssNext from 'postcss-cssnext';
-import cssImport from 'postcss-import';
+import cssNext from 'postcss-cssnext'
+import cssImport from 'postcss-import'
 
 module.exports = {
   externals: [
-    nodeExternals(),
+    nodeExternals()
   ],
 
   target: 'node',
@@ -15,28 +15,28 @@ module.exports = {
   entry: {
     server: [
       'babel-polyfill',
-      './src/server/index.js',
-    ],
+      './src/server/index.js'
+    ]
   },
 
   output: {
     path: './public',
     filename: '[name].js',
     libraryTarget: 'commonjs2',
-    publicPath: '/public/',
+    publicPath: '/public/'
   },
-  
+
   module: {
     loaders: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
         loaders: [
-          'babel',
-        ],
+          'babel'
+        ]
       },
-      { 
-        test: /\.css$/, 
+      {
+        test: /\.css$/,
         loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader')
       }
     ]
@@ -46,7 +46,7 @@ module.exports = {
     return [
       cssImport,
       cssNext
-    ];
+    ]
   },
 
   plugins: [
@@ -61,6 +61,6 @@ module.exports = {
     process: false,
     Buffer: false,
     __filename: false,
-    __dirname: false,
-  },
-};
+    __dirname: false
+  }
+}

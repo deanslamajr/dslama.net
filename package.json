@@ -13,7 +13,7 @@
     "build": "npm run build:back && npm run build:front",
     "prebuild:prod": "rimraf public",
     "build:prod": "npm run build:back && npm run build:prod:front",
-    "test": "jest",
+    "test": "standard --fix && jest",
     "test:update": "jest --updateSnapshot"
   },
   "repository": {
@@ -67,6 +67,7 @@
     "postcss-loader": "^1.1.1",
     "react-addons-test-utils": "^15.4.1",
     "rimraf": "^2.5.4",
+    "standard": "^10.0.1",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.2",
     "webpack-merge": "^2.0.0",

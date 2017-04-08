@@ -1,8 +1,8 @@
-import { 
+import {
   READINGS_ADD,
   READINGS_FETCH_PENDING,
-  READINGS_FETCH_FULFILLED, 
-  READINGS_FETCH_REJECTED } from './constants';
+  READINGS_FETCH_FULFILLED,
+  READINGS_FETCH_REJECTED } from './constants'
 
 const reducers = {
   [READINGS_ADD]: (state, payload) => ({
@@ -25,9 +25,9 @@ const reducers = {
     error: payload.response.data,
     isLoading: false
   })
-};
+}
 
 export default (state = {}, { type, payload }) => {
-  const actionReducer = reducers[type];
-  return typeof actionReducer === 'function' ? actionReducer(state, payload) : state;
-};
+  const actionReducer = reducers[type]
+  return typeof actionReducer === 'function' ? actionReducer(state, payload) : state
+}

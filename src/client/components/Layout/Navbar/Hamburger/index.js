@@ -1,25 +1,25 @@
-import React from 'react';
-import cssModules from 'react-css-modules';
-import classNames from 'classnames';
+import React from 'react'
+import cssModules from 'react-css-modules'
+import classNames from 'classnames'
 
-import styles from './hamburger.css';
+import styles from './hamburger.css'
 
 class Hamburger extends React.Component {
-  render() {
-    const { onMenuClick, expanded } = this.props;
+  render () {
+    const { onMenuClick, expanded } = this.props
 
     const isActive = classNames({
       active: expanded
-    }, 'mobile', 'hamburger');
+    }, 'mobile', 'hamburger')
 
     return (
       <div onClick={onMenuClick} styleName={isActive}>
-        <span styleName='line'></span>
-        <span styleName='line'></span>
-        <span styleName='line'></span>
+        <span styleName='line' />
+        <span styleName='line' />
+        <span styleName='line' />
       </div>
-    );
+    )
   }
 }
 
-export default cssModules(Hamburger, styles, { allowMultiple: true });
+export default cssModules(Hamburger, styles, { allowMultiple: true })

@@ -1,6 +1,6 @@
-import db from './db';
+import db from './db'
 
-import constants from '../../../config/constants';
+import constants from '../../../config/constants'
 
 export const getHashedPassword = (username) => {
   return db
@@ -10,6 +10,6 @@ export const getHashedPassword = (username) => {
     .then(res => {
       return res && res.password
         ? res.password
-        : null;
-    });
-};
+        : null
+    })
+}

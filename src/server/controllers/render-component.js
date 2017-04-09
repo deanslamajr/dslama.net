@@ -40,10 +40,10 @@ function fetchDataByPath (req) {
             resolve({ store })
           })
           .catch(() => {
-            //@todo log error
-            resolve();
-          });
-        break;
+            // @todo log error
+            resolve()
+          })
+        break
       case '/readings':
         getReadings()
           .then(data => {

@@ -14,6 +14,7 @@ const router = express.Router()
 
 const ACCESSTOKENCOOKIE = constants.get('accessTokenCookie')
 const SECRET = constants.get('secret')
+const INVALID_CREDS = 'INVALID_CREDS'
 
 router.use('/api', api)
 
@@ -27,7 +28,7 @@ router.post('/login', (req, res) => {
     .then(response => {
       // username does not exist in DB
       if (!response) {
-        return Promise.reject(418)
+        return Promise.reject(new Error(INVALID_CREDS))
       }
 
       return new Promise((resolve, reject) => {
@@ -41,7 +42,7 @@ router.post('/login', (req, res) => {
     })
     .then(result => {
       // incorrect password
-      if (result != true) {
+      if (result !== true) {
         res.sendStatus(418)
         return
       }
@@ -66,7 +67,7 @@ router.post('/login', (req, res) => {
     .catch(error => {
       let code
 
-      error === 418
+      error && error.message === INVALID_CREDS
         ? code = 418
         : code = 500
 
@@ -79,7 +80,8 @@ router.get('/authstatus', (req, res) => {
     .then(() => {
       res.sendStatus(200)
     })
-    .catch((err) => {
+    .catch(() => {
+      // @todo log error
       res.sendStatus(418)
     })
 })

@@ -5,6 +5,7 @@
   "DB_TABLE_READINGS": "",
   "DB_TABLE_USERS": "",
   "DB_TABLE_ABOUT": "",
+  "DB_TABLE_PROJECTS": "",
   "secret": "",
   "accessTokenCookie": "",
   "ASSETS_DOMAIN": "",

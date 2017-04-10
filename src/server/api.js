@@ -4,8 +4,20 @@ import uuid from 'uuid/v4'
 import { add as addReading, get as getReadings } from './models/readings'
 import { get as getAbout } from './models/about'
 import { get as getPosts } from './models/posts'
+import { get as getProjects } from './models/projects'
 
 const router = express.Router()
+
+router.get('/projects', (req, res) => {
+  getProjects()
+    .then(projects => {
+      res.status(200).json(projects)
+    })
+    .catch(() => {
+      // @todo log error
+      res.sendStatus(500)
+    })
+})
 
 router.get('/posts', (req, res) => {
   getPosts()

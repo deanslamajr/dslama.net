@@ -1,11 +1,11 @@
 import React from 'react'
 
-export default class Projects extends React.Component {
+import ProjectsContainer from './ProjectsContainer'
+
+export default class ProjectsParentContainer extends React.Component {
   render () {
-    return (
-      <div>
-        WIP: Current projects
-      </div>
-    )
+    const { children: editProjectsComponent } = this.props
+
+    return editProjectsComponent || <ProjectsContainer />
   }
 }

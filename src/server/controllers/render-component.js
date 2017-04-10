@@ -8,6 +8,7 @@ import createStore from '../../client/data/store'
 import { addReadings } from '../../client/data/readings/actions'
 import { addAbout } from '../../client/data/about/actions'
 import { addPosts } from '../../client/data/posts/actions'
+import { addProjects } from '../../client/data/projects/actions'
 
 import routes from '../../client/components/routes'
 import { verify as verifyJWT } from '../models/jwt'
@@ -15,6 +16,7 @@ import { verify as verifyJWT } from '../models/jwt'
 import { get as getPosts } from '../models/posts'
 import { get as getReadings } from '../models/readings'
 import { get as getAbout } from '../models/about'
+import { get as getProjects } from '../models/projects'
 
 function fetchDataByPath (req) {
   return new Promise((resolve, reject) => {
@@ -26,6 +28,17 @@ function fetchDataByPath (req) {
         getAbout()
           .then(data => {
             store.dispatch(addAbout(data))
+            resolve({ store })
+          })
+          .catch(() => {
+            // @todo log error
+            resolve()
+          })
+        break
+      case '/projects':
+        getProjects()
+          .then(data => {
+            store.dispatch(addProjects(data))
             resolve({ store })
           })
           .catch(() => {

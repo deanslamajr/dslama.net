@@ -9,3 +9,19 @@
 .auth-div {
   height: 3em;
 }
+
+.form-input {
+  width: 20%;
+  margin: 0.75rem auto;
+}
+
+.form-text {
+  text-align: center;
+}
+
+@media (--phone-max-width) {
+  .form-input {
+    width: 45%;
+    margin: 0.75rem auto;
+  }
+} 

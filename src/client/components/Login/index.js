@@ -49,7 +49,7 @@ class Login extends React.Component {
 
   renderLoginResultDiv () {
     return this.state.loginResult
-      ? (<a styleName='form-element form-text' onClick={this.checkAuthentication}>{this.state.loginResult}!</a>)
+      ? (<a styleName='form-input form-text' onClick={this.checkAuthentication}>{this.state.loginResult}!</a>)
       : null
   }
 
@@ -67,7 +67,7 @@ class Login extends React.Component {
   renderAuthenticationCheckDiv () {
     const authState = this.state.authenticated
     return (
-      <div styleName='form-element form-text auth-div'>
+      <div styleName='form-input form-text auth-div'>
         <div>{authState}</div>
         {
           authState === AUTHENTICATED
@@ -103,9 +103,9 @@ class Login extends React.Component {
     return (
       <form styleName='container' onSubmit={this.handleSubmit}>
         { this.renderAuthenticationCheckDiv() }
-        <input type='text' onChange={this.handleChange.bind(this, 'username')} placeholder='username' styleName='form-element' />
-        <input type='password' onChange={this.handleChange.bind(this, 'password')} placeholder='password' styleName='form-element' />
-        <input type='submit' value='Login' styleName='form-element' />
+        <input type='text' onChange={this.handleChange.bind(this, 'username')} placeholder='username' styleName='form-input' />
+        <input type='password' onChange={this.handleChange.bind(this, 'password')} placeholder='password' styleName='form-input' />
+        <input type='submit' value='Login' styleName='form-input' />
         { this.renderLoginResultDiv() }
       </form>
     )

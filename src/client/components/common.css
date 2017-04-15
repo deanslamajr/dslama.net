@@ -7,15 +7,6 @@
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16);
 }
 
-.form-element {
-  width: 25%;
-  margin: 0.75rem auto;
-}
-
-.form-text {
-  text-align: center;
-}
-
 .card {
   background-color: white;
   padding: 1.25rem;
@@ -62,11 +53,6 @@
 }
 
 @media (--phone-max-width) {
-  .form-element {
-    width: 65%;
-    margin: 0.5rem auto;
-  }
-
   .title {
     font-size: 1.5rem;
   }

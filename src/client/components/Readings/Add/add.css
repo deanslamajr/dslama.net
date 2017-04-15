@@ -7,11 +7,16 @@
 }
 
 textarea[placeholder="title"], textarea[placeholder="url"] {
-  height: 3em;
+  height: 5em;
 }
 
 textarea[placeholder="quote"] {
-  height: 19em;
+  height: 30em;
+}
+
+.form-element {
+  width: 45%;
+  margin: 0.75rem auto;
 }
 
 .server-message {
@@ -29,12 +34,13 @@ textarea[placeholder="quote"] {
 }
 
 @media (--phone-max-width) {
+  .form-element {
+    width: 85%;
+    margin: 0.5rem auto;
+  }
+
   .server-message {
     width: 65%;
     height: 2em;
-  }
-
-  textarea[placeholder="quote"] {
-    height: 15em;
   }
 }

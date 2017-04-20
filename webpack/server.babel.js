@@ -1,5 +1,7 @@
 import path from 'path'
 
+import webpack from 'webpack'
+
 import nodeExternals from 'webpack-node-externals'
 
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
@@ -72,10 +74,21 @@ export default env => {
       ]
     },
     // ------------------------------------
+    // Devtool
+    // ------------------------------------
+    devtool: 'sourcemap',
+    // ------------------------------------
     // Plugins
     // ------------------------------------
     plugins: [
-      new ExtractTextPlugin('assets/styles.css')
+      new ExtractTextPlugin('assets/styles.css'),
+      // This enables the sourcemap in nodejs
+      // http://jlongster.com/Backend-Apps-with-Webpack--Part-I#Sourcemaps,-CSS,-and
+      new webpack.BannerPlugin({ 
+        banner: 'require("source-map-support").install();',
+        raw: true, 
+        entryOnly: false 
+      })
     ],
     // ------------------------------------
     // Node PolyFills/Mocks

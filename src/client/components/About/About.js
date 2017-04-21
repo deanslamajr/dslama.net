@@ -10,10 +10,14 @@ function renderTitle (title) {
   return <div styleName='title'>{title}</div>
 }
 
-function renderImage (imageURL) {
+function renderLogo (imageURL) {
+  const backgroundImage = {
+    backgroundImage: `url(${imageURL}), url(${imageURL})`
+  }
+
   return (
-    <div styleName='image-container'>
-      <img styleName='image' src={imageURL} />
+    <div styleName='logo-container shadow'>
+      <div style={backgroundImage} styleName='logo-main' />
     </div>
   )
 }
@@ -50,7 +54,7 @@ class About extends React.Component {
       return (
         <div styleName='about'>
           { data.title ? renderTitle(data.title) : null }
-          { data.pictureURL ? renderImage(data.pictureURL) : null }
+          { data.pictureURL ? renderLogo(data.pictureURL) : null }
           { data.links ? renderLinks(data.links) : null }
           { data.bio ? renderBio(data.bio) : null }
         </div>

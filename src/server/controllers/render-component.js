@@ -140,8 +140,9 @@ function renderComponent (req, res) {
           .send('Not found')
       }
     })
-    .catch(() => {
+    .catch(err => {
       // @todo log error
+      console.error(err)
       res
         .status(500)
         .send('500: System Error')

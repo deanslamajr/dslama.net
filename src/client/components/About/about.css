@@ -6,15 +6,25 @@
 }
 
 .title {
-  margin: 1.5rem;
+  margin: 3.5rem;
   text-align: center;
   font-size: 1.5rem;
 }
 
-.image {
-  display: block;
-  margin: 2rem auto;
-  width: 40%;
+.logo-container {
+  height: 15rem;
+  margin: 0 1.5rem;
+}
+
+.logo-main {
+  background-repeat: no-repeat,no-repeat;
+  background-color: #e7eeed;
+  background-blend-mode: color-burn, color-burn;
+  height: 100%;
+  width: 100%;
+  background-position-x: 24rem, -3rem;
+  background-position-y: -20rem, -5rem;
+  background-size: 70rem, 30rem;
 }
 
 .links {
@@ -28,6 +38,7 @@
 .link {
   display: inline;
   margin: 2rem;
+  margin-top: 3.5rem;
 }
 
 .link a:link {
@@ -41,7 +52,6 @@
 .bio {
   font-family: 'Josefin Sans', sans-serif;
   text-align: justify;
-  margin-top: 2rem;
   font-size: 1.15rem;
 }
 
@@ -49,10 +59,19 @@
   .title {
     margin: 2rem;
   }
-  
-  .image {
-    margin: 2rem auto;
-    width: 70%;
+
+  .logo-container {
+    height: 14rem;
+  }
+
+  .logo-main {
+    background-position-x: 16rem, -3rem;
+    background-position-y: -11rem, 0rem;
+    background-size: 45rem, 22rem;
+  }
+
+  .links {
+    margin-top: 2rem;
   }
 
   .link {
@@ -65,13 +84,16 @@
 }
 
 @media (--phone-max-width) {
-  .image-container {
+
+  .logo-container {
     margin: 0 .75rem;
   }
 
-  .image {
-    margin: 2rem auto;
-    width: 100%;
+  .logo-main {
+    background-blend-mode: color-burn, lighten;
+    background-position-x: 0rem;
+    background-position-y: 50%;
+    background-size: 125%;
   }
 
   .links {

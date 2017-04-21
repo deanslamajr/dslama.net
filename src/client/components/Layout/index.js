@@ -8,9 +8,7 @@ import styles from './layout.css'
 function renderFooter () {
   return (
     <div styleName='footer-container'>
-      This page is one part of a web application<br />
-      created by Dean Slama<br />
-      Feel free to <a styleName='footer-link' href='https://github.com/deanslamajr/deanslamajr.com' target='_blank'>fork the codes</a> and host your own!
+      Feel free to <a styleName='footer-link' href='https://github.com/deanslamajr/deanslamajr.com' target='_blank'>fork this spa</a> and host it!
     </div>
   )
 }

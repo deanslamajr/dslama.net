@@ -1,9 +1,12 @@
 import React from 'react'
 
-import ErrorComponent from '../Error'
+import Header from '../Header'
 import Loader from '../Loader'
+import ErrorComponent from '../Error'
 
 import Project from './Project'
+
+const summary = 'This is a list of software authored by the developer. Clicking on the title of an item will open a new tab/window navigated to a publicly hosted version of the software. Each project`s source code is available via the `source` link.'
 
 export default class ProjectsList extends React.Component {
   componentDidMount () {
@@ -20,6 +23,7 @@ export default class ProjectsList extends React.Component {
 
       return (
         <div>
+          <Header summary={summary} />
           {
             sortedData.map(projectsData => (
               <Project key={projectsData.id} cardData={projectsData} />
@@ -28,7 +32,12 @@ export default class ProjectsList extends React.Component {
         </div>
       )
     } else if (isLoading) {
-      return <Loader />
+      return (
+        <div>
+          <Header summary={summary} />
+          <Loader />
+        </div>
+      )
     } else if (error) {
       // @todo reroute to 5xx view
       return <ErrorComponent />

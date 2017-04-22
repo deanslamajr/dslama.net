@@ -84,10 +84,10 @@ export default env => {
       new ExtractTextPlugin('assets/styles.css'),
       // This enables the sourcemap in nodejs
       // http://jlongster.com/Backend-Apps-with-Webpack--Part-I#Sourcemaps,-CSS,-and
-      new webpack.BannerPlugin({ 
+      new webpack.BannerPlugin({
         banner: 'require("source-map-support").install();',
-        raw: true, 
-        entryOnly: false 
+        raw: true,
+        entryOnly: false
       })
     ],
     // ------------------------------------

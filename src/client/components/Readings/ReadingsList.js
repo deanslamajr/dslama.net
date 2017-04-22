@@ -1,9 +1,12 @@
 import React from 'react'
 
-import ErrorComponent from '../Error'
+import Header from '../Header'
 import Loader from '../Loader'
+import ErrorComponent from '../Error'
 
 import Reading from './Reading'
+
+const summary = 'This is a list of interesting and informative blog posts from others in the international web development community. Most recently discovered posts are nearer the top.'
 
 export default class Readings extends React.Component {
   componentDidMount () {
@@ -20,6 +23,7 @@ export default class Readings extends React.Component {
 
       return (
         <div>
+          <Header summary={summary} />
           {
             sortedData.map(readingData => (
               <Reading key={readingData.id} cardData={readingData} />
@@ -28,7 +32,12 @@ export default class Readings extends React.Component {
         </div>
       )
     } else if (isLoading) {
-      return <Loader />
+      return (
+        <div>
+          <Header summary={summary} />
+          <Loader />
+        </div>
+      )
     } else if (error) {
       // @todo reroute to 5xx view
       return <ErrorComponent />

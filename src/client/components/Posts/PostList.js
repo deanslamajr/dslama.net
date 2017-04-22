@@ -1,9 +1,12 @@
 import React from 'react'
 
-import ErrorComponent from '../Error'
+import Header from '../Header'
 import Loader from '../Loader'
+import ErrorComponent from '../Error'
 
 import Post from './Post'
+
+const summary = 'This is a list of blog posts authored by the developer. Most recently published posts are nearer the top.'
 
 export default class PostList extends React.Component {
   componentDidMount () {
@@ -18,6 +21,7 @@ export default class PostList extends React.Component {
     if (data && data.length) {
       return (
         <div>
+          <Header summary={summary} />
           {
             data.map(postData => (
               <Post key={postData.id} data={postData} />
@@ -26,7 +30,12 @@ export default class PostList extends React.Component {
         </div>
       )
     } else if (isLoading) {
-      return <Loader />
+      return (
+        <div>
+          <Header summary={summary} />
+          <Loader />
+        </div>
+      )
     } else if (error) {
       // @todo reroute to 5xx view
       return <ErrorComponent />

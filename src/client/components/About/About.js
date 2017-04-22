@@ -3,12 +3,9 @@ import cssModules from 'react-css-modules'
 
 import styles from './about.css'
 
-import ErrorComponent from '../Error'
+import Header from '../Header'
 import Loader from '../Loader'
-
-function renderTitle (title) {
-  return <div styleName='title'>{title}</div>
-}
+import ErrorComponent from '../Error'
 
 function renderLogo (imageURL) {
   const backgroundImage = {
@@ -53,7 +50,7 @@ class About extends React.Component {
     if (data) {
       return (
         <div styleName='about'>
-          { data.title ? renderTitle(data.title) : null }
+          { data.title ? <Header summary={data.title} /> : null }
           { data.pictureURL ? renderLogo(data.pictureURL) : null }
           { data.links ? renderLinks(data.links) : null }
           { data.bio ? renderBio(data.bio) : null }

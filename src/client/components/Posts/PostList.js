@@ -1,4 +1,5 @@
 import React from 'react'
+import Helmet from 'react-helmet'
 
 import Header from '../Header'
 import Loader from '../Loader'
@@ -17,9 +18,10 @@ export default class PostList extends React.Component {
 
   render () {
     const { data, isLoading, error } = this.props
+    let content
 
     if (data && data.length) {
-      return (
+      content = (
         <div>
           <Header summary={summary} />
           {
@@ -30,7 +32,7 @@ export default class PostList extends React.Component {
         </div>
       )
     } else if (isLoading) {
-      return (
+      content = (
         <div>
           <Header summary={summary} />
           <Loader />
@@ -38,9 +40,18 @@ export default class PostList extends React.Component {
       )
     } else if (error) {
       // @todo reroute to 5xx view
-      return <ErrorComponent />
+      content = <ErrorComponent />
     } else {
-      return null
+      content = null
     }
+
+    return (
+      <div>
+        <Helmet>
+          <title>dslama.net - posts</title>
+        </Helmet>
+        {content}
+      </div>
+    )
   }
 }

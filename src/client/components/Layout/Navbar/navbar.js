@@ -62,12 +62,4 @@ class NavBar extends React.Component {
   }
 }
 
-NavBar.propTypes = {
-  title: React.PropTypes.string.isRequired,
-  menuItems: React.PropTypes.arrayOf(React.PropTypes.string),
-  expanded: React.PropTypes.bool.isRequired,
-  onMenuClick: React.PropTypes.func.isRequired,
-  onLinkClick: React.PropTypes.func.isRequired
-}
-
 export default cssModules(NavBar, styles, { allowMultiple: true })

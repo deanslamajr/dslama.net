@@ -84,7 +84,6 @@
 }
 
 @media (--phone-max-width) {
-
   .logo-container {
     margin: 0 .75rem;
   }

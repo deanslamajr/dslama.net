@@ -57,9 +57,3 @@ export default class NavBarContainer extends React.Component {
     )
   }
 };
-
-NavBarContainer.propTypes = {
-  currentPath: React.PropTypes.string.isRequired,
-  title: React.PropTypes.string.isRequired,
-  menuItems: React.PropTypes.arrayOf(React.PropTypes.string)
-}

@@ -1,5 +1,6 @@
 import React from 'react'
 import cssModules from 'react-css-modules'
+import Helmet from 'react-helmet'
 
 import styles from './about.css'
 
@@ -46,9 +47,10 @@ class About extends React.Component {
 
   render () {
     const { data, isLoading, error } = this.props
+    let content
 
     if (data) {
-      return (
+      content = (
         <div styleName='about'>
           { data.title ? <Header summary={data.title} /> : null }
           { data.pictureURL ? renderLogo(data.pictureURL) : null }
@@ -57,13 +59,22 @@ class About extends React.Component {
         </div>
       )
     } else if (isLoading) {
-      return <Loader />
+      content = <Loader />
     } else if (error) {
       // @todo reroute to 5xx view
-      return <ErrorComponent />
+      content = <ErrorComponent />
     } else {
-      return null
+      content = null
     }
+
+    return (
+      <div>
+        <Helmet>
+          <title>dslama.net - about</title>
+        </Helmet>
+        {content}
+      </div>
+    )
   }
 }
 

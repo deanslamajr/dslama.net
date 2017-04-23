@@ -56,4 +56,4 @@ export default class NavBarContainer extends React.Component {
       />
     )
   }
-};
+}

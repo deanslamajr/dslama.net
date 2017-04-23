@@ -1,4 +1,5 @@
 import React from 'react'
+import Helmet from 'react-helmet'
 
 import Header from '../Header'
 import Loader from '../Loader'
@@ -17,11 +18,12 @@ export default class Readings extends React.Component {
 
   render () {
     const { readings, isLoading, error } = this.props
+    let content
 
     if (readings) {
       const sortedData = readings.sort((a, b) => b.foundDate - a.foundDate)
 
-      return (
+      content = (
         <div>
           <Header summary={summary} />
           {
@@ -32,7 +34,7 @@ export default class Readings extends React.Component {
         </div>
       )
     } else if (isLoading) {
-      return (
+      content = (
         <div>
           <Header summary={summary} />
           <Loader />
@@ -40,9 +42,18 @@ export default class Readings extends React.Component {
       )
     } else if (error) {
       // @todo reroute to 5xx view
-      return <ErrorComponent />
+      content = <ErrorComponent />
     } else {
-      return null
+      content = null
     }
+
+    return (
+      <div>
+        <Helmet>
+          <title>dslama.net - readings</title>
+        </Helmet>
+        {content}
+      </div>
+    )
   }
 }

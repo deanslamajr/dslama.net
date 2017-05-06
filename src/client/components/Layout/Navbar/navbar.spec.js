@@ -39,7 +39,7 @@ describe('Navbar', () => {
     expect(tree).toMatchSnapshot()
   })
 
-  it('should properly handle menu click events', () => {
+  xit('should properly handle menu click events', () => {
     expect(onMenuClick.mock.calls.length).toBe(0)
 
     navbar.find('.mobile').simulate('click')
@@ -89,7 +89,7 @@ describe('Navbar container', () => {
     expect(navbarContainer.find('.show').length).toBe(0)
   })
 
-  it('should make a clicked item active while inactivating all other items', () => {
+  xit('should make a clicked item active while inactivating all other items', () => {
     expect(navbarContainer.find('.inner-container').childAt(0).is('.active')).toBeFalsy()
 
     navbarContainer.find('.inner-container').childAt(0).simulate('click')

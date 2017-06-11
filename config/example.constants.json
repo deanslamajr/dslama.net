@@ -10,5 +10,8 @@
   "accessTokenCookie": "",
   "ASSETS_DOMAIN": "",
   "SENTRY_DNS": "",
-  "MEDIUM_USERNAME": ""
+  "MEDIUM_USERNAME": "",
+  "METRICS_HOST": "localhost",
+  "METRICS_PORT": 8125,
+  "METRICS_PREFIX": "local.dslamanet"
 }

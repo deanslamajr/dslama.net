@@ -8,6 +8,8 @@ import renderComponent from './controllers/render-component'
 import { getHashedPassword as getUsersHashedPassword } from './models/user'
 import { verify as verifyJWT } from './models/jwt'
 
+import { increment } from './helpers/metrics'
+
 import constants from '../../config/constants'
 
 const router = express.Router()
@@ -24,6 +26,8 @@ router.post('/logout', (req, res) => {
 })
 
 router.post('/login', (req, res) => {
+  increment('login_attempt')
+
   getUsersHashedPassword(req.body.username)
     .then(response => {
       // username does not exist in DB

@@ -37,6 +37,7 @@
     "express": "^4.14.0",
     "helmet": "^3.3.0",
     "jsonwebtoken": "^7.1.9",
+    "lynx": "^0.2.0",
     "nconf": "^0.8.4",
     "react": "^15.4.1",
     "react-css-modules": "^3.7.10",

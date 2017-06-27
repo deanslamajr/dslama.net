@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
 import { getHashedPassword as getUsersHashedPassword } from '../models/user'
-import { increment } from '../helpers/metrics'
+import { increment, time } from '../helpers/metrics'
 import constants from '../../../config/constants'
 
 const ACCESSTOKENCOOKIE = constants.get('accessTokenCookie')
@@ -51,16 +51,22 @@ function createJWT (res, result) {
 }
 
 export function authenticateUser (req, res) {
-  increment('login_attempt')
+  const startTime = Date.now()
 
   return getUsersHashedPassword(req.body.username)
     .then(verifyPassword.bind(null, req))
     .then(createJWT.bind(null, res))
+    .then(() => {
+      increment('login.success')
+      time('login.suc', Date.now() - startTime)
+    })
     .catch(error => {
       const responseCode = error && error.message === INVALID_CREDS
         ? 418
         : 500
 
       res.sendStatus(responseCode)
+      increment('login.failure')
+      time('login.fail', Date.now() - startTime)
     })
 }

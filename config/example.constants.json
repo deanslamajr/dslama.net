@@ -13,5 +13,9 @@
   "MEDIUM_USERNAME": "",
   "METRICS_HOST": "localhost",
   "METRICS_PORT": 8125,
-  "METRICS_PREFIX": "local.dslamanet"
+  "METRICS_PREFIX": "local.dslamanet",
+  "S3_ACCESS_KEY_ID": "",
+  "S3_SECRET_ACCESS_KEY": "",
+  "S3_ASSETS_BUCKET": "",
+  "S3_REGION": ""
 }

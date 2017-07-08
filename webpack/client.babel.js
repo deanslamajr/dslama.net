@@ -7,6 +7,7 @@ import { getIfUtils, removeEmpty } from 'webpack-config-utils'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
 import CompressionPlugin from 'compression-webpack-plugin'
+import AssetsPlugin from 'assets-webpack-plugin'
 
 import FaviconsWebpackPlugin from 'favicons-webpack-plugin'
 
@@ -83,6 +84,8 @@ export default env => {
     // Plugins
     // ------------------------------------
     plugins: removeEmpty([
+      // emits a json file with assets paths 
+      new AssetsPlugin(),
       new ExtractTextPlugin(ifProd('[name]-[contenthash].css', 'styles.css')),
       new HtmlWebpackPlugin(removeEmpty({
         template: path.join(__dirname, '../src/client/index.ejs'),

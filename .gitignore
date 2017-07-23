@@ -3,7 +3,9 @@ node_modules
 npm-debug.log
 
 # build artifacts
-public
+public/*.js
+public/*.ejs
+public/assets
 webpack-assets.json
 
 # deployment artifacts

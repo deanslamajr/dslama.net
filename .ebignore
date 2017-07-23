@@ -1,3 +1,5 @@
+.git/
+
 # npm
 node_modules
 npm-debug.log
@@ -12,8 +14,3 @@ build_packages
 
 # constants
 config/constants.json
-
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml

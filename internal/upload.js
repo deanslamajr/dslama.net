@@ -4,6 +4,8 @@ import path from 'path';
 import AWS from 'aws-sdk';
 import s3StreamFactory from 's3-upload-stream';
 
+import packageJson from '../package.json';
+
 import constants from '../config/constants'
 
 const s3Config = {
@@ -13,11 +15,16 @@ const s3Config = {
 };
 const s3Stream = s3StreamFactory(new AWS.S3(s3Config));
 
-const wd = path.join(__dirname, '..', 'public', 'assets');
+const backendWorkingDirectory = path.join(__dirname, '..', 'public');
+const frontendWorkingDirectory = path.join(__dirname, '..', 'public', 'assets');
 
-const defaultConfig = {
-  Bucket: constants.get('S3_ASSETS_BUCKET')
+const frontendS3Config = {
+  Bucket: constants.get('FRONTEND_S3_ASSETS_BUCKET')
 };
+const backendS3Config = {
+  Bucket: constants.get('BACKEND_S3_ASSETS_BUCKET')
+};
+
 const gzipMetaTags = {
   ContentEncoding: 'gzip',
   ContentType: 'text/javascript'
@@ -28,13 +35,16 @@ const cssMetaTags = {
 
 const tasks = [];
 
-fs.readdir(wd, (err, files) => {
+/*
+ * Frontend files
+ */
+fs.readdir(frontendWorkingDirectory, (err, files) => {
   files.forEach(file => {
     if (/\.(gz)/.test(file)) {
-      tasks.push(uploadFile(file, gzipMetaTags));
+      tasks.push(uploadFile(frontendWorkingDirectory, file, { ...frontendS3Config, ...gzipMetaTags }));
     }
     else if (/\.(css)/.test(file)) {
-      tasks.push(uploadFile(file, cssMetaTags));
+      tasks.push(uploadFile(frontendWorkingDirectory, file, { ...frontendS3Config, ...cssMetaTags }));
     }
     else if (
       /favicons/.test(file) ||
@@ -44,14 +54,31 @@ fs.readdir(wd, (err, files) => {
       console.log('skipping:' + file)
     }
     else {
-      tasks.push(uploadFile(file));
+      tasks.push(uploadFile(frontendWorkingDirectory, file, frontendS3Config));
+    }
+  });
+});
+
+/*
+ * Backend files
+ */
+fs.readdir(backendWorkingDirectory, (err, files) => {
+  files.forEach(file => {
+    if (!/assets/.test(file)) {
+      tasks.push(uploadFile(backendWorkingDirectory, file, { ...backendS3Config, version: packageJson.version }));
     }
   });
 })
 
-function uploadFile(filename, extraConfig = {}) {
+function uploadFile(workingDirectory, filename, extraConfig = {}) {
+  let s3Filename = filename
+  if (extraConfig.version) {
+    console.log('this has a version tag:' + extraConfig.version);
+    s3Filename = `${extraConfig.version}-${filename}`;
+    delete extraConfig.version;
+  }
   return new Promise((resolve, reject) => {
-    const config = Object.assign({ Key: filename }, extraConfig, defaultConfig);
+    const config = Object.assign({ Key: s3Filename }, extraConfig);
 
     // Create the streams
     const upload = s3Stream.upload(config);
@@ -73,15 +100,12 @@ function uploadFile(filename, extraConfig = {}) {
         ETag: '"bf2acbedf84207d696c8da7dbb205b9f-5"' }
     */
     upload.on('uploaded', (details) => {
-      console.log(`${filename} was successfully uploaded!`);
+      console.log(`${s3Filename} was successfully uploaded!`);
       console.dir(details);
-    });
-
-    upload.on('finish', () => {
       resolve();
     });
 
-    const readStream = fs.createReadStream(path.join(wd, filename));
+    const readStream = fs.createReadStream(path.join(workingDirectory, filename));
     readStream.pipe(upload); 
   });
 }

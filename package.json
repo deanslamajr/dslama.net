@@ -1,6 +1,6 @@
 {
   "name": "deanslamajr.com",
-  "version": "0.5.0",
+  "version": "1.0.10",
   "description": "a blog",
   "main": "app.js",
   "scripts": {
@@ -14,7 +14,9 @@
     "build:prod": "npm run build:back && npm run build:front:prod",
     "test": "standard --fix && jest",
     "test:update": "jest --updateSnapshot",
-    "upload": "babel-node internal/upload.js"
+    "upload": "babel-node internal/upload.js",
+    "update:index": "babel-node internal/find-and-replace-gzip.js",
+    "deploy:patch": "npm version patch && npm run build:prod && npm run update:index && npm run upload && eb deploy -l `git describe`"
   },
   "repository": {
     "type": "git",
@@ -42,6 +44,7 @@
     "lynx": "^0.2.0",
     "nconf": "^0.8.4",
     "object.values": "^1.0.4",
+    "raven": "^2.1.0",
     "react": "^15.4.1",
     "react-css-modules": "^3.7.10",
     "react-dom": "^15.4.1",

@@ -4,14 +4,17 @@ import {
   get as getReadings,
   add as addReading } from '../models/readings'
 
+import Raven from '../helpers/sentry'
+
 function get (req, res) {
   return getReadings()
     .then(readings => {
       res.status(200)
       res.json(readings)
     })
-    .catch(() => {
+    .catch(e => {
       // @todo log error
+      Raven.captureException(e);
       res.sendStatus(500)
     })
 }

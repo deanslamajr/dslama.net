@@ -13,7 +13,8 @@ const s3Config = {
 };
 const s3Stream = s3StreamFactory(new AWS.S3(s3Config));
 
-const wd = path.join(__dirname, '..', 'public', 'assets');
+const backendWorkingDirectory = path.join(__dirname, '..', 'public');
+const frontendWorkingDirectory = path.join(__dirname, '..', 'public', 'assets');
 
 const defaultConfig = {
   Bucket: constants.get('S3_ASSETS_BUCKET')
@@ -28,13 +29,16 @@ const cssMetaTags = {
 
 const tasks = [];
 
-fs.readdir(wd, (err, files) => {
+/*
+ * Frontend files
+ */
+fs.readdir(frontendWorkingDirectory, (err, files) => {
   files.forEach(file => {
     if (/\.(gz)/.test(file)) {
-      tasks.push(uploadFile(file, gzipMetaTags));
+      tasks.push(uploadFile(frontendWorkingDirectory, file, gzipMetaTags));
     }
     else if (/\.(css)/.test(file)) {
-      tasks.push(uploadFile(file, cssMetaTags));
+      tasks.push(uploadFile(frontendWorkingDirectory, file, cssMetaTags));
     }
     else if (
       /favicons/.test(file) ||
@@ -44,12 +48,23 @@ fs.readdir(wd, (err, files) => {
       console.log('skipping:' + file)
     }
     else {
-      tasks.push(uploadFile(file));
+      tasks.push(uploadFile(frontendWorkingDirectory, file));
+    }
+  });
+});
+
+/*
+ * Backend files
+ */
+fs.readdir(backendWorkingDirectory, (err, files) => {
+  files.forEach(file => {
+    if (!/assets/.test(file)) {
+      tasks.push(uploadFile(backendWorkingDirectory, file));
     }
   });
 })
 
-function uploadFile(filename, extraConfig = {}) {
+function uploadFile(workingDirectory, filename, extraConfig = {}) {
   return new Promise((resolve, reject) => {
     const config = Object.assign({ Key: filename }, extraConfig, defaultConfig);
 
@@ -75,13 +90,10 @@ function uploadFile(filename, extraConfig = {}) {
     upload.on('uploaded', (details) => {
       console.log(`${filename} was successfully uploaded!`);
       console.dir(details);
-    });
-
-    upload.on('finish', () => {
       resolve();
     });
 
-    const readStream = fs.createReadStream(path.join(wd, filename));
+    const readStream = fs.createReadStream(path.join(workingDirectory, filename));
     readStream.pipe(upload); 
   });
 }

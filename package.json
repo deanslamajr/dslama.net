@@ -15,7 +15,8 @@
     "test": "standard --fix && jest",
     "test:update": "jest --updateSnapshot",
     "upload": "babel-node internal/upload.js",
-    "update:index": "babel-node internal/find-and-replace-gzip.js"
+    "update:index": "babel-node internal/find-and-replace-gzip.js",
+    "deploy": "npm run build:prod && npm run update:index && npm run upload && eb deploy"
   },
   "repository": {
     "type": "git",

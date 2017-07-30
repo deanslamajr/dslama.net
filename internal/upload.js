@@ -4,6 +4,8 @@ import path from 'path';
 import AWS from 'aws-sdk';
 import s3StreamFactory from 's3-upload-stream';
 
+import packageJson from '../package.json';
+
 import constants from '../config/constants'
 
 const s3Config = {
@@ -63,7 +65,7 @@ fs.readdir(frontendWorkingDirectory, (err, files) => {
 fs.readdir(backendWorkingDirectory, (err, files) => {
   files.forEach(file => {
     if (!/assets/.test(file)) {
-      tasks.push(uploadFile(backendWorkingDirectory, file, { ...backendS3Config, version: 'taco' }));
+      tasks.push(uploadFile(backendWorkingDirectory, file, { ...backendS3Config, version: packageJson.version }));
     }
   });
 })

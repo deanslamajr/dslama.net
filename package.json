@@ -1,6 +1,6 @@
 {
   "name": "deanslamajr.com",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "a blog",
   "main": "app.js",
   "scripts": {

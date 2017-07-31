@@ -5,7 +5,6 @@ const values = require('object.values');
 const manifest = require('../webpack-assets.json');
 
 const options = {
- 
   //Single file or glob 
   files: path.join(__dirname, '..', 'public', 'index.ejs'),
  
@@ -17,8 +16,6 @@ const options = {
   encoding: 'utf8',
 };
 
-console.log(manifest);
-
 // cheack for Object.values
 // @todo if nodeVersion >= 7.0.0 , native support of Object.values negates requirement of this shim
 if (!Object.values) {
@@ -28,20 +25,13 @@ if (!Object.values) {
 if (manifest) {
   const javascripts = Object.values(manifest).map(bundlesExports => bundlesExports['js'])
 
-  console.log(`javascripts: ${javascripts}`);
-
   // @todo handle case where javascripts is an Array
   const bundleSpecificOptions = {
     from: new RegExp(javascripts),
     to: `${javascripts}.gz`
   }
-  
-  // options.from = new RegExp(javascripts);
-
-  // options.to = `${javascripts}.gz`;
 
   const finalOptions = Object.assign({}, options, bundleSpecificOptions)
-
 
   try {
     const changedFiles = replace.sync(finalOptions);

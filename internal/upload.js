@@ -38,37 +38,35 @@ const tasks = [];
 /*
  * Frontend files
  */
-fs.readdir(frontendWorkingDirectory, (err, files) => {
-  files.forEach(file => {
-    if (/\.(gz)/.test(file)) {
-      tasks.push(uploadFile(frontendWorkingDirectory, file, { ...frontendS3Config, ...gzipMetaTags }));
-    }
-    else if (/\.(css)/.test(file)) {
-      tasks.push(uploadFile(frontendWorkingDirectory, file, { ...frontendS3Config, ...cssMetaTags }));
-    }
-    else if (
-      /favicons/.test(file) ||
-      /\.(json)/.test(file) ||
-      /(styles.css|styles.css.map)/.test(file)
-      ) {
-      console.log('skipping:' + file)
-    }
-    else {
-      tasks.push(uploadFile(frontendWorkingDirectory, file, frontendS3Config));
-    }
-  });
+const frontendFiles = fs.readdirSync(frontendWorkingDirectory);
+frontendFiles.forEach(file => {
+  if (/\.(gz)/.test(file)) {
+    tasks.push(uploadFile(frontendWorkingDirectory, file, { ...frontendS3Config, ...gzipMetaTags }));
+  }
+  else if (/\.(css)/.test(file)) {
+    tasks.push(uploadFile(frontendWorkingDirectory, file, { ...frontendS3Config, ...cssMetaTags }));
+  }
+  else if (
+    /favicons/.test(file) ||
+    /\.(json)/.test(file) ||
+    /(styles.css|styles.css.map)/.test(file)
+    ) {
+    console.log('skipping:' + file)
+  }
+  else {
+    tasks.push(uploadFile(frontendWorkingDirectory, file, frontendS3Config));
+  }
 });
 
 /*
  * Backend files
  */
-fs.readdir(backendWorkingDirectory, (err, files) => {
-  files.forEach(file => {
-    if (!/assets/.test(file)) {
-      tasks.push(uploadFile(backendWorkingDirectory, file, { ...backendS3Config, version: packageJson.version }));
-    }
-  });
-})
+const backendFiles = fs.readdirSync(backendWorkingDirectory);
+backendFiles.forEach(file => {
+  if (!/assets/.test(file)) {
+    tasks.push(uploadFile(backendWorkingDirectory, file, { ...backendS3Config, version: packageJson.version }));
+  }
+});
 
 function uploadFile(workingDirectory, filename, extraConfig = {}) {
   let s3Filename = filename

@@ -84,7 +84,7 @@ export default env => {
     // Plugins
     // ------------------------------------
     plugins: removeEmpty([
-      // emits a json file with assets paths 
+      // emits a json file with assets paths
       new AssetsPlugin(),
       new ExtractTextPlugin(ifProd('[name]-[contenthash].css', 'styles.css')),
       new HtmlWebpackPlugin(removeEmpty({

@@ -13,10 +13,10 @@ function get (req, res) {
       res.json(readings)
     })
     .catch(e => {
-      //res.sendStatus(500)
-      res.status(500).json(e);
+      // res.sendStatus(500)
+      res.status(500).json(e)
       // @todo log error
-      Raven.captureException(e);
+      Raven.captureException(e)
     })
 }
 

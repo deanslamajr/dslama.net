@@ -1,7 +1,7 @@
 {
   "name": "deanslamajr.com",
   "version": "1.4.2",
-  "description": "a blog",
+  "description": "an about page",
   "main": "app.js",
   "scripts": {
     "start": "node public/server.js",

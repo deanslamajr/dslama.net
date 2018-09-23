@@ -1,14 +1,19 @@
 import React from 'react'
-import cssModules from 'react-css-modules'
+import styled from 'styled-components'
 
-import styles from './header.css'
+const Container = styled.div`
+  margin: 3rem 2rem 2rem;
+  font-size: 1.1rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  text-align: center;
+`
 
 function Header ({ summary }) {
   return (
-    <div styleName='container'>
+    <Container>
       { summary }
-    </div>
+    </Container>
   )
 }
 
-export default cssModules(Header, styles)
+export default Header

@@ -57,6 +57,7 @@
     "redux-promise-middleware": "^4.2.0",
     "replace-in-file": "^2.5.3",
     "source-map-support": "^0.4.14",
+    "styled-components": "^3.4.9",
     "uuid": "^3.0.1"
   },
   "devDependencies": {

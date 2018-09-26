@@ -1,15 +1,24 @@
 import React from 'react'
-import cssModules from 'react-css-modules'
+import styled from 'styled-components'
+import { media } from '../../style/style-utils'
 
-import styles from './error.css'
+const Container = styled.div`
+  margin: 5rem;
+  text-align: center;
+  font-size: 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  ${ media.phoneMax`
+    margin: 5rem 2rem;
+  ` }
+`
 
-function error () {
+function Error () {
   return (
-    <div styleName='container'>
+    <Container>
       <div styleName='message'>500 error, our apologies.</div>
       <div styleName='message'>This error is the engineer's fault.</div>
-    </div>
+    </Container>
   )
 }
 
-export default cssModules(error, styles, { allowMultiple: true })
+export default Error

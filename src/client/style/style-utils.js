@@ -12,3 +12,9 @@ export const media = {
     }
   `
 }
+
+export function shadow () {
+  return `
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16);
+  `;
+}

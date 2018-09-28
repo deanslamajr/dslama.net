@@ -1,5 +1,7 @@
 import React from 'react'
 import cssModules from 'react-css-modules'
+import styled from 'styled-components'
+import { media, shadow } from '../../style/style-utils'
 import Helmet from 'react-helmet'
 
 import styles from './about.css'
@@ -8,15 +10,50 @@ import Header from '../Header'
 import Loader from '../Loader'
 import ErrorComponent from '../Error'
 
-function renderLogo (imageURL) {
-  const backgroundImage = {
-    backgroundImage: `url(${imageURL}), url(${imageURL})`
-  }
+const LogoContainer = styled.div`
+  height: 15rem;
+  margin: 0 1.5rem;
+  ${shadow()}
 
+  ${media.tabletMax`
+    height: 14rem;
+  `}
+
+  ${media.phoneMax`
+    margin: 0 .75rem;
+  `}
+`
+
+const BackgroundImage = styled.div`
+  background-image: url("${props => props.imageUrl}"), url("${props => props.imageUrl}");
+  background-repeat: no-repeat,no-repeat;
+  background-color: #e7eeed;
+  background-blend-mode: color-burn, color-burn;
+  height: 100%;
+  width: 100%;
+  background-position-x: 24rem, -3rem;
+  background-position-y: -20rem, -5rem;
+  background-size: 70rem, 30rem;
+
+  ${media.tabletMax`
+    background-position-x: 16rem, -3rem;
+    background-position-y: -11rem, 0rem;
+    background-size: 45rem, 22rem;
+  `}
+
+  ${media.phoneMax`
+    background-blend-mode: color-burn, lighten;
+    background-position-x: 0rem;
+    background-position-y: 50%;
+    background-size: 125%;
+  `}
+`
+
+function renderLogo (imageUrl) {
   return (
-    <div styleName='logo-container shadow'>
-      <div style={backgroundImage} styleName='logo-main' />
-    </div>
+    <LogoContainer>
+      <BackgroundImage imageUrl={imageUrl} />
+    </LogoContainer>
   )
 }
 

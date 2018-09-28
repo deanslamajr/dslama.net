@@ -11,22 +11,6 @@
   font-size: 1.5rem;
 }
 
-.logo-container {
-  height: 15rem;
-  margin: 0 1.5rem;
-}
-
-.logo-main {
-  background-repeat: no-repeat,no-repeat;
-  background-color: #e7eeed;
-  background-blend-mode: color-burn, color-burn;
-  height: 100%;
-  width: 100%;
-  background-position-x: 24rem, -3rem;
-  background-position-y: -20rem, -5rem;
-  background-size: 70rem, 30rem;
-}
-
 .links {
   font-size: 1.25rem;
   text-align: center;
@@ -60,16 +44,6 @@
     margin: 2rem;
   }
 
-  .logo-container {
-    height: 14rem;
-  }
-
-  .logo-main {
-    background-position-x: 16rem, -3rem;
-    background-position-y: -11rem, 0rem;
-    background-size: 45rem, 22rem;
-  }
-
   .links {
     margin-top: 2rem;
   }
@@ -84,17 +58,6 @@
 }
 
 @media (--phone-max-width) {
-  .logo-container {
-    margin: 0 .75rem;
-  }
-
-  .logo-main {
-    background-blend-mode: color-burn, lighten;
-    background-position-x: 0rem;
-    background-position-y: 50%;
-    background-size: 125%;
-  }
-
   .links {
     justify-content: space-around;
   }

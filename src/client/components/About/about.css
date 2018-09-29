@@ -11,24 +11,8 @@
   font-size: 1.5rem;
 }
 
-.bio {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  text-align: justify;
-  font-size: 1.15rem;
-}
-
 @media (--tablet-portrait-max-width) {
   .title {
     margin: 2rem;
-  }
-
-  .bio {
-    margin: 2rem 1.5rem;
-  }
-}
-
-@media (--phone-max-width) {
-  .bio {
-    margin: 2rem .75rem;
   }
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import cssModules from 'react-css-modules'
 import styled from 'styled-components'
-import { media, shadow } from '../../style/style-utils'
+import { media, shadow, card } from '../../style/style-utils'
 import Helmet from 'react-helmet'
 
 import styles from './about.css'
@@ -112,8 +112,25 @@ function renderLinks (linksArray) {
   )
 }
 
+const BioCard = styled.div`
+  ${shadow()}
+  ${card()}
+
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  text-align: justify;
+  font-size: 1.15rem;
+
+  ${media.tabletMax`
+    margin: 2rem 1.5rem;
+  `}
+
+  ${media.phoneMax`
+    margin: 2rem .75rem;
+  `}
+`
+
 function renderBio (bio) {
-  return <div styleName='bio card shadow' dangerouslySetInnerHTML={{__html: bio}} />
+  return <BioCard dangerouslySetInnerHTML={{__html: bio}} />
 }
 
 class About extends React.Component {

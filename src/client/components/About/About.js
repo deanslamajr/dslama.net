@@ -49,6 +49,47 @@ const BackgroundImage = styled.div`
   `}
 `
 
+const LinksContainer = styled.div`
+  font-size: 1.25rem;
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  ${media.tabletMax`
+    margin-top: 2rem;
+  `}
+
+  ${media.phoneMax`
+    justify-content: space-around;
+  `}
+`
+
+const LinkItem = styled.li`
+  display: inline;
+  margin: 2rem;
+
+  ${media.tabletMax`
+    margin: 0 1.5rem;
+  `}
+
+  ${media.phoneMax`
+    margin: .5rem;
+  `}
+`
+
+const Link = styled.a`
+  color: black;
+
+  :link {
+    color: black;
+  }
+
+  :visited {
+    color: black;
+  }
+`
+
 function renderLogo (imageUrl) {
   return (
     <LogoContainer>
@@ -59,15 +100,15 @@ function renderLogo (imageUrl) {
 
 function renderLinks (linksArray) {
   return (
-    <div styleName='links'>
+    <LinksContainer>
       {
         linksArray.map(({ name, url }) => (
-          <li key={name} styleName='link'>
-            <a href={url} target='_blank'>{name}</a>
-          </li>
+          <LinkItem key={name}>
+            <Link href={url} target='_blank'>{name}</Link>
+          </LinkItem>
         ))
       }
-    </div>
+    </LinksContainer>
   )
 }
 

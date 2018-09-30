@@ -1,19 +1,17 @@
 import React from 'react'
-import cssModules from 'react-css-modules'
 import styled from 'styled-components'
 import { media, shadow, card } from '../../style/style-utils'
 import Helmet from 'react-helmet'
-
-import styles from './about.css'
 
 import Header from '../Header'
 import Loader from '../Loader'
 import ErrorComponent from '../Error'
 
 const LogoContainer = styled.div`
+  ${shadow()}
+
   height: 15rem;
   margin: 0 1.5rem;
-  ${shadow()}
 
   ${media.tabletMax`
     height: 14rem;
@@ -48,6 +46,14 @@ const BackgroundImage = styled.div`
     background-size: 125%;
   `}
 `
+
+function renderLogo (imageUrl) {
+  return (
+    <LogoContainer>
+      <BackgroundImage imageUrl={imageUrl} />
+    </LogoContainer>
+  )
+}
 
 const LinksContainer = styled.div`
   font-size: 1.25rem;
@@ -90,14 +96,6 @@ const Link = styled.a`
   }
 `
 
-function renderLogo (imageUrl) {
-  return (
-    <LogoContainer>
-      <BackgroundImage imageUrl={imageUrl} />
-    </LogoContainer>
-  )
-}
-
 function renderLinks (linksArray) {
   return (
     <LinksContainer>
@@ -133,6 +131,10 @@ function renderBio (bio) {
   return <BioCard dangerouslySetInnerHTML={{__html: bio}} />
 }
 
+const AboutContainer = styled.div`
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+`
+
 class About extends React.Component {
   componentDidMount () {
     if (!this.props.data) {
@@ -146,12 +148,12 @@ class About extends React.Component {
 
     if (data) {
       content = (
-        <div styleName='about'>
+        <AboutContainer>
           { data.title ? <Header summary={data.title} /> : null }
           { data.pictureURL ? renderLogo(data.pictureURL) : null }
           { data.links ? renderLinks(data.links) : null }
           { data.bio ? renderBio(data.bio) : null }
-        </div>
+        </AboutContainer>
       )
     } else if (isLoading) {
       content = <Loader />
@@ -173,4 +175,4 @@ class About extends React.Component {
   }
 }
 
-export default cssModules(About, styles, { allowMultiple: true })
+export default About

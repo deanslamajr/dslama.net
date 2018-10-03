@@ -2,6 +2,7 @@ import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { match, RouterContext } from 'react-router'
 import { Provider } from 'react-redux'
+import { ServerStyleSheet } from 'styled-components'
 
 import createStore from '../../client/data/store'
 
@@ -117,22 +118,29 @@ function renderComponent (req, res) {
       } else if (props) {
         store = store || createStore()
 
-        const initialState = JSON.stringify(store.getState())
         // generate store with data
+        const initialState = JSON.stringify(store.getState())
+
+        const sheet = new ServerStyleSheet()
+        
         const markup = renderToString(
-          <Provider store={store} key='provider'>
-            <RouterContext
-              {...props}
-              createElement={(Component, props) => {
-                return <Component {...props} />
-              }}
-            />
-          </Provider>
+          sheet.collectStyles(
+            <Provider store={store} key='provider'>
+              <RouterContext
+                {...props}
+                createElement={(Component, props) => {
+                  return <Component {...props} />
+                }}
+              />
+            </Provider>
+          )
         )
+
+        const styleTags = sheet.getStyleTags()
 
         res
           .status(200)
-          .render('index', { markup, initialState })
+          .render('index', { markup, styleTags, initialState })
       } else {
         // @todo: replace with 302 redirect to /404
         res

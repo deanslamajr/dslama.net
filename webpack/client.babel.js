@@ -91,6 +91,7 @@ export default env => {
         template: path.join(__dirname, '../src/client/index.ejs'),
         filename: '../index.ejs',
         inject: 'body',
+        styleTags: '<%- styleTags -%>',
         markupTarget: '<%- markup -%>',
         initialState: '<%- initialState -%>',
         sentryCDN: ifProd('<script src="https://cdn.ravenjs.com/3.9.2/raven.min.js"></script>')

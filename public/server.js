@@ -3478,6 +3478,8 @@ var _reactRouter = __webpack_require__(14);
 
 var _reactRedux = __webpack_require__(5);
 
+var _styledComponents = __webpack_require__(4);
+
 var _store = __webpack_require__(63);
 
 var _store2 = _interopRequireDefault(_store);
@@ -3597,9 +3599,12 @@ function renderComponent(req, res) {
     } else if (props) {
       store = store || (0, _store2.default)();
 
-      var initialState = JSON.stringify(store.getState());
       // generate store with data
-      var markup = (0, _server.renderToString)(_react2.default.createElement(
+      var initialState = JSON.stringify(store.getState());
+
+      var sheet = new _styledComponents.ServerStyleSheet();
+
+      var markup = (0, _server.renderToString)(sheet.collectStyles(_react2.default.createElement(
         _reactRedux.Provider,
         { store: store, key: 'provider' },
         _react2.default.createElement(_reactRouter.RouterContext, _extends({}, props, {
@@ -3607,9 +3612,11 @@ function renderComponent(req, res) {
             return _react2.default.createElement(Component, props);
           }
         }))
-      ));
+      )));
 
-      res.status(200).render('index', { markup: markup, initialState: initialState });
+      var styleTags = sheet.getStyleTags();
+
+      res.status(200).render('index', { markup: markup, styleTags: styleTags, initialState: initialState });
     } else {
       // @todo: replace with 302 redirect to /404
       res.status(404).send('Not found');

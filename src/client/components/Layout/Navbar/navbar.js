@@ -1,10 +1,35 @@
 import React from 'react'
+import styled from 'styled-components'
+import { media, shadow, card } from '../../style/style-utils'
+
 import classNames from 'classnames'
 import cssModules from 'react-css-modules'
 
 import Hamburger from './Hamburger'
 
 import styles from './navbar.css'
+
+//<div styleName='outer-container shadow'>
+
+const OuterContainer = styled.div`
+  ${shadow()}
+
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  background-color: #004741;
+  color: white;
+  border-radius: 2px;
+
+  ${media.tabletMax`
+    margin: 2rem 1.5rem;
+  `}
+
+  ${media.phoneMax`
+    margin: 2rem .75rem;
+  `}
+`
 
 class NavBar extends React.Component {
   _generateItemClasses (items) {

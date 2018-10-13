@@ -1,7 +1,7 @@
 @import '../../breakpoints.css';
 @import '../../common.css';
 
-.outer-container {
+/* .outer-container {
   margin-top: 1rem;
   display: flex;
   justify-content: space-between;
@@ -9,7 +9,7 @@
   background-color: #004741;
   color: white;
   border-radius: 2px;
-}
+} */
 
 .middle-container {
   display: flex;

@@ -1,15 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import { media, shadow, card } from '../../style/style-utils'
 
-import classNames from 'classnames'
-import cssModules from 'react-css-modules'
+import { media, shadow } from '../../../style/style-utils'
 
 import Hamburger from './Hamburger'
-
-import styles from './navbar.css'
-
-//<div styleName='outer-container shadow'>
 
 const OuterContainer = styled.div`
   ${shadow()}
@@ -23,68 +17,98 @@ const OuterContainer = styled.div`
   border-radius: 2px;
 
   ${media.tabletMax`
-    margin: 2rem 1.5rem;
+    margin-top: 0;
+    border-radius: 0;
   `}
 
   ${media.phoneMax`
-    margin: 2rem .75rem;
+    margin-top: 0;
+    flex-direction: column;
+    padding: .5rem .2rem 0;
+  `}
+`
+
+const MiddleContainer = styled.span`
+  display: flex;
+  font-size: 2rem;
+  justify-content: space-between;
+  padding: .4rem .2rem 0;
+  cursor: default;
+
+  ${media.phoneMax`
+    padding: 0;
+  `}
+`
+
+const InnerContainer = styled.span`
+  display: flex;
+  justify-content: flex-end;
+  padding-right: .55rem;
+
+  ${media.tabletMax`
+    margin-left: 1rem;
+  `}
+
+  ${media.phoneMax`
+    display: ${props => props.expanded ? 'inline' : 'none' };
+    flex-direction: column;
+  `}
+`
+
+const MenuItem = styled.span`
+  margin-left: 2rem;
+  padding: .45rem .2rem .1rem;
+  color: white;
+  cursor: pointer;
+  font-size: 1.5rem;
+
+  text-decoration: ${props => props.isActive ? 'underline' : 'inherit'};
+
+  ${media.tabletMax`
+    margin-left: .8rem;
+  `}
+
+  ${media.phoneMax`
+    display: block;
+    text-align: right;
+    padding-right: 1.25rem;
+    font-size: 1.75rem;
+    border-top: 1px solid #002e2a;
+    margin: 0;
   `}
 `
 
 class NavBar extends React.Component {
-  _generateItemClasses (items) {
-    const { activeItem } = this.props
-
-    const itemSelected = {}
-
-    items.forEach(item => {
-      itemSelected[item] = classNames('link', { 'active': activeItem === item.toLowerCase() })
-    })
-
-    return itemSelected
-  }
-
-  _renderMenuItem (item, styleName) {
-    const { onLinkClick } = this.props
-
-    function _onLinkClick (item) {
-      onLinkClick(item)
-    }
-
-    return (
-      <span key={item} onClick={_onLinkClick.bind(this, item)} styleName={styleName}>
-        {item}
-      </span>
-    )
-  }
-
   render () {
     const {
+      activeItem,
       title,
       menuItems,
       expanded,
+      onLinkClick,
       onMenuClick
     } = this.props
 
-    const conditionalShow = classNames({
-      [styles['show']]: expanded
-    })
-
-    const itemsClasses = this._generateItemClasses(menuItems)
-    const navbarItems = menuItems.map(item => this._renderMenuItem(item, itemsClasses[item]))
-
     return (
-      <div styleName='outer-container shadow'>
-        <span styleName='middle-container'>
+      <OuterContainer>
+        <MiddleContainer>
           <span>{title}</span>
           <Hamburger onMenuClick={onMenuClick} expanded={expanded} />
-        </span>
-        <span styleName='inner-container' className={conditionalShow}>
-          { navbarItems }
-        </span>
-      </div>
+        </MiddleContainer>
+        <InnerContainer expanded={expanded}>
+          {menuItems.map(item => (
+            <MenuItem
+              key={item}
+              onClick={() => onLinkClick(item)}
+              isActive={activeItem === item.toLowerCase()}
+            >
+              {item}
+            </MenuItem>
+          ))}
+        </InnerContainer>
+      </OuterContainer>
     )
   }
 }
 
-export default cssModules(NavBar, styles, { allowMultiple: true })
+export default NavBar

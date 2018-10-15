@@ -1,7 +1,12 @@
 import React from 'react'
-import cssModules from 'react-css-modules'
-
-import styles from '../common.css'
+import {
+  CardLink,
+  ShadowCard,
+  Title,
+  Details,
+  Quote,
+  OuterContainer
+ } from '../Card'
 
 import { formatDate } from '../helpers'
 
@@ -13,27 +18,26 @@ function Post ({ data }) {
   const publishDate = formatDate(date)
 
   return (
-    <div styleName='flex-container'>
-      <a
-        styleName='card-link'
+    <OuterContainer>
+      <CardLink
         href={postURL}
         target='_blank'>
-        <div styleName='card shadow'>
-          <div styleName='title'>
+        <ShadowCard>
+          <Title>
             {data.title}
-          </div>
-          <div styleName='details'>
+          </Title>
+          <Details>
             <div>
               {publishDate}
             </div>
-          </div>
-          <div styleName='quote'>
+          </Details>
+          <Quote>
             {data.previewContent.bodyModel.paragraphs[1].text}
-          </div>
-        </div>
-      </a>
-    </div>
+          </Quote>
+        </ShadowCard>
+      </CardLink>
+    </OuterContainer>
   )
 }
 
-export default cssModules(Post, styles, { allowMultiple: true })
+export default Post

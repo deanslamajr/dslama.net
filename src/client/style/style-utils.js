@@ -29,17 +29,6 @@ export function card () {
   `
 }
 
-export function cardLink () {
-  return css`
-    color: inherit;
-    text-decoration: none;
-
-    ${media.phoneMax`
-      margin: 0;
-    `}
-  `
-}
-
 export function shadow () {
   return css`
     box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16);

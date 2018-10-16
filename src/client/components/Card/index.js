@@ -13,7 +13,12 @@ const OuterContainer = styled.div`
 `
 
 const CardLink = styled.a`
-  ${cardLink()}
+  color: inherit;
+  text-decoration: none;
+
+  ${media.phoneMax`
+    margin: 0;
+  `}
 `
 
 const ShadowCard = styled.div`

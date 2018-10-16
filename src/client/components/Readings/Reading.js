@@ -1,7 +1,13 @@
 import React from 'react'
-import cssModules from 'react-css-modules'
 
-import styles from '../common.css'
+import {
+  CardLink,
+  ShadowCard,
+  Title,
+  Details,
+  Quote,
+  OuterContainer
+ } from '../Card'
 
 import { formatDate } from '../helpers'
 
@@ -10,28 +16,27 @@ function Reading ({ cardData }) {
   const publishDate = formatDate(date)
 
   return (
-    <div key={cardData.id} styleName='flex-container'>
-      <a
-        styleName='card-link'
+    <OuterContainer>
+      <CardLink
         href={cardData.url}
         target='_blank'>
-        <div styleName='card shadow'>
-          <div styleName='title'>
+        <ShadowCard>
+          <Title>
             {cardData.title}
-          </div>
-          <div styleName='details'>
+          </Title>
+          <Details>
             <div>
               {`${cardData.author} @ ${cardData.publication}`}
             </div>
             <div>
               {publishDate}
             </div>
-          </div>
-          <div styleName='quote' dangerouslySetInnerHTML={{ __html: cardData.quote }} />
-        </div>
-      </a>
-    </div>
+          </Details>
+          <Quote dangerouslySetInnerHTML={{ __html: cardData.quote }} />
+        </ShadowCard>
+      </CardLink>
+    </OuterContainer>
   )
 }
 
-export default cssModules(Reading, styles, { allowMultiple: true })
+export default Reading

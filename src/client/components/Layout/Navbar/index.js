@@ -1,5 +1,4 @@
 import React from 'react'
-import { browserHistory } from 'react-router'
 
 import Navbar from './navbar'
 
@@ -27,7 +26,7 @@ export default class NavBarContainer extends React.Component {
       activeItem: path
     })
 
-    browserHistory.push(`/${path}`)
+    this.props.history.push(`/${path}`)
   }
 
   componentWillMount () {

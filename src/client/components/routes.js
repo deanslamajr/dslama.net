@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, IndexRoute } from 'react-router'
+import { Route, Switch } from 'react-router'
 
 // Components
 import Layout from './Layout'
@@ -16,19 +16,49 @@ import AddReading from './Readings/Add'
 
 import Login from './Login'
 
-export default (
-  <Route path='/' component={Layout}>
-    <IndexRoute component={About} />
-    <Route path='about' component={About}>
-      <Route path='edit' component={EditAbout} />
-    </Route>
-    <Route path='posts' component={Posts} />
-    <Route path='projects' component={Projects} />
-    <Route path='readings' component={Readings}>
-      <Route path='add' component={AddReading} />
-    </Route>
-    {/* login path is purposefully obscured */}
-    <Route path='babylou' component={Login} />
-    {/* @todo: add /404 path */}
-  </Route>
+const Routes = () => (
+  <Switch>
+    <Route exact path='/about' render={props => (
+      <Layout {...props}>
+        <About />
+      </Layout>
+    )} />
+    <Route path='/about/edit' render={props => (
+      <Layout {...props}>
+        <EditAbout/>
+      </Layout>
+    )} />
+    <Route path='/posts' render={props => (
+      <Layout {...props}>
+        <Posts/>
+      </Layout>
+    )} />
+    <Route path='/projects' render={props => (
+      <Layout {...props}>
+        <Projects/>
+      </Layout>
+    )} />
+    <Route exact path='/readings' render={props => (
+      <Layout {...props}>
+        <Readings/>
+      </Layout>
+    )} />
+    <Route path='/readings/add' render={props => (
+      <Layout {...props}>
+        <AddReading/>
+      </Layout>
+    )} />
+    <Route path='/babylou' render={props => (
+      <Layout {...props}>
+        <Login/>
+      </Layout>
+    )} />
+    <Route render={props => (
+      <Layout {...props}>
+        <About/>
+      </Layout>
+    )} />
+  </Switch>
 )
+
+export default Routes

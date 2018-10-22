@@ -58,6 +58,7 @@ class Layout extends React.Component {
           currentPath={pathname}
           title={this.title}
           menuItems={this.menuItems}
+          {...this.props}
         />
         {this.props.children}
         <Footer>

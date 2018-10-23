@@ -1,3 +1,0 @@
-@custom-media --phone-max-width (width <= 599px);
-@custom-media --tablet-portrait-max-width (width <= 899px);
-@custom-media --big-desktop-width (width > 1800px);

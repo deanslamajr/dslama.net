@@ -1,14 +1,38 @@
 import React from 'react'
-import cssModules from 'react-css-modules'
+import styled from 'styled-components'
 import axios from 'axios'
 
-import styles from './login.css'
+import { media } from '../../style/style-utils'
 
 const SUCCESS = 'success'
 const FAILURE = 'failure'
 const LOGGEDOUT = 'logged out'
 const AUTHENTICATED = 'authenticated'
 const NOTAUTHENTICATED = 'not authenticated'
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  margin-top: 5.5rem;
+`
+
+const CenteredBase = styled.div`
+  width: 20%;
+  margin: 0.75rem auto;
+
+  ${media.phoneMax`
+    width: 45%;
+    margin: 0.75rem auto;
+  `}
+`
+
+const CenteredText = styled(CenteredBase)`
+  text-align: center;
+`
+
+const AuthText = styled(CenteredText)`
+  height: 3em;
+`
 
 class Login extends React.Component {
   constructor (props) {
@@ -49,7 +73,7 @@ class Login extends React.Component {
 
   renderLoginResultDiv () {
     return this.state.loginResult
-      ? (<a styleName='form-input form-text' onClick={this.checkAuthentication}>{this.state.loginResult}!</a>)
+      ? (<CenteredText as='a' onClick={this.checkAuthentication}>{this.state.loginResult}!</CenteredText>)
       : null
   }
 
@@ -67,14 +91,14 @@ class Login extends React.Component {
   renderAuthenticationCheckDiv () {
     const authState = this.state.authenticated
     return (
-      <div styleName='form-input form-text auth-div'>
+      <AuthText>
         <div>{authState}</div>
         {
           authState === AUTHENTICATED
             ? <button onClick={this.logout}>Logout</button>
             : null
         }
-      </div>
+      </AuthText>
     )
   }
 
@@ -101,15 +125,29 @@ class Login extends React.Component {
 
   render () {
     return (
-      <form styleName='container' onSubmit={this.handleSubmit}>
+      <Form onSubmit={this.handleSubmit}>
         { this.renderAuthenticationCheckDiv() }
-        <input type='text' onChange={this.handleChange.bind(this, 'username')} placeholder='username' styleName='form-input' />
-        <input type='password' onChange={this.handleChange.bind(this, 'password')} placeholder='password' styleName='form-input' />
-        <input type='submit' value='Login' styleName='form-input' />
+        <CenteredBase
+          as='input'
+          type='text'
+          onChange={this.handleChange.bind(this, 'username')}
+          placeholder='username'
+        />
+        <CenteredBase
+          as='input'
+          type='password'
+          onChange={this.handleChange.bind(this, 'password')}
+          placeholder='password'
+        />
+        <CenteredBase
+          as='input'
+          type='submit'
+          value='Login'
+        />
         { this.renderLoginResultDiv() }
-      </form>
+      </Form>
     )
   }
 }
 
-export default cssModules(Login, styles, { allowMultiple: true })
+export default Login

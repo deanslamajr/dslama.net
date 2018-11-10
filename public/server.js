@@ -65,7 +65,7 @@ module.exports =
 /******/ 	__webpack_require__.p = "/public/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 86);
+/******/ 	return __webpack_require__(__webpack_require__.s = 87);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -873,6 +873,10 @@ var _express = __webpack_require__(13);
 
 var _express2 = _interopRequireDefault(_express);
 
+var _path = __webpack_require__(82);
+
+var _path2 = _interopRequireDefault(_path);
+
 var _bodyParser = __webpack_require__(77);
 
 var _bodyParser2 = _interopRequireDefault(_bodyParser);
@@ -906,6 +910,14 @@ app.set('port', process.env.PORT || 1986);
 app.use(_express2.default.static(__dirname));
 
 app.use(_bodyParser2.default.json());
+
+// @todo remove this
+// testing only
+app.get('/ddi', function (req, res) {
+  console.log('__dirname');
+  console.dir(__dirname);
+  res.sendFile(_path2.default.join(__dirname + '/../src/client/comic.html'));
+});
 
 // define routes
 app.use(_routes2.default);
@@ -3355,7 +3367,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _redux = __webpack_require__(30);
 
-var _reduxPromiseMiddleware = __webpack_require__(84);
+var _reduxPromiseMiddleware = __webpack_require__(85);
 
 var _reduxPromiseMiddleware2 = _interopRequireDefault(_reduxPromiseMiddleware);
 
@@ -3605,7 +3617,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.add = exports.get = undefined;
 
-var _v = __webpack_require__(85);
+var _v = __webpack_require__(86);
 
 var _v2 = _interopRequireDefault(_v);
 
@@ -3667,7 +3679,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _server = __webpack_require__(83);
+var _server = __webpack_require__(84);
 
 var _reactRouter = __webpack_require__(29);
 
@@ -3973,7 +3985,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _raven = __webpack_require__(82);
+var _raven = __webpack_require__(83);
 
 var _raven2 = _interopRequireDefault(_raven);
 
@@ -4105,28 +4117,34 @@ module.exports = require("nconf");
 /* 82 */
 /***/ (function(module, exports) {
 
-module.exports = require("raven");
+module.exports = require("path");
 
 /***/ }),
 /* 83 */
 /***/ (function(module, exports) {
 
-module.exports = require("react-dom/server");
+module.exports = require("raven");
 
 /***/ }),
 /* 84 */
 /***/ (function(module, exports) {
 
-module.exports = require("redux-promise-middleware");
+module.exports = require("react-dom/server");
 
 /***/ }),
 /* 85 */
 /***/ (function(module, exports) {
 
-module.exports = require("uuid/v4");
+module.exports = require("redux-promise-middleware");
 
 /***/ }),
 /* 86 */
+/***/ (function(module, exports) {
+
+module.exports = require("uuid/v4");
+
+/***/ }),
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(32);

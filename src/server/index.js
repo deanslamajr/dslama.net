@@ -1,4 +1,5 @@
 import express from 'express'
+import path from 'path';
 
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
@@ -22,10 +23,18 @@ app.use(express.static(__dirname))
 
 app.use(bodyParser.json())
 
+// @todo remove this
+// testing only
+app.get('/ddi', (req, res) => {
+  console.log('__dirname')
+  console.dir(__dirname)
+  res.sendFile(path.join(__dirname + '/../src/client/comic.html'))
+})
+
 // define routes
 app.use(router)
 
 // start the server
-app.listen(app.get('port'), function () {
+app.listen(app.get('port'), () => {
   console.log('ready on port ' + app.get('port'))
 })

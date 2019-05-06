@@ -2185,11 +2185,15 @@ function Project(_ref) {
           { href: cardData.url, target: '_blank', styleName: 'project-link' },
           cardData.name
         ),
-        '-',
-        _react2.default.createElement(
-          SourceLink,
-          { href: cardData.source, target: '_blank', styleName: 'source-link' },
-          'source'
+        cardData.source && _react2.default.createElement(
+          _react2.default.Fragment,
+          null,
+          '-',
+          _react2.default.createElement(
+            SourceLink,
+            { href: cardData.source, target: '_blank', styleName: 'source-link' },
+            'source'
+          )
         )
       ),
       _react2.default.createElement(

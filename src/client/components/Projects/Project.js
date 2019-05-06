@@ -33,8 +33,12 @@ function Project ({ cardData }) {
       <ShadowCard>
         <Title>
           <ProjectLink href={cardData.url} target='_blank' styleName='project-link'>{cardData.name}</ProjectLink>
-           -
-          <SourceLink href={cardData.source} target='_blank' styleName='source-link'>source</SourceLink>
+          {cardData.source &&(
+            <React.Fragment>
+              -
+            <SourceLink href={cardData.source} target='_blank' styleName='source-link'>source</SourceLink>
+            </React.Fragment>
+          )}
         </Title>
         <Description>
           {cardData.description}

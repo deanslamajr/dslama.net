@@ -3,6 +3,10 @@
   "version": "2.0.2",
   "description": "an about page",
   "main": "app.js",
+  "engines": {
+    "node": "8.12.0",
+    "npm": "6.4.1"
+  },
   "scripts": {
     "start": "node public/server.js",
     "build:front:dev": "webpack --config webpack/client.babel.js --env.dev --progress",

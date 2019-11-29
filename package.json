@@ -9,6 +9,7 @@
   },
   "scripts": {
     "start": "node public/server.js",
+    "build:image": "npm version prerelease --preid=g\"$(git rev-parse --short=5 HEAD)\" && docker build -t deanslamajr/dslama.net:v\"$(git describe)\" .",
     "build:front:dev": "webpack --config webpack/client.babel.js --env.dev --progress",
     "build:front:prod": "webpack --config webpack/client.babel.js --env.prod --progress -p",
     "build:back": "webpack --config webpack/server.babel.js --progress",

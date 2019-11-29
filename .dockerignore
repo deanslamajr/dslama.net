@@ -1,0 +1,14 @@
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+Makefile
+docker-compose.yml
+
+# Node
+node_modules
+
+# Other
+.editorconfig

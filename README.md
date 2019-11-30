@@ -4,9 +4,19 @@
 
 A quick and modern about page
 
-# Deploy
+# Development
+* `npm rm -rf node_modules && npm install`
+* `npm run build`
+* `npm start`
 
-1. `npm run deploy:heroku`
-2. commit the build assets to `master`
-3. `npm version major|minor|patch`
-4. `git push heroku master`
+# Deployment
+
+1. Commit all changes
+2. `npm run publish:test|patch|minor|major`
+  * This will build and publish the latest image.
+  * Take note of the new image tag name. e.g. The tag from the following output is `v2.0.3-10`.
+  ```
+  v2.0.3-10: digest: sha256:44587ec99bc610dbfc1019da6b486c110eea8275f01eb40176e67187c36c0092 size: 952
+  ```
+
+3. Perform k8s rollout via instructions in `deployment` repo

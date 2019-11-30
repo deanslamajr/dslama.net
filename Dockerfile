@@ -1,4 +1,4 @@
-FROM node:6.9.0
+FROM node:6.9.1
 
 # install dependencies
 WORKDIR /opt/app
@@ -9,7 +9,7 @@ RUN npm run build
 
 # copy app source to image _after_ npm install so that
 # application code changes don't bust the docker cache of npm install step
-FROM mhart/alpine-node:4.9
+FROM mhart/alpine-node:4.9.1
 COPY --from=0 /opt/app .
 
 EXPOSE 8080

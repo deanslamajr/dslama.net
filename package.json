@@ -10,7 +10,7 @@
   "scripts": {
     "start": "node public/server.js",
     "start:image": "sudo docker run -p 8080:8080/tcp deanslamajr/dslama.net:\"$(git describe)\"",
-    "build:image": "npm version prerelease --preid=g\"$(git rev-parse --short=5 HEAD)\" && sudo docker build -t deanslamajr/dslama.net:\"$(git describe)\" .",
+    "build:image": "npm version prerelease --preid=g\"$(git rev-parse --short=5 HEAD)\" && sudo docker build -f ../deployment/dslama.net/Dockerfile -t deanslamajr/dslama.net:\"$(git describe)\" .",
     "publish:image": "sudo docker push deanslamajr/dslama.net:\"$(git describe)\"",
     "build:front:dev": "webpack --config webpack/client.babel.js --env.dev --progress",
     "build:front:prod": "webpack --config webpack/client.babel.js --env.prod --progress -p",

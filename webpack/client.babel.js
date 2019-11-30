@@ -112,36 +112,38 @@ export default env => {
         threshold: 10240,
         minRatio: 0.8
       })),
-      ifProd(new FaviconsWebpackPlugin({
-        // Your source logo
-        logo: './src/favicon.png',
-        // The prefix for all image files (might be a folder or a name)
-        prefix: 'favicons/',
-        // Emit all stats of the generated icons
-        emitStats: true,
-        // Generate a cache file with control hashes and
-        // don't rebuild the favicons until those hashes change
-        persistentCache: true,
-        // Inject the html into the html-webpack-plugin
-        inject: true,
-        // favicon background color (see https://github.com/haydenbleasel/favicons#usage)
-        // background: '#fff',
-        // favicon app title (see https://github.com/haydenbleasel/favicons#usage)
-        title: 'dslama.net',
-        // which icons should be generated (see https://github.com/haydenbleasel/favicons#usage)
-        icons: {
-          android: true,
-          appleIcon: true,
-          appleStartup: true,
-          coast: false,
-          favicons: true,
-          firefox: true,
-          opengraph: false,
-          twitter: false,
-          yandex: false,
-          windows: false
-        }
-      }))
+      // Uncomment to generate favicons for prod builds
+      //
+      // ifProd(new FaviconsWebpackPlugin({
+      //   // Your source logo
+      //   logo: './src/favicon.png',
+      //   // The prefix for all image files (might be a folder or a name)
+      //   prefix: 'favicons/',
+      //   // Emit all stats of the generated icons
+      //   emitStats: true,
+      //   // Generate a cache file with control hashes and
+      //   // don't rebuild the favicons until those hashes change
+      //   persistentCache: true,
+      //   // Inject the html into the html-webpack-plugin
+      //   inject: true,
+      //   // favicon background color (see https://github.com/haydenbleasel/favicons#usage)
+      //   // background: '#fff',
+      //   // favicon app title (see https://github.com/haydenbleasel/favicons#usage)
+      //   title: 'dslama.net',
+      //   // which icons should be generated (see https://github.com/haydenbleasel/favicons#usage)
+      //   icons: {
+      //     android: true,
+      //     appleIcon: true,
+      //     appleStartup: true,
+      //     coast: false,
+      //     favicons: true,
+      //     firefox: true,
+      //     opengraph: false,
+      //     twitter: false,
+      //     yandex: false,
+      //     windows: false
+      //   }
+      // }))
     ])
   }
 }

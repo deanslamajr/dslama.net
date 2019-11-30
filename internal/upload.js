@@ -4,8 +4,6 @@ import path from 'path'
 import AWS from 'aws-sdk'
 import s3StreamFactory from 's3-upload-stream'
 
-import packageJson from '../package.json'
-
 import constants from '../config/constants'
 
 const s3Config = {
@@ -15,14 +13,10 @@ const s3Config = {
 }
 const s3Stream = s3StreamFactory(new AWS.S3(s3Config))
 
-const backendWorkingDirectory = path.join(__dirname, '..', 'public')
 const frontendWorkingDirectory = path.join(__dirname, '..', 'public', 'assets')
 
 const frontendS3Config = {
   Bucket: constants.get('FRONTEND_S3_ASSETS_BUCKET')
-}
-const backendS3Config = {
-  Bucket: constants.get('BACKEND_S3_ASSETS_BUCKET')
 }
 
 const gzipMetaTags = {
@@ -52,16 +46,6 @@ frontendFiles.forEach(file => {
     console.log('skipping:' + file)
   } else {
     tasks.push(uploadFile(frontendWorkingDirectory, file, frontendS3Config))
-  }
-})
-
-/*
- * Backend files
- */
-const backendFiles = fs.readdirSync(backendWorkingDirectory)
-backendFiles.forEach(file => {
-  if (!/assets/.test(file)) {
-    tasks.push(uploadFile(backendWorkingDirectory, file, { ...backendS3Config, version: packageJson.version }))
   }
 })
 

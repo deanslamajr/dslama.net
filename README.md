@@ -9,6 +9,10 @@ A quick and modern about page
 * `npm run build`
 * `npm start`
 
+# Test Image
+* `npm run image:build`
+* `sudo docker run -it deanslamajr/dslama.net:<image-tag> /bin/sh`
+
 # Deployment
 
 1. Ensure that `docker` is available on the command line

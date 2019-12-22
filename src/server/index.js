@@ -9,6 +9,21 @@ import router from './routes'
 
 const app = express()
 
+// if in production envs
+// only allow https connections
+// http://blog.lookfar.com/blog/2017/07/19/how-to-https-all-the-things-in-node/
+if (process.env.NODE_ENV === 'production') {
+	app.enable('trust proxy');
+
+	app.use(function(req, res, next){
+		if (req.header('x-forwarded-proto') !== 'https') {
+			res.redirect('https://' + req.header('host') + req.url);
+		} else{
+			next();
+		}
+	})
+}
+
 // helps secure Express with various HTTP headers
 app.use(helmet())
 

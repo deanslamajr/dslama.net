@@ -9,6 +9,12 @@ import router from './routes'
 
 const app = express()
 
+// health check
+// needs to be before https redirect
+app.get('/health', (req, res) => {
+	res.sendStatus(200);
+})
+
 // if in production envs
 // only allow https connections
 // http://blog.lookfar.com/blog/2017/07/19/how-to-https-all-the-things-in-node/
@@ -37,14 +43,6 @@ app.set('port', (process.env.PORT || 1986))
 app.use(express.static(__dirname))
 
 app.use(bodyParser.json())
-
-// @todo remove this
-// testing only
-app.get('/ddi', (req, res) => {
-  console.log('__dirname')
-  console.dir(__dirname)
-  res.sendFile(path.join(__dirname + '/../src/client/comic.html'))
-})
 
 // define routes
 app.use(router)

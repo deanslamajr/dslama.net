@@ -1,6 +1,6 @@
 {
   "name": "deanslamajr.com",
-  "version": "2.1.3",
+  "version": "2.1.4",
   "description": "an about page",
   "main": "app.js",
   "engines": {

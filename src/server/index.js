@@ -10,8 +10,9 @@ import router from './routes'
 const app = express()
 
 // health check
+// endpoint defined by GKE ingress
 // needs to be before https redirect
-app.get('/health', (req, res) => {
+app.get('/healthz', (req, res) => {
 	res.sendStatus(200);
 })
 

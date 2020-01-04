@@ -7,7 +7,7 @@ import ErrorComponent from '../Error'
 
 import Project from './Project'
 
-const summary = 'This is a list of software authored by the developer. Clicking on the title of an item will open a new tab/window navigated to a publicly hosted version of the software. Each project`s source code is available via the `source` link.'
+const summary = 'Cool, handbuilt webapps. Click on a title to start one up.'
 
 export default class ProjectsList extends React.Component {
   componentDidMount () {

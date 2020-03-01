@@ -3,4 +3,7 @@ node_modules
 npm-debug.log
 
 # next.js
-.next/
+.next
+
+# graphql-let
+__generated__

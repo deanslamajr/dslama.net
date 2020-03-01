@@ -1,0 +1,12 @@
+query FetchHomeMain {
+    homeMain {
+        links {
+            name
+            url
+        }
+        version
+        pictureURL
+        bio
+        title
+    }
+}

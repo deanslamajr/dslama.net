@@ -1,0 +1,16 @@
+type Link {
+    name: String
+    url: String
+}
+
+type HomeMain {
+    links: [Link]
+    version: Int
+    pictureURL: String
+    bio: String
+    title: String
+}
+
+type Query {
+    homeMain: HomeMain!
+}

@@ -3,7 +3,7 @@ type Link {
     url: String
 }
 
-type HomeMain {
+type HomePayload {
     links: [Link]
     version: Int
     pictureURL: String
@@ -11,6 +11,19 @@ type HomeMain {
     title: String
 }
 
+type Post {
+    url: String
+    originalPublishDate: String
+    title: String
+    snippet: String
+}
+
+type PostsPayload {
+    posts: [Post]
+    summary: String
+}
+
 type Query {
-    homeMain: HomeMain!
+    homeQuery: HomePayload!
+    postsQuery: PostsPayload!
 }

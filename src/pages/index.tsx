@@ -23,7 +23,7 @@ const Home: NextPage = () => {
       </Head>
 
       <AboutContainer>
-        <Header summary={data?.homeMain.title || ''}></Header>
+        <Header summary={data?.homeQuery.title || ''}></Header>
       </AboutContainer>
     </div>
   );

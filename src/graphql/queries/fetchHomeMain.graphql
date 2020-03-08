@@ -1,5 +1,5 @@
 query FetchHomeMain {
-    homeMain {
+    homeQuery {
         links {
             name
             url

@@ -1,0 +1,11 @@
+query FetchPosts {
+    postsQuery {
+        posts {
+            url
+            originalPublishDate
+            title
+            snippet
+        }
+        summary
+    }
+}

@@ -1,11 +1,7 @@
-export interface StyledComponentTheme {
-  colors: {
-    primary: string;
-  };
-}
+import { DefaultTheme } from 'styled-components';
 
-export const theme: StyledComponentTheme = {
+export const theme: DefaultTheme = {
   colors: {
-    primary: '#e7eeed',
+    background: '#e7eeed',
   },
 };

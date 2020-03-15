@@ -1,0 +1,11 @@
+type Post {
+    url: String
+    originalPublishDate: String
+    title: String
+    snippet: String
+}
+
+type PostsPayload {
+    posts: [Post]
+    summary: String
+}

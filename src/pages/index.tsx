@@ -1,5 +1,6 @@
 import { NextPage } from 'next';
 import Head from 'next/head';
+import Link from 'next/link';
 import styled from 'styled-components';
 
 import { Header } from '../components/Header';
@@ -13,7 +14,7 @@ const AboutContainer = styled.div`
 `;
 
 const Home: NextPage = () => {
-  const { data } = useFetchHomeMainQuery({ fetchPolicy: 'cache-first' });
+  const { data } = useFetchHomeMainQuery();
 
   return (
     <div>
@@ -25,6 +26,11 @@ const Home: NextPage = () => {
       <AboutContainer>
         <Header summary={data?.homeQuery.title || ''}></Header>
       </AboutContainer>
+
+      <Link href="/posts">
+        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+        <a>posts</a>
+      </Link>{' '}
     </div>
   );
 };

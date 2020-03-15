@@ -1,0 +1,12 @@
+type Link {
+    name: String
+    url: String
+}
+
+type HomePayload {
+    links: [Link]
+    version: Int
+    pictureURL: String
+    bio: String
+    title: String
+}

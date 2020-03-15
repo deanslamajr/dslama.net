@@ -6,3 +6,7 @@ An about page web app
 * `nvm use`
 * `npm rm -rf node_modules && npm install`
 * `npm run dev`
+
+## To Debug Backend
+* `npm run dev`
+* In vscode, run `Attach` script in the debug menu

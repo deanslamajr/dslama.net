@@ -8,5 +8,5 @@ An about page web app
 * `npm run dev`
 
 ## To Debug Backend
-* `npm run dev`
+* `npm run dev:debug`
 * In vscode, run `Attach` script in the debug menu

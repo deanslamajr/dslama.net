@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "codegen": "graphql-let",
-    "dev": "npm run codegen && NODE_OPTIONS='--inspect' next dev",
+    "dev": "npm run codegen && next dev",
+    "dev:debug": "npm run codegen && NODE_OPTIONS='--inspect' next dev",
     "build": "npm run codegen && next build",
     "start": "next start",
     "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx src"

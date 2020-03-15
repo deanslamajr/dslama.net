@@ -1,17 +1,13 @@
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
-import styled from 'styled-components';
 
-import { Header } from '../components/Header';
-import { withApollo } from '../graphql/with-apollo';
+import { Styled } from './index.styles';
 
-import { useFetchHomeMainQuery } from '../graphql/queries/fetchHomeMain.graphql';
+import { Header } from '../../components/Header';
+import { withApollo } from '../../graphql/with-apollo';
 
-const AboutContainer = styled.div`
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
-    Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-`;
+import { useFetchHomeMainQuery } from '../../graphql/queries/fetchHomeMain.graphql';
 
 const Home: NextPage = () => {
   const { data } = useFetchHomeMainQuery();
@@ -22,11 +18,9 @@ const Home: NextPage = () => {
         <title>dslama.net</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-
-      <AboutContainer>
+      <Styled.Container>
         <Header summary={data?.homeQuery.title || ''}></Header>
-      </AboutContainer>
-
+      </Styled.Container>
       <Link href="/posts">
         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
         <a>posts</a>

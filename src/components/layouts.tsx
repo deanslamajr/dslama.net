@@ -2,26 +2,49 @@ import styled, {
   css,
   createGlobalStyle,
   CSSObject,
+  Interpolation,
+  InterpolationFunction,
   SimpleInterpolation,
+  ThemedStyledProps,
 } from 'styled-components';
 
+const tabletMax = <T extends {}>(
+  cssRules:
+    | CSSObject
+    | TemplateStringsArray
+    | InterpolationFunction<ThemedStyledProps<T, {}>>,
+  ...interpolations:
+    | SimpleInterpolation[]
+    | Array<Interpolation<ThemedStyledProps<T, {}>>>
+) => css`
+  @media (max-width: 899px) {
+    ${css(cssRules, ...interpolations)}
+  }
+`;
+
+const phoneMax = <T extends {}>(
+  cssRules:
+    | CSSObject
+    | TemplateStringsArray
+    | InterpolationFunction<ThemedStyledProps<T, {}>>,
+  ...interpolations:
+    | SimpleInterpolation[]
+    | Array<Interpolation<ThemedStyledProps<T, {}>>>
+) => css`
+  @media (max-width: 599px) {
+    ${css(cssRules, ...interpolations)}
+  }
+`;
+
 export const breakpoints = {
-  tabletMax: (
-    cssRules: CSSObject | TemplateStringsArray,
-    ...interpolations: SimpleInterpolation[]
-  ) => css`
-    @media (max-width: 899px) {
-      ${css(cssRules, ...interpolations)}
-    }
-  `,
-  phoneMax: (
-    cssRules: CSSObject | TemplateStringsArray,
-    ...interpolations: SimpleInterpolation[]
-  ) => css`
-    @media (max-width: 599px) {
-      ${css(cssRules, ...interpolations)}
-    }
-  `,
+  tabletMax,
+  phoneMax,
+};
+
+export const shadow: () => SimpleInterpolation = () => {
+  return css`
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16);
+  `;
 };
 
 export const GlobalStyles = createGlobalStyle`

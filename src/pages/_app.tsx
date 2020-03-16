@@ -4,6 +4,7 @@ import React from 'react';
 import { ThemeProvider } from 'styled-components';
 
 import { GlobalStyles, OuterContainer } from '../components/layouts';
+import { Navbar } from '../components/navbar';
 
 import { theme } from '../theme';
 
@@ -19,6 +20,7 @@ export default class MyApp extends App {
         <ThemeProvider theme={theme}>
           <GlobalStyles />
           <OuterContainer>
+            <Navbar />
             <Component {...pageProps} />
           </OuterContainer>
         </ThemeProvider>

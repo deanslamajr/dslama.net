@@ -1,24 +1,61 @@
 import { NextPage } from 'next';
 import Head from 'next/head';
 
-import { Container } from './About.styles';
+import {
+  BackgroundImage,
+  BioCard,
+  Container,
+  LinkAnchor,
+  LinkItem,
+  LinksContainer,
+  LogoContainer,
+} from './About.styles';
 
+import { Spinner } from '../../components/spinner';
 import { Header } from '../../components/header';
-import { withApollo } from '../../graphql/with-apollo';
 
-import { useFetchHomeMainQuery } from '../../graphql/queries/fetchHomeMain.graphql';
+import { withApollo } from '../../graphql/with-apollo';
+import {
+  useFetchHomeMainQuery,
+  FetchHomeMainQuery,
+  Link,
+} from '../../graphql/queries/fetchHomeMain.graphql';
 
 const Home: NextPage = () => {
-  const { data } = useFetchHomeMainQuery();
+  const { data, loading, error } = useFetchHomeMainQuery();
+
+  if (loading) {
+    return <Spinner />;
+  }
+
+  if (error || !data) {
+    return null;
+  }
+
+  const {
+    homeQuery: { bio, pictureURL, links, title },
+  } = data as FetchHomeMainQuery;
 
   return (
     <div>
       <Head>
         <title>dslama.net</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Container>
-        <Header summary={data?.homeQuery.title || ''}></Header>
+        <Header summary={title || ''}></Header>
+        <LogoContainer>
+          <BackgroundImage imageUrl={pictureURL || ''} />
+        </LogoContainer>
+        <LinksContainer>
+          {(links as Link[]).map(({ name, url }) => (
+            <LinkItem key={name || ''}>
+              <LinkAnchor href={url || ''} target="_blank">
+                {name}
+              </LinkAnchor>
+            </LinkItem>
+          ))}
+        </LinksContainer>
+        <BioCard dangerouslySetInnerHTML={{ __html: bio || '' }} />
       </Container>
     </div>
   );

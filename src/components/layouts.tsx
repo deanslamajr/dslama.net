@@ -2,10 +2,13 @@ import styled, {
   css,
   createGlobalStyle,
   CSSObject,
+  DefaultTheme,
   Interpolation,
   InterpolationFunction,
   SimpleInterpolation,
+  ThemeProps,
   ThemedStyledProps,
+  FlattenInterpolation,
 } from 'styled-components';
 
 const tabletMax = <T extends {}>(
@@ -47,9 +50,29 @@ export const shadow: () => SimpleInterpolation = () => {
   `;
 };
 
+export const card: () => FlattenInterpolation<
+  ThemeProps<DefaultTheme>
+> = () => {
+  return css`
+    background-color: white;
+    padding: 1.25rem;
+    border-radius: 2px;
+    font-size: 1.3rem;
+    margin: auto 1.5rem;
+
+    ${breakpoints.phoneMax`
+      padding: .5rem;
+      margin: 0;
+      font-size: 1.2rem;
+    `}
+  `;
+};
+
 export const GlobalStyles = createGlobalStyle`
     body {
-        margin: 0;
+      margin: 0;
+      overflow-y: overlay;
+      overflow-x: hidden;
     }
 
     pre {

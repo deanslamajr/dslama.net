@@ -14,7 +14,6 @@ const Posts: NextPage = () => {
     <div>
       <Head>
         <title>dslama.net - posts</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       {JSON.stringify(data?.postsQuery?.posts)}
       <Link href="/">

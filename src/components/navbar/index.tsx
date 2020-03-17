@@ -16,24 +16,28 @@ type NavbarProps = {};
 
 const getPathFromRoute: (route: string) => string = route => {
   const tokens = route.split('/');
-  return tokens.length > 1 ? tokens[1] : '';
+  if (tokens[1] === '') {
+    return 'about';
+  }
+  return tokens[1];
 };
 
 export const Navbar: React.FunctionComponent<NavbarProps> = () => {
   const router = useRouter();
   const path = getPathFromRoute(router.route);
+
   const [isExpanded, setIsExpanded] = useState(false);
-  const [activeItem, setActiveItem] = useState<string | null>(path);
+  const [activeItem, setActiveItem] = useState(path);
 
   const onLinkClick: (item: string) => void = item => {
-    const path = item.toLowerCase();
+    const newPath = item.toLowerCase();
 
     setIsExpanded(false);
-    setActiveItem(path);
+    setActiveItem(newPath);
 
-    const newPath = path !== 'about' ? `/${path}` : '/';
+    const url = newPath !== 'about' ? `/${newPath}` : '/';
 
-    router.push(newPath);
+    router.push(url);
   };
 
   const onMenuClick: () => void = () => {

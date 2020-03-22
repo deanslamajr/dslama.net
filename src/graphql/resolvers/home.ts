@@ -1,7 +1,7 @@
-import { Resolver, ResolversTypes } from '../types/home.graphqls';
+import { Resolver, HomePayload } from '../types/home.graphqls';
 import { get as getAbout } from './models/about';
 
-export const resolver: Resolver<ResolversTypes['HomePayload']> = async (
+export const resolver: Resolver<HomePayload> = async (
   _parent,
   _args,
   _context,

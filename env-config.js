@@ -17,6 +17,7 @@ const serverSecrets = {
   DYNAMO_TABLE_READINGS: fromProcessEnv('DYNAMO_TABLE_READINGS'),
   DYNAMO_TABLE_USERS: fromProcessEnv('DYNAMO_TABLE_USERS'),
   DYNAMO_TABLE_PROJECTS: fromProcessEnv('DYNAMO_TABLE_PROJECTS'),
+  MEDIUM_USERNAME: fromProcessEnv('MEDIUM_USERNAME'),
 };
 
 const serverEnvironment = Object.assign({}, clientEnvironment, serverSecrets);

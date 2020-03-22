@@ -12,7 +12,7 @@ import {
   LogoContainer,
 } from './About.styles';
 
-import { Spinner } from '../../components/spinner';
+import { LoadingErrorOrRender } from '../../components/LoadingErrorOrRender';
 import { Header } from '../../components/header';
 
 import { withApollo } from '../../graphql/with-apollo';
@@ -28,40 +28,41 @@ import {
 const Home: NextPage = () => {
   const { data, loading, error } = useFetchHomeMainQuery();
 
-  if (loading) {
-    return <Spinner />;
-  }
-
-  if (error || !data) {
-    return null;
-  }
-
-  const {
-    homeQuery: { bio, pictureURL, links, title },
-  } = data as FetchHomeMainQuery;
-
   return (
-    <div>
-      <Head>
-        <title>dslama.net</title>
-      </Head>
-      <Container>
-        <Header summary={title || ''}></Header>
-        <LogoContainer>
-          <BackgroundImage imageUrl={pictureURL || ''} />
-        </LogoContainer>
-        <LinksContainer>
-          {(links as Link[]).map(({ name, url }) => (
-            <LinkItem key={name || ''}>
-              <LinkAnchor href={url || ''} target="_blank">
-                {name}
-              </LinkAnchor>
-            </LinkItem>
-          ))}
-        </LinksContainer>
-        <BioCard dangerouslySetInnerHTML={{ __html: bio || '' }} />
-      </Container>
-    </div>
+    <LoadingErrorOrRender<FetchHomeMainQuery>
+      error={error}
+      isLoading={loading}
+      queryResult={data}
+      render={({ queryResult }) => {
+        const {
+          homeQuery: { bio, pictureURL, links, title },
+        } = queryResult;
+
+        return (
+          <div>
+            <Head>
+              <title>dslama.net</title>
+            </Head>
+            <Container>
+              <Header summary={title || ''}></Header>
+              <LogoContainer>
+                <BackgroundImage imageUrl={pictureURL || ''} />
+              </LogoContainer>
+              <LinksContainer>
+                {(links as Link[]).map(({ name, url }) => (
+                  <LinkItem key={name || ''}>
+                    <LinkAnchor href={url || ''} target="_blank">
+                      {name}
+                    </LinkAnchor>
+                  </LinkItem>
+                ))}
+              </LinksContainer>
+              <BioCard dangerouslySetInnerHTML={{ __html: bio || '' }} />
+            </Container>
+          </div>
+        );
+      }}
+    />
   );
 };
 

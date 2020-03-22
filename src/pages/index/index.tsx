@@ -1,5 +1,6 @@
 import { NextPage } from 'next';
 import Head from 'next/head';
+// import getConfig from 'next/config';
 
 import {
   BackgroundImage,
@@ -20,6 +21,9 @@ import {
   FetchHomeMainQuery,
   Link,
 } from '../../graphql/queries/fetchHomeMain.graphql';
+
+// const { publicRuntimeConfig } = getConfig();
+// publicRuntimeConfig.FAVICON_ROOT_URL
 
 const Home: NextPage = () => {
   const { data, loading, error } = useFetchHomeMainQuery();

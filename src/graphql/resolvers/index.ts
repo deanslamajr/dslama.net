@@ -1,4 +1,4 @@
-import { QueryResolvers } from '../types/about.graphqls';
+import { QueryResolvers } from '../types/root.graphqls';
 import { resolver as homeMainResolver } from './home';
 import { resolver as postsResolver } from './posts';
 

@@ -7,3 +7,6 @@ npm-debug.log
 
 # graphql-let
 __generated__
+
+# secrets
+.env

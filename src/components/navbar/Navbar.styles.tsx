@@ -11,6 +11,8 @@ export const OuterContainer = styled.div`
   background-color: #004741;
   color: ${props => props.theme.colors.text};
   border-radius: 2px;
+  position: sticky;
+  top: 0;
   ${breakpoints.tabletMax`
     margin-top: 0;
     border-radius: 0;

@@ -44,7 +44,7 @@ const Home: NextPage = () => {
               <title>dslama.net</title>
             </Head>
             <Container>
-              <Header summary={title || ''}></Header>
+              <Header summary={title || ''} />
               <LogoContainer>
                 <BackgroundImage imageUrl={pictureURL || ''} />
               </LogoContainer>

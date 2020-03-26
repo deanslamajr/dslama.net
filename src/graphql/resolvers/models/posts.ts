@@ -10,9 +10,10 @@ const mediumUser = serverRuntimeConfig.MEDIUM_USERNAME;
 const transformRawPost: (rawPost: any) => Post = rawPost => {
   const url = `https://medium.com/${mediumUser}/${rawPost.uniqueSlug}`;
   const snippet = rawPost?.previewContent?.bodyModel?.paragraphs[1]?.text;
+
   return {
     url,
-    originalPublishDate: rawPost.firstPublishedAt,
+    originalPublishDate: new Date(rawPost.firstPublishedAt),
     title: rawPost?.title,
     snippet,
   };

@@ -1,8 +1,18 @@
 import { NextPage } from 'next';
 import Head from 'next/head';
-import Link from 'next/link';
+
+import { formatDate } from '../../utils';
 
 import { LoadingErrorOrRender } from '../../components/LoadingErrorOrRender';
+import { Header } from '../../components/header';
+import {
+  CardLink,
+  Details,
+  OuterContainer,
+  Quote,
+  ShadowCard,
+  Title,
+} from '../../components/Card';
 
 import { withApollo } from '../../graphql/with-apollo';
 
@@ -20,20 +30,34 @@ const Posts: NextPage = () => {
       isLoading={loading}
       queryResult={data}
       render={({ queryResult }) => {
-        const {
-          postsQuery: { posts },
-        } = queryResult;
+        const { posts, summary } = (queryResult as FetchPostsQuery).postsQuery;
 
         return (
           <div>
             <Head>
               <title>dslama.net - posts</title>
             </Head>
-            {JSON.stringify(posts)}
-            <Link href="/">
-              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-              <a>home</a>
-            </Link>{' '}
+            <div>
+              <Header summary={summary || ''} />
+              {posts &&
+                posts.map(post => (
+                  <OuterContainer>
+                    <CardLink href={post?.url || ''} target="_blank">
+                      <ShadowCard>
+                        <Title>{post?.title}</Title>
+                        <Details>
+                          <div>
+                            {post
+                              ? formatDate(post.originalPublishDate as number)
+                              : ''}
+                          </div>
+                        </Details>
+                        <Quote>{post?.snippet}</Quote>
+                      </ShadowCard>
+                    </CardLink>
+                  </OuterContainer>
+                ))}
+            </div>
           </div>
         );
       }}

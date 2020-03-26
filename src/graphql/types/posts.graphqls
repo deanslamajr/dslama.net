@@ -1,6 +1,6 @@
 type Post {
     url: String
-    originalPublishDate: String
+    originalPublishDate: Date
     title: String
     snippet: String
 }

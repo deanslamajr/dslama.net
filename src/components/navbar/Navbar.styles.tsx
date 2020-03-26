@@ -74,4 +74,8 @@ export const MenuItem = styled.span<MenuItemProps>`
     border-top: 1px solid #002e2a;
     margin: 0;
   `}
+
+  &:hover {
+    opacity: 0.75;
+  }
 `;

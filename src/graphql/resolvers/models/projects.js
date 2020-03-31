@@ -7,11 +7,5 @@ import db from './db';
 const { serverRuntimeConfig } = getConfig();
 
 export const get = () => {
-  return db
-    .table(serverRuntimeConfig.DYNAMO_TABLE_PROJECTS)
-    .scan()
-    .then(response => {
-      console.log('response', response);
-      return response;
-    });
+  return db.table(serverRuntimeConfig.DYNAMO_TABLE_PROJECTS).scan();
 };

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { breakpoints } from './layouts';
 import { card, shadow } from './layouts';
@@ -21,13 +21,21 @@ export const CardLink = styled.a`
   `}
 `;
 
-export const ShadowCard = styled.div`
+interface Hover {
+  hover?: boolean;
+}
+
+export const ShadowCard = styled.div<Hover>`
   ${card()}
   ${shadow()}
 
-  &:hover {
-    opacity: 0.75;
-  }
+  ${props =>
+    props.hover &&
+    css`
+      &:hover {
+        opacity: 0.75;
+      }
+    `}
 `;
 
 export const Title = styled.div`

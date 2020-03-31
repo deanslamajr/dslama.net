@@ -8,5 +8,6 @@ type Project {
 }
 
 type ProjectsPayload {
+    summary: String
     projects: [Project]
 }

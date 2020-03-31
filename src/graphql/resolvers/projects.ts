@@ -1,9 +1,27 @@
-import {
-  Resolver,
-  ProjectsPayload,
-  ResolversTypes,
-} from '../types/projects.graphqls';
+import { Resolver, ResolversTypes } from '../types/projects.graphqls';
 import { get as getProjects } from './models/projects';
+import { Project } from '../../types';
+
+interface RawProject {
+  id: string;
+  url: string;
+  name: string;
+  description: string;
+  order: number;
+  source: string;
+  summary: string;
+}
+
+const transformRawProject: (rawProject: RawProject) => Project = rawProject => {
+  return {
+    id: rawProject.id,
+    appUrl: rawProject.url,
+    description: rawProject.description,
+    name: rawProject.name,
+    sourceUrl: rawProject.source,
+    summary: rawProject.summary,
+  };
+};
 
 export const resolver: Resolver<ResolversTypes['ProjectsPayload']> = async (
   _parent: any,
@@ -11,20 +29,19 @@ export const resolver: Resolver<ResolversTypes['ProjectsPayload']> = async (
   _context: any,
   _info: any
 ) => {
-  const data = await getProjects();
-
-  console.log('data', data);
+  // summary: 'A quick and modern about page! All page data is lazy-fetched from an Amazon RDS datastore.<br><br>This identity portal uses React with React Router to present the various views in a quick, AJAX-powered single page application. Redux is used to maintain global state between the views. The CSS modules styling pattern is used to have styles strongly coupled to specific components for safe and easy CSS managment.',
+  // source: 'https://github.com/deanslamajr/dslama.net',
+  // order: 0,
+  // description: 'The web experience you are currently enjoying!',
+  // id: '7d2b734c-a1b4-4b3f-939d-6ceda599c209',
+  // url: 'https://www.dslama.net',
+  // name: 'dslama.net'
+  const rawProjects = await getProjects();
 
   return {
-    projects: [
-      {
-        id: 'fakeId',
-        links: [],
-        version: 'data?.version',
-        pictureURL: 'data?.pictureURL',
-        bio: 'data?.bio',
-        title: 'data?.title',
-      },
-    ],
+    projects: rawProjects.map(transformRawProject),
+    // @TODO move this to the DB
+    summary:
+      'This is a list of software authored by the developer. Clicking on the title of an item will open a new tab/window navigated to a publicly hosted version of the software. Each project`s source code is available via the `source` link.',
   };
 };

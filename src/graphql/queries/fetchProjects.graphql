@@ -8,5 +8,6 @@ query FetchProjects {
             sourceUrl
             summary
         }
+        summary
     }
 }

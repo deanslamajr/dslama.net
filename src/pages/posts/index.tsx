@@ -43,7 +43,7 @@ const Posts: NextPage = () => {
                 posts.map(post => (
                   <OuterContainer key={post?.url || ''}>
                     <CardLink href={post?.url || ''} target="_blank">
-                      <ShadowCard>
+                      <ShadowCard hover>
                         <Title>{post?.title}</Title>
                         <Details>
                           <div>

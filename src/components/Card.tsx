@@ -7,6 +7,7 @@ export const OuterContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 3rem 0;
+  z-index: ${props => props.theme.zIndex.lowest};
   ${breakpoints.tabletMax`
     margin: 3rem .75rem;
   `}

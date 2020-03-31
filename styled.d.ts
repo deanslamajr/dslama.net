@@ -10,5 +10,10 @@ declare module 'styled-components' {
       background: string;
       red: string;
     };
+    zIndex: {
+      highest: number;
+      middle: number;
+      lowest: number;
+    };
   }
 }

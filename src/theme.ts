@@ -8,4 +8,9 @@ export const theme: DefaultTheme = {
     background: '#e7eeed',
     red: '#b21a27',
   },
+  zIndex: {
+    highest: 999,
+    middle: 0,
+    lowest: -999,
+  },
 };

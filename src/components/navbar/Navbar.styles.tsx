@@ -13,6 +13,7 @@ export const OuterContainer = styled.div`
   border-radius: 2px;
   position: sticky;
   top: 0;
+  z-index: ${props => props.theme.zIndex.highest};
   ${breakpoints.tabletMax`
     margin-top: 0;
     border-radius: 0;

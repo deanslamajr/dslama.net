@@ -82,6 +82,26 @@ export const GlobalStyles = createGlobalStyle`
       white-space: -o-pre-wrap;    /* Opera 7 */
       word-wrap: break-word;       /* Internet Explorer 5.5+ */
     }
+
+    /* unvisited link */
+    a:link {
+      /* color: ${props => props.theme.colors.red}; */
+    }
+
+    /* visited link */
+    a:visited {
+      opacity: .75;
+    }
+
+    /* mouse over link */
+    a:hover {
+      opacity: .5;
+    }
+
+    /* selected link */
+    a:active {
+      opacity: .5;
+    }
 `;
 
 export const OuterContainer = styled.div`

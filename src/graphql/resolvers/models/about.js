@@ -2,6 +2,8 @@ import getConfig from 'next/config';
 
 import db from './db';
 
+// @TODO type this file after converting to redis
+
 const { serverRuntimeConfig } = getConfig();
 
 function reverseSortResponseByVersion(res) {

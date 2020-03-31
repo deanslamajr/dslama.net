@@ -1,6 +1,8 @@
 import DynamodbFactory from '@awspilot/dynamodb';
 import getConfig from 'next/config';
 
+// @TODO type this file after converting to redis
+
 const { serverRuntimeConfig } = getConfig();
 
 const dynamoDB = DynamodbFactory({

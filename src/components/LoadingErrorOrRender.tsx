@@ -20,6 +20,7 @@ export const LoadingErrorOrRender = <T,>({
   }
 
   if (error || !queryResult) {
+    console.log('error', error);
     return null;
   }
 

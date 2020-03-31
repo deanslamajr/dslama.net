@@ -1,0 +1,12 @@
+query FetchProjects {
+    getProjects {
+        projects {
+            id
+            appUrl
+            description
+            name
+            sourceUrl
+            summary
+        }
+    }
+}

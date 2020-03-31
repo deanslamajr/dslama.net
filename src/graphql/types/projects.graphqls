@@ -1,0 +1,12 @@
+type Project {
+    id: ID!
+    appUrl: String
+    description: String
+    name: String
+    sourceUrl: String
+    summary: String
+}
+
+type ProjectsPayload {
+    projects: [Project]
+}

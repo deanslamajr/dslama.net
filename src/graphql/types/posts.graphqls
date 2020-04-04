@@ -5,7 +5,7 @@ type Post {
     snippet: String
 }
 
-type PostsPayload {
+type PostsPage {
     posts: [Post]
     summary: String
 }

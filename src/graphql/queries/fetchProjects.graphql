@@ -1,5 +1,5 @@
 query FetchProjects {
-    getProjects {
+    projectsPage {
         projects {
             id
             appUrl

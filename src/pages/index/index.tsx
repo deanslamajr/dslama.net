@@ -16,22 +16,22 @@ import { Header } from '../../components/header';
 
 import { withApollo } from '../../graphql/with-apollo';
 import {
-  useFetchHomeMainQuery,
-  FetchHomeMainQuery,
+  useFetchAboutQuery,
+  FetchAboutQuery,
   Link,
-} from '../../graphql/queries/fetchHomeMain.graphql';
+} from '../../graphql/queries/fetchAbout.graphql';
 
 const Home: NextPage = () => {
-  const { data, loading, error } = useFetchHomeMainQuery();
+  const { data, loading, error } = useFetchAboutQuery();
 
   return (
-    <LoadingErrorOrRender<FetchHomeMainQuery>
+    <LoadingErrorOrRender<FetchAboutQuery>
       error={error}
       isLoading={loading}
       queryResult={data}
       render={({ queryResult }) => {
         const {
-          homeQuery: { bio, pictureURL, links, title },
+          aboutPage: { bio, pictureURL, links, title },
         } = queryResult;
 
         return (

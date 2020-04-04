@@ -27,10 +27,7 @@ const Posts: NextPage = () => {
         isLoading={loading}
         queryResult={data}
         render={({ queryResult }) => {
-          const {
-            posts,
-            summary,
-          } = (queryResult as FetchPostsQuery).postsQuery;
+          const { posts, summary } = (queryResult as FetchPostsQuery).postsPage;
 
           return (
             <div>

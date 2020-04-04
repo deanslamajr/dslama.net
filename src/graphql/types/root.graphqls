@@ -1,7 +1,7 @@
 type Query {
-    homeQuery: HomePayload!
-    postsQuery: PostsPayload!
-    getProjects: ProjectsPayload!
+    aboutPage: AboutPage!
+    postsPage: PostsPage!
+    projectsPage: ProjectsPage!
     readingsPage: ReadingsPage!
 }
 

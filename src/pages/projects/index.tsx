@@ -31,7 +31,7 @@ const Projects: NextPage = () => {
         const {
           projects,
           summary,
-        } = (queryResult as FetchProjectsQuery).getProjects;
+        } = (queryResult as FetchProjectsQuery).projectsPage;
 
         return (
           <div>

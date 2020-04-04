@@ -67,12 +67,11 @@ export interface CardProps {
 export const Card: React.FC<CardProps> = ({
   children,
   href,
-  key,
   quote,
   quoteHasHtml,
   title,
 }) => (
-  <OuterContainer key={key}>
+  <OuterContainer>
     <CardLink href={href} target="_blank">
       <ShadowCard>
         <Title>{title}</Title>

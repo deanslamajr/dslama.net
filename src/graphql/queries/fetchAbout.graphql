@@ -1,5 +1,5 @@
-query FetchHomeMain {
-    homeQuery {
+query FetchAbout {
+    aboutPage {
         links {
             name
             url

@@ -1,5 +1,5 @@
 query FetchPosts {
-    postsQuery {
+    postsPage {
         posts {
             url
             originalPublishDate

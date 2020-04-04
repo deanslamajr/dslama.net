@@ -1,7 +1,7 @@
-import { Resolver, ResolversTypes } from '../types/posts.graphqls';
+import { Resolver, PostsPage } from '../types/posts.graphqls';
 import { get as getPosts } from './models/posts';
 
-export const resolver: Resolver<ResolversTypes['PostsPayload']> = async (
+export const resolver: Resolver<PostsPage> = async (
   _parent,
   _args,
   _context,

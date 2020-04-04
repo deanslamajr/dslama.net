@@ -3,7 +3,7 @@ type Link {
     url: String
 }
 
-type HomePayload {
+type AboutPage {
     links: [Link]
     version: Int
     pictureURL: String

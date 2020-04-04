@@ -1,0 +1,15 @@
+type Reading {
+    author: String
+    id: ID!
+    foundDate: Date
+    publication: String
+    publishDate: Date
+    quote: String
+    title: String
+    url: String
+}
+
+type ReadingsPage {
+    summary: String
+    readings: [Reading]
+}

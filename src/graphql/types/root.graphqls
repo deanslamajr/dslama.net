@@ -2,5 +2,6 @@ type Query {
     homeQuery: HomePayload!
     postsQuery: PostsPayload!
     getProjects: ProjectsPayload!
+    readingsPage: ReadingsPage!
 }
 

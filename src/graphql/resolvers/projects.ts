@@ -39,9 +39,10 @@ export const resolver: Resolver<ResolversTypes['ProjectsPayload']> = async (
   const rawProjects = await getProjects();
 
   return {
-    projects: rawProjects.map(transformRawProject),
+    projects: rawProjects
+      .sort((a: RawProject, b: RawProject) => b.order - a.order)
+      .map(transformRawProject),
     // @TODO move this to the DB
-    summary:
-      'This is a list of software authored by the developer. Clicking on the title of an item will open a new tab/window navigated to a publicly hosted version of the software. Each project`s source code is available via the `source` link.',
+    summary: 'Cool, handbuilt webapps. Click on a title to start one up.',
   };
 };

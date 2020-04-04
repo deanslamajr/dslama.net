@@ -55,7 +55,7 @@ export const InnerContainer = styled.span<ExpandableContainerProps>`
 
 export type MenuItemProps = {
   isActive: boolean;
-}
+};
 
 export const MenuItem = styled.span<MenuItemProps>`
   margin-left: 2rem;

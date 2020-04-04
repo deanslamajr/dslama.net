@@ -11,8 +11,7 @@ export const resolver: Resolver<ResolversTypes['PostsPayload']> = async (
 
   return {
     // @TODO move this to the DB
-    summary:
-      'This is a list of blog posts authored by the developer. Most recently published posts are nearer the top.',
+    summary: 'Thoughts, findings, and general experiences on web development',
     posts,
   };
 };

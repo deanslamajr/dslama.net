@@ -1,15 +1,9 @@
 import { NextPage } from 'next';
 import Head from 'next/head';
 
-import { Project } from '../../types';
-
-import { formatDate } from '../../utils';
-
 import { LoadingErrorOrRender } from '../../components/LoadingErrorOrRender';
 import { Header } from '../../components/header';
 import {
-  CardLink,
-  Details,
   OuterContainer,
   Quote,
   ShadowCard,

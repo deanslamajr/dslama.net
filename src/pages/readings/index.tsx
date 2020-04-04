@@ -5,14 +5,7 @@ import { formatDate } from '../../utils';
 
 import { LoadingErrorOrRender } from '../../components/LoadingErrorOrRender';
 import { Header } from '../../components/header';
-import {
-  CardLink,
-  Details,
-  OuterContainer,
-  Quote,
-  ShadowCard,
-  Title,
-} from '../../components/Card';
+import { Card } from '../../components/Card';
 
 import { withApollo } from '../../graphql/with-apollo';
 
@@ -44,6 +37,18 @@ const ReadingsPage: NextPage = () => {
               <div>
                 <Header summary={summary || ''} />
               </div>
+              {readings &&
+                readings.map(reading => (
+                  <Card
+                    href={reading?.url || ''}
+                    key={reading?.id || ''}
+                    quoteHasHtml
+                    quote={reading?.quote || ''}
+                    title={reading?.title || ''}>
+                    <div>{`${reading?.author} @ ${reading?.publication}`}</div>
+                    <div>{formatDate(reading?.publishDate)}</div>
+                  </Card>
+                ))}
             </div>
           );
         }}

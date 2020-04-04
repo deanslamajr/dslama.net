@@ -5,7 +5,6 @@ import {
   ReadingsPage,
 } from '../types/readings.graphqls';
 import { get as getReadings } from './models/readings';
-import { Project } from '../../types';
 
 interface RawReading {
   id: string;
@@ -47,12 +46,14 @@ export const resolver: Resolver<ResolverTypeWrapper<ReadingsPage>> = async (
 ) => {
   const rawReadings: RawReading[] = await getReadings();
 
-  const readings: Reading[] = rawReadings.map(transformRawReading);
+  const readings: Reading[] = rawReadings
+    .map(transformRawReading)
+    .sort((a, b) => b.foundDate - a.foundDate);
 
   return {
     readings,
     // @TODO move this to the DB
     summary:
-      'Possibly helpful, possibly insightful, and/or possibly interesting writings from others.',
+      'Possibly helpful, possibly insightful, and/or possibly interesting write-ups on all things web development.',
   };
 };

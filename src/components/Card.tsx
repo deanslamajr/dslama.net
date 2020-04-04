@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import { breakpoints } from './layouts';
 import { card, shadow } from './layouts';
@@ -14,6 +14,7 @@ export const OuterContainer = styled.div`
 `;
 
 export const CardLink = styled.a`
+  width: 100%;
   color: inherit;
   text-decoration: none;
   ${breakpoints.phoneMax`
@@ -21,21 +22,9 @@ export const CardLink = styled.a`
   `}
 `;
 
-interface Hover {
-  hover?: boolean;
-}
-
-export const ShadowCard = styled.div<Hover>`
+export const ShadowCard = styled.div`
   ${card()}
   ${shadow()}
-
-  ${props =>
-    props.hover &&
-    css`
-      &:hover {
-        opacity: 0.75;
-      }
-    `}
 `;
 
 export const Title = styled.div`
@@ -66,3 +55,34 @@ export const Quote = styled.div`
     text-align: justify;
   `}
 `;
+
+export interface CardProps {
+  href: string;
+  key: string;
+  quote: string;
+  quoteHasHtml?: boolean;
+  title: string;
+}
+
+export const Card: React.FC<CardProps> = ({
+  children,
+  href,
+  key,
+  quote,
+  quoteHasHtml,
+  title,
+}) => (
+  <OuterContainer key={key}>
+    <CardLink href={href} target="_blank">
+      <ShadowCard>
+        <Title>{title}</Title>
+        <Details>{children}</Details>
+        {quoteHasHtml ? (
+          <Quote dangerouslySetInnerHTML={{ __html: quote }} />
+        ) : (
+          <Quote>{quote}</Quote>
+        )}
+      </ShadowCard>
+    </CardLink>
+  </OuterContainer>
+);

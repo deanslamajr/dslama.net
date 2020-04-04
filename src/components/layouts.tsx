@@ -83,6 +83,10 @@ export const GlobalStyles = createGlobalStyle`
       word-wrap: break-word;       /* Internet Explorer 5.5+ */
     }
 
+    a {
+      color: ${props => props.theme.colors.red};
+    }
+
     /* unvisited link */
     a:link {
       /* color: ${props => props.theme.colors.red}; */
@@ -95,7 +99,7 @@ export const GlobalStyles = createGlobalStyle`
 
     /* mouse over link */
     a:hover {
-      opacity: .5;
+      opacity: .75;
     }
 
     /* selected link */

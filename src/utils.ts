@@ -1,4 +1,7 @@
-export const formatDate: (epochDate: number) => string = epochDate => {
+export const formatDate: (epochDate?: number) => string = epochDate => {
+  if (!epochDate) {
+    return '';
+  }
   const date = new Date(epochDate);
 
   const monthNames = [

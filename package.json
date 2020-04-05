@@ -8,7 +8,11 @@
     "dev:debug": "npm run codegen && NODE_OPTIONS='--inspect' next dev",
     "build": "npm run codegen && next build",
     "start": "next start",
-    "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx src"
+    "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx src",
+    "image:build": "sudo docker build -f ../deployment/dslama.net/nextjs-refactor/Dockerfile -t deanslamajr/dslama.net:\"$(git describe)\" .",
+    "image:promote": "sudo docker push deanslamajr/dslama.net:\"$(git describe)\"",
+    "publish": "npm run image:build && npm run image:promote",
+    "publish:test": "npm version prerelease --preid=g\"$(git rev-parse --short=5 HEAD)\" && npm run publish"
   },
   "dependencies": {
     "@apollo/react-common": "^3.1.3",

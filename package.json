@@ -7,7 +7,7 @@
     "dev": "npm run codegen && next dev",
     "dev:debug": "npm run codegen && NODE_OPTIONS='--inspect' next dev",
     "build": "npm run codegen && next build",
-    "start": "next start",
+    "start": "next start -p 8080",
     "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx src",
     "image:build": "sudo docker build -f ../deployment/dslama.net/nextjs-refactor/Dockerfile -t deanslamajr/dslama.net:\"$(git describe)\" .",
     "image:promote": "sudo docker push deanslamajr/dslama.net:\"$(git describe)\"",

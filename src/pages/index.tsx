@@ -9,17 +9,17 @@ import {
   LinkItem,
   LinksContainer,
   LogoContainer,
-} from './About.styles';
+} from '../components/About.styles';
 
-import { LoadingErrorOrRender } from '../../components/LoadingErrorOrRender';
-import { Header } from '../../components/header';
+import { LoadingErrorOrRender } from '../components/LoadingErrorOrRender';
+import { Header } from '../components/header';
 
-import { withApollo } from '../../graphql/with-apollo';
+import { withApollo } from '../graphql/with-apollo';
 import {
   useFetchAboutQuery,
   FetchAboutQuery,
   Link,
-} from '../../graphql/queries/fetchAbout.graphql';
+} from '../graphql/queries/fetchAbout.graphql';
 
 const Home: NextPage = () => {
   const { data, loading, error } = useFetchAboutQuery();

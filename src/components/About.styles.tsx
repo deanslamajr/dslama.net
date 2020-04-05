@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { breakpoints, shadow, card } from '../../components/layouts';
+import { breakpoints, shadow, card } from './layouts';
 
 export const Container = styled.div`
   font-family: ${props => props.theme.fonts};

@@ -1,11 +1,5 @@
-import {
-  Resolver,
-  ReadingsPage,
-  Reading,
-} from '../types/readings.graphqls';
+import { Resolver, ReadingsPage } from '../types/readings.graphqls';
 import { get as getReadings } from './models/readings';
-
-
 
 export const resolver: Resolver<ReadingsPage> = async (
   _parent,

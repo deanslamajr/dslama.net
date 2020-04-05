@@ -1,18 +1,18 @@
 import { NextPage } from 'next';
 import Head from 'next/head';
 
-import { formatDate } from '../../utils';
+import { formatDate } from '../utils';
 
-import { LoadingErrorOrRender } from '../../components/LoadingErrorOrRender';
-import { Header } from '../../components/header';
-import { Card } from '../../components/Card';
+import { LoadingErrorOrRender } from '../components/LoadingErrorOrRender';
+import { Header } from '../components/header';
+import { Card } from '../components/Card';
 
-import { withApollo } from '../../graphql/with-apollo';
+import { withApollo } from '../graphql/with-apollo';
 
 import {
   useFetchPostsQuery,
   FetchPostsQuery,
-} from '../../graphql/queries/fetchPosts.graphql';
+} from '../graphql/queries/fetchPosts.graphql';
 
 const Posts: NextPage = () => {
   const { data, loading, error } = useFetchPostsQuery();

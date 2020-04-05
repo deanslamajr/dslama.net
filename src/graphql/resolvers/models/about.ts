@@ -18,7 +18,7 @@ const reverseSortResponseByVersion: (
     }
     return b.version - a.version;
   });
-}
+};
 
 export const get: () => Promise<AboutPage> = async () => {
   const rawAboutPageData: AboutPage[] = await db

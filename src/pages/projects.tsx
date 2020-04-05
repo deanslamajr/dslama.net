@@ -1,23 +1,22 @@
 import { NextPage } from 'next';
 import Head from 'next/head';
 
-import { LoadingErrorOrRender } from '../../components/LoadingErrorOrRender';
-import { Header } from '../../components/header';
+import { LoadingErrorOrRender } from '../components/LoadingErrorOrRender';
+import { Header } from '../components/header';
+import { OuterContainer, Quote, ShadowCard, Title } from '../components/Card';
+
 import {
-  OuterContainer,
-  Quote,
-  ShadowCard,
-  Title,
-} from '../../components/Card';
+  Description,
+  ProjectLink,
+  SourceLink,
+} from '../components/Projects.styles';
 
-import { Description, ProjectLink, SourceLink } from './Projects.styles';
-
-import { withApollo } from '../../graphql/with-apollo';
+import { withApollo } from '../graphql/with-apollo';
 
 import {
   useFetchProjectsQuery,
   FetchProjectsQuery,
-} from '../../graphql/queries/fetchProjects.graphql';
+} from '../graphql/queries/fetchProjects.graphql';
 
 const Projects: NextPage = () => {
   const { data, loading, error } = useFetchProjectsQuery();

@@ -1,6 +1,6 @@
 {
   "name": "dslama.net",
-  "version": "2.1.9-g2b759.0",
+  "version": "2.1.9-gae497.0",
   "private": true,
   "scripts": {
     "codegen": "graphql-let",

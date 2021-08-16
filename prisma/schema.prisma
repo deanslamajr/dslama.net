@@ -1,0 +1,28 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model AboutPage {
+  version     Int      @default(autoincrement()) @id
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  links       Link[]
+  pictureURL  String
+  bio         String
+  title       String
+}
+
+model Link {
+  id                        Int      @default(autoincrement()) @id
+  name                      String
+  url                       String
+  pageVersionThatReference  AboutPage[]
+}

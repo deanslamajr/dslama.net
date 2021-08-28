@@ -23,6 +23,8 @@
   ],
   "include": [
     "next-env.d.ts",
+    "prisma.d.ts",
+    "styled.d.ts",
     "**/*.ts",
     "**/*.tsx"
   ]

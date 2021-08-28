@@ -4,7 +4,7 @@ An about page web app
 
 # Development
 * `nvm use`
-* `npm clean`
+* `npm run clean`
 * A connection to a properly migrated DB is required to run this app
     * A docker-compose is provided to simplify setting up a locally hosted postgresql server
         * Ensure that [Docker Compose](https://docs.docker.com/compose/install/) is available on the command line
@@ -17,6 +17,7 @@ An about page web app
 ## DB
 * view, modify, etc. data/rows
     * `npx prisma studio`
+    * open browser to `http://localhost:5555/`
 * modify schema
     * make changes to `./prisma/schema.prisma`
     * updates the DB - `npx prisma migrate dev --name <descriptive-name-for-changes>`

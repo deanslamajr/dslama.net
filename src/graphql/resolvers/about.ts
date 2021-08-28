@@ -1,13 +1,10 @@
 import { Resolver, AboutPage } from '../types/about.graphqls';
-import { get as getAbout } from './models/about';
+import {fetchMostRecentVersion as fetchMostRecentAboutPageData} from './postgresql/aboutPage';
 
 export const resolver: Resolver<AboutPage> = async (
-  _parent,
-  _args,
-  _context,
-  _info
+  _parent, _args, _context, _info
 ) => {
-  const data = await getAbout();
+  const data = await fetchMostRecentAboutPageData();
 
   return {
     links: data?.links,

@@ -13,6 +13,9 @@ import {
 
 import { LoadingErrorOrRender } from '../components/LoadingErrorOrRender';
 import { Header } from '../components/header';
+import {AboutPageEditModal} from '../components/AboutPageEditModal';
+
+import {useState as useEditModeState} from '../contexts/EditModeState';
 
 import { withApollo } from '../graphql/with-apollo';
 import {
@@ -23,6 +26,9 @@ import {
 
 const Home: NextPage = () => {
   const { data, loading, error } = useFetchAboutQuery();
+  const [editModeState] = useEditModeState();
+
+  console.log('editModeState', editModeState)
 
   return (
     <LoadingErrorOrRender<FetchAboutQuery>
@@ -55,6 +61,7 @@ const Home: NextPage = () => {
               </LinksContainer>
               <BioCard dangerouslySetInnerHTML={{ __html: bio || '' }} />
             </Container>
+            {editModeState.showModal && <AboutPageEditModal />}
           </div>
         );
       }}

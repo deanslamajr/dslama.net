@@ -6,6 +6,7 @@ export const theme: DefaultTheme = {
   colors: {
     text: 'white',
     background: '#e7eeed',
+    modalBackground: 'rgba(12, 9, 13, 0.5)',
     red: '#b21a27',
   },
   zIndex: {

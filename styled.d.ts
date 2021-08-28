@@ -8,6 +8,7 @@ declare module 'styled-components' {
     colors: {
       text: string;
       background: string;
+      modalBackground: string;
       red: string;
     };
     zIndex: {

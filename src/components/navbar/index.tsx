@@ -6,10 +6,13 @@ import {
   MenuItem,
   MiddleContainer,
   OuterContainer,
+  EditModeBadge
 } from './Navbar.styles';
 import { Hamburger } from './hamburger';
+import {useState as useEditModeState} from '../../contexts/EditModeState';
 
-const TITLE = 'dean slama';
+const getTitle = (isEditMode: boolean) => isEditMode ? 'edit' : 'dean slama';
+
 const MENU_ITEMS: string[] = ['about', 'posts', 'projects', 'readings'];
 
 type NavbarProps = {};
@@ -22,7 +25,8 @@ const getPathFromRoute: (route: string) => string = route => {
   return tokens[1];
 };
 
-export const Navbar: React.FunctionComponent<NavbarProps> = () => {
+export const Navbar: React.FunctionComponent<NavbarProps> = ({}) => {
+  const [editModeState, updateEditMode] = useEditModeState();
   const router = useRouter();
   const path = getPathFromRoute(router.route);
 
@@ -44,10 +48,21 @@ export const Navbar: React.FunctionComponent<NavbarProps> = () => {
     setIsExpanded(!isExpanded);
   };
 
+  const toggleEditModal = () => {
+    if (editModeState.isActive) {
+      updateEditMode({
+        ...editModeState,
+        showModal: !editModeState.showModal
+      });
+    }
+  };
+
   return (
     <OuterContainer>
       <MiddleContainer>
-        <span>{TITLE}</span>
+        <span onClick={toggleEditModal}>
+          {getTitle(editModeState.isActive)}
+        </span>
         <Hamburger onMenuClick={onMenuClick} expanded={isExpanded} />
       </MiddleContainer>
       <InnerContainer expanded={isExpanded}>

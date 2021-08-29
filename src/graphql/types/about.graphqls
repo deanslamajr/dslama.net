@@ -10,3 +10,15 @@ type AboutPage {
     bio: String
     title: String
 }
+
+input LinkInput {
+    name: String
+    url: String
+}
+
+input UpdateAboutPageInput {
+    links: [LinkInput]
+    pictureURL: String
+    bio: String
+    title: String
+}

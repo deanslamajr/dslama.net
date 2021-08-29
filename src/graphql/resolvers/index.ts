@@ -1,8 +1,9 @@
-import { QueryResolvers } from '../types/root.graphqls';
+import { QueryResolvers, MutationResolvers } from '../types/root.graphqls';
 import { resolver as aboutPageResolver } from './about';
 import { resolver as postsPageResolver } from './posts';
 import { resolver as projectsPageResolver } from './projects';
 import { resolver as readingsPageResolver } from './readings';
+import {resolver as updateAboutPageResolver } from './mutations/updateAboutPage';
 import { scalars } from './scalars';
 
 const Query: Required<QueryResolvers> = {
@@ -12,4 +13,8 @@ const Query: Required<QueryResolvers> = {
   readingsPage: readingsPageResolver,
 };
 
-export default { ...scalars, Query };
+const Mutation: Required<MutationResolvers> = {
+  updateAboutPage: updateAboutPageResolver
+}
+
+export default { ...scalars, Mutation, Query };

@@ -1,0 +1,12 @@
+mutation UpdateAboutPage($input: UpdateAboutPageInput!) {
+  updateAboutPage(input: $input) {
+    links {
+        name
+        url
+    }
+    version
+    pictureURL
+    bio
+    title
+  }
+}

@@ -1,6 +1,8 @@
 import React from 'react';
-import { Button, Form, TextField } from 'grape-ui-react';
+import { Button, Form, Progress, TextField } from 'grape-ui-react';
 import { Form as FinalForm, Field } from 'react-final-form';
+
+import {useUpdateAboutPageMutation, UpdateAboutPageInput} from '../../graphql/mutations/updateAboutPage.graphql';
 
 import {Modal} from '../Modal';
 
@@ -9,12 +11,22 @@ const initialValues = {
 };
 
 export const AboutPageEditModal: React.FC<{}> = ({}) => {
+  const [updateAboutPage, {loading, error}] = useUpdateAboutPageMutation();
+
   const handleSubmit = (values) => {
-    console.log('values', values);
+    updateAboutPage({
+      variables: {
+        input: {
+          title: values.title
+        }
+      }
+    });
   };
   
   return (<Modal>
-      <FinalForm
+    {loading
+      ? <Progress progressType="circular" />
+      : <FinalForm
           onSubmit={values => handleSubmit(values)}
           initialValues={initialValues}
           render={({ form, valid }) => (
@@ -37,5 +49,6 @@ export const AboutPageEditModal: React.FC<{}> = ({}) => {
               </Form>
           )}
         />
+    }
   </Modal>);
 }

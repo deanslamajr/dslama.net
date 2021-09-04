@@ -5,6 +5,7 @@ import React, {
   ReactNode,
   SetStateAction,
   useContext,
+  useEffect,
   useState,
 } from 'react';
 import { useRouter } from 'next/router'
@@ -19,10 +20,16 @@ type Setter = Dispatch<SetStateAction<State>>;
 const StateContext = createContext<State | undefined>(undefined);
 const SetterContext = createContext<Setter | undefined>(undefined);
 
-const getInitializedState = (isActive: boolean): State => ({
+const getInitializedState = (queryString?: string | string[]): State => {
+  // dslama.net/?edit
+  // TODO replace with proper login
+  const isActive = Boolean(queryString !== undefined);
+  
+  return {
     isActive,
     showModal: false
-});
+  };
+}
 
 const useEditModeState = (): [State, Setter] => {
   const state = useContext(StateContext);
@@ -37,12 +44,12 @@ type Props = { children: ReactNode };
 const EditModeProvider = ({ children }: Props) => {
   const router = useRouter();
   const [state, setState] = useState<State>(
-    () => getInitializedState(
-      // dslama.net/?edit
-      // TODO replace with proper login
-      Boolean(typeof router.query.edit === 'string')
-    )
+    () => getInitializedState(router.query.edit)
   );
+
+  useEffect(() => {
+    setState(getInitializedState(router.query.edit));
+  }, [router.query.edit]);
 
   return (
     <StateContext.Provider value={state}>

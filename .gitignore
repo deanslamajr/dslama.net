@@ -5,8 +5,8 @@ npm-debug.log
 # next.js
 .next
 
-# graphql-let
-__generated__
+# gql codegen
+src/graphql/generated
 
 # secrets
 .env

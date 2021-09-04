@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Form, Progress, TextField } from 'grape-ui-react';
 import { Form as FinalForm, Field } from 'react-final-form';
 
-import {useUpdateAboutPageMutation, UpdateAboutPageInput} from '../../graphql/mutations/updateAboutPage.graphql';
+import {useUpdateAboutPageMutation, UpdateAboutPageInput} from '../../graphql/generated/ops';
 
 import {Modal} from '../Modal';
 

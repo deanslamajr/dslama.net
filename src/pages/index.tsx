@@ -17,18 +17,17 @@ import {AboutPageEditModal} from '../components/AboutPageEditModal';
 
 import {useState as useEditModeState} from '../contexts/EditModeState';
 
-import { withApollo } from '../graphql/with-apollo';
+import getStaticPropsFactory from '../graphql/getStaticPropsFactory';
 import {
   useFetchAboutQuery,
   FetchAboutQuery,
   Link,
-} from '../graphql/queries/fetchAbout.graphql';
+  FetchAboutDocument
+} from '../graphql/generated/ops';
 
 const Home: NextPage = () => {
   const { data, loading, error } = useFetchAboutQuery();
   const [editModeState] = useEditModeState();
-
-  console.log('editModeState', editModeState)
 
   return (
     <LoadingErrorOrRender<FetchAboutQuery>
@@ -69,4 +68,6 @@ const Home: NextPage = () => {
   );
 };
 
-export default withApollo(Home);
+export const getStaticProps = getStaticPropsFactory(FetchAboutDocument);
+
+export default Home;

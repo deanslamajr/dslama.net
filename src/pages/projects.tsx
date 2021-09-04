@@ -11,12 +11,13 @@ import {
   SourceLink,
 } from '../components/Projects.styles';
 
-import { withApollo } from '../graphql/with-apollo';
 
+import getStaticPropsFactory from '../graphql/getStaticPropsFactory';
 import {
   useFetchProjectsQuery,
   FetchProjectsQuery,
-} from '../graphql/queries/fetchProjects.graphql';
+  FetchProjectsDocument
+} from '../graphql/generated/ops';
 
 const Projects: NextPage = () => {
   const { data, loading, error } = useFetchProjectsQuery();
@@ -77,4 +78,6 @@ const Projects: NextPage = () => {
   );
 };
 
-export default withApollo(Projects);
+export const getStaticProps = getStaticPropsFactory(FetchProjectsDocument);
+
+export default Projects;

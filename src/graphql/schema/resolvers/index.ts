@@ -1,4 +1,4 @@
-import { QueryResolvers, MutationResolvers } from '../types/root.graphqls';
+import { QueryResolvers, MutationResolvers } from '../../generated/graphql';
 import { resolver as aboutPageResolver } from './about';
 import { resolver as postsPageResolver } from './posts';
 import { resolver as projectsPageResolver } from './projects';

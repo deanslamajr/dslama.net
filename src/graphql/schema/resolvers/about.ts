@@ -1,4 +1,4 @@
-import { Resolver, AboutPage } from '../types/about.graphqls';
+import { Resolver, AboutPage } from '../../generated/graphql';
 import {fetchMostRecentVersion as fetchMostRecentAboutPageData} from './postgresql/aboutPage';
 
 export const resolver: Resolver<AboutPage> = async (

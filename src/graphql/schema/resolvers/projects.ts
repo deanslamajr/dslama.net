@@ -1,4 +1,4 @@
-import { Resolver, ProjectsPage } from '../types/projects.graphqls';
+import { Resolver, ProjectsPage } from '../../generated/graphql';
 import { get as getProjects } from './models/projects';
 
 export const resolver: Resolver<ProjectsPage> = async (

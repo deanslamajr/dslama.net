@@ -7,12 +7,12 @@ import { LoadingErrorOrRender } from '../components/LoadingErrorOrRender';
 import { Header } from '../components/header';
 import { Card } from '../components/Card';
 
-import { withApollo } from '../graphql/with-apollo';
-
+import getStaticPropsFactory from '../graphql/getStaticPropsFactory';
 import {
   useFetchReadingsQuery,
   FetchReadingsQuery,
-} from '../graphql/queries/fetchReadings.graphql';
+  FetchReadingsDocument
+} from '../graphql/generated/ops';
 
 const ReadingsPage: NextPage = () => {
   const { data, loading, error } = useFetchReadingsQuery();
@@ -57,4 +57,6 @@ const ReadingsPage: NextPage = () => {
   );
 };
 
-export default withApollo(ReadingsPage);
+export const getStaticProps = getStaticPropsFactory(FetchReadingsDocument);
+
+export default ReadingsPage;

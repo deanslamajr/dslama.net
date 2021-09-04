@@ -1,4 +1,4 @@
-import { Resolver, PostsPage } from '../types/posts.graphqls';
+import { Resolver, PostsPage } from '../../generated/graphql';
 import { get as getPosts } from './models/posts';
 
 export const resolver: Resolver<PostsPage> = async (

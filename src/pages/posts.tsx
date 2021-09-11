@@ -7,7 +7,7 @@ import { LoadingErrorOrRender } from '../components/LoadingErrorOrRender';
 import { Header } from '../components/header';
 import { Card } from '../components/Card';
 
-import getStaticPropsFactory from '../graphql/getStaticPropsFactory';
+import getServerSidePropsFactory from '../graphql/getServerSidePropsFactory';
 import {
   useFetchPostsQuery,
   FetchPostsQuery,
@@ -52,6 +52,6 @@ const Posts: NextPage = () => {
   );
 };
 
-export const getStaticProps = getStaticPropsFactory(FetchPostsDocument);
+export const getServerSideProps = getServerSidePropsFactory(FetchPostsDocument);
 
 export default Posts;

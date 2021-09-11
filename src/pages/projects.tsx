@@ -12,7 +12,7 @@ import {
 } from '../components/Projects.styles';
 
 
-import getStaticPropsFactory from '../graphql/getStaticPropsFactory';
+import getServerSidePropsFactory from '../graphql/getServerSidePropsFactory';
 import {
   useFetchProjectsQuery,
   FetchProjectsQuery,
@@ -78,6 +78,6 @@ const Projects: NextPage = () => {
   );
 };
 
-export const getStaticProps = getStaticPropsFactory(FetchProjectsDocument);
+export const getServerSideProps = getServerSidePropsFactory(FetchProjectsDocument);
 
 export default Projects;

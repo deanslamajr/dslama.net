@@ -1,27 +1,30 @@
 import { ApolloError } from 'apollo-client';
-
-import { Spinner } from './spinner';
+import { Progress } from 'grape-ui-react';
 
 interface LoadingErrorOrRenderProps<T> {
-  error: ApolloError | undefined;
+  error?: ApolloError;
+  errorRender?: (error: ApolloError) => JSX.Element;
   isLoading: boolean;
-  queryResult: T | undefined;
-  render: (props: { queryResult: T }) => JSX.Element;
+  queryResult: T | undefined | null;
+  render: (props: { queryResult: T | undefined | null }) => JSX.Element;
 }
 
 export const LoadingErrorOrRender = <T,>({
   error,
+  errorRender,
   isLoading,
   queryResult,
   render,
 }: React.PropsWithChildren<LoadingErrorOrRenderProps<T>>) => {
   if (isLoading) {
-    return <Spinner />;
+    return <Progress progressType="circular"/>;
   }
 
-  if (error || !queryResult) {
+  if (error) {
     console.log('error', error);
-    return null;
+    return errorRender
+      ? errorRender(error)
+      : 'Something broke!';
   }
 
   return render({

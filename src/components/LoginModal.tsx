@@ -2,31 +2,17 @@ import React from 'react';
 import { Button, Form, Progress, TextField } from 'grape-ui-react';
 import { Form as FinalForm, Field } from 'react-final-form';
 
-import {useUpdateAboutPageMutation, UpdateAboutPageInput, UpdateAboutPageMutation} from '../../graphql/generated/ops';
-
-import {LoadingErrorOrRender} from '../LoadingErrorOrRender';
-import {Modal} from '../Modal';
-import {LoginModal} from '../LoginModal';
+import {LoadingErrorOrRender} from './LoadingErrorOrRender';
+import {Modal} from './Modal';
 
 const initialValues = {
   title: 'initial value'
 };
 
-export const AboutPageEditModal: React.FC<{}> = ({}) => {
-  const [updateAboutPage, {data, loading, error}] = useUpdateAboutPageMutation();
-
-  const handleSubmit = (values) => {
-    updateAboutPage({
-      variables: {
-        input: {
-          title: values.title
-        }
-      }
-    });
-  };
-  
+export const LoginModal: React.FC<{}> = ({}) => { 
   return (<Modal>
-    <LoadingErrorOrRender<UpdateAboutPageMutation>
+    <div>Login Modal</div>
+    {/* <LoadingErrorOrRender<UpdateAboutPageMutation>
       error={error}
       isLoading={loading}
       queryResult={data}
@@ -59,7 +45,7 @@ export const AboutPageEditModal: React.FC<{}> = ({}) => {
           />
         );
       }}
-      errorRender={(error) => <LoginModal />}
-    />
+      errorRender={(error) => <LoginForm />}
+    /> */}
   </Modal>);
 }

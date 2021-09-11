@@ -17,6 +17,8 @@ const serverSecrets = {
   DYNAMO_TABLE_USERS: fromProcessEnv('DYNAMO_TABLE_USERS'),
   DYNAMO_TABLE_PROJECTS: fromProcessEnv('DYNAMO_TABLE_PROJECTS'),
   MEDIUM_USERNAME: fromProcessEnv('MEDIUM_USERNAME'),
+  NODE_ENV: fromProcessEnv('NODE_ENV'),
+  SESSION_COOKIE_SECRET: fromProcessEnv('SESSION_COOKIE_SECRET'),
 };
 
 const serverEnvironment = Object.assign({}, clientEnvironment, serverSecrets);

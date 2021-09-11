@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import {
   ApolloClient,
   InMemoryCache,
-  NormalizedCacheObject,
+  NormalizedCacheObject
 } from '@apollo/client'
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined
@@ -35,12 +35,17 @@ function createApolloClient(context?: ResolverContext) {
   })
 }
 
-export function initializeApollo(
-  initialState: any = null,
+type InitializeApollo = (params: {
+  context?: ResolverContext;
+  initialState?: any;
+}) => ApolloClient<NormalizedCacheObject>;
+
+export const initializeApollo: InitializeApollo = ({
+  initialState = null,
   // Pages with Next.js data fetching methods, like `getStaticProps`, can send
   // a custom context which will be used by `SchemaLink` to server render pages
-  context?: ResolverContext
-) {
+  context
+}) => {
   const _apolloClient = apolloClient ?? createApolloClient(context)
 
   // If your page has Next.js data fetching methods that use Apollo Client, the initial state
@@ -57,6 +62,6 @@ export function initializeApollo(
 }
 
 export function useApollo(initialState: any) {
-  const store = useMemo(() => initializeApollo(initialState), [initialState])
+  const store = useMemo(() => initializeApollo({initialState}), [initialState])
   return store
 }

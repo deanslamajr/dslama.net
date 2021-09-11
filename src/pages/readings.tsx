@@ -7,7 +7,7 @@ import { LoadingErrorOrRender } from '../components/LoadingErrorOrRender';
 import { Header } from '../components/header';
 import { Card } from '../components/Card';
 
-import getStaticPropsFactory from '../graphql/getStaticPropsFactory';
+import getServerSidePropsFactory from '../graphql/getServerSidePropsFactory';
 import {
   useFetchReadingsQuery,
   FetchReadingsQuery,
@@ -57,6 +57,6 @@ const ReadingsPage: NextPage = () => {
   );
 };
 
-export const getStaticProps = getStaticPropsFactory(FetchReadingsDocument);
+export const getServerSideProps = getServerSidePropsFactory(FetchReadingsDocument);
 
 export default ReadingsPage;

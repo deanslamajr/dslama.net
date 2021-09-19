@@ -58,13 +58,27 @@ const Home: NextPage = () => {
                         </LinkItem>
                       ))
                   )
-                  : null
+                  : (
+                    <LinkItem key={''}>
+                      <LinkAnchor href={''} target="_blank">
+                      </LinkAnchor>
+                    </LinkItem>
+                  )
                 )
               }
               </LinksContainer>
               <BioCard dangerouslySetInnerHTML={{ __html: queryResult?.aboutPage.bio || '' }} />
             </Container>
-            {editModeState.showModal && <AboutPageEditModal />}
+
+            {editModeState.showModal && (
+              <AboutPageEditModal
+                initialValues={{
+                  bio: queryResult?.aboutPage.bio || '',
+                  pictureURL: queryResult?.aboutPage.pictureURL || '',
+                  title: queryResult?.aboutPage.title || ''
+                }}
+              />
+            )}
           </div>
         );
       }}

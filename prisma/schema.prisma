@@ -24,7 +24,8 @@ model Link {
   id                        String @default(uuid()) @id
   name                      String
   url                       String
-  pageVersionThatReference  AboutPage[]
+  aboutPage                 AboutPage @relation(fields: [pageVersionThatReference], references: [version])
+  pageVersionThatReference  Int
 }
 
 model Account {

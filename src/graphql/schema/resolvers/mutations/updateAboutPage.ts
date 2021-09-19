@@ -1,8 +1,10 @@
+import {AuthenticationError} from 'apollo-server-micro';
+
 import { MutationResolvers } from '../../../generated/graphql';
 import {update} from '../postgresql/aboutPage';
 import {ContextInterface} from '../../context';
 
-export const resolver: Required<MutationResolvers<ContextInterface>['updateAboutPage']> = async (
+export const resolver: MutationResolvers<ContextInterface>['updateAboutPage'] = async (
   _parent, args, context, _info
 ) => {
 
@@ -22,5 +24,5 @@ export const resolver: Required<MutationResolvers<ContextInterface>['updateAbout
     };
   }
 
-  throw new Error('Unauthorized!');
+  throw new AuthenticationError('This action requires an authenticated account.');
 };

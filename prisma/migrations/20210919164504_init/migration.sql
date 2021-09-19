@@ -7,22 +7,35 @@ CREATE TABLE "AboutPage" (
     "bio" TEXT NOT NULL,
     "title" TEXT NOT NULL,
 
-    PRIMARY KEY ("version")
+    CONSTRAINT "AboutPage_pkey" PRIMARY KEY ("version")
 );
 
 -- CreateTable
 CREATE TABLE "Link" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "url" TEXT NOT NULL,
 
-    PRIMARY KEY ("id")
+    CONSTRAINT "Link_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Account" (
+    "id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "username" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "isActive" BOOLEAN NOT NULL,
+    "lastLoginAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Account_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "_AboutPageToLink" (
     "A" INTEGER NOT NULL,
-    "B" INTEGER NOT NULL
+    "B" TEXT NOT NULL
 );
 
 -- CreateIndex

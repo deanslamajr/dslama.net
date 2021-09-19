@@ -15,7 +15,7 @@ An about page web app
 * `npm run dev`
 
 ## DB
-* view, modify, etc. data/rows
+* manage data (view, modify, etc.)
     * `npx prisma studio`
     * open browser to `http://localhost:5555/`
 * modify schema

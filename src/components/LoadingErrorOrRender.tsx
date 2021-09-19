@@ -21,10 +21,9 @@ export const LoadingErrorOrRender = <T,>({
   }
 
   if (error) {
-    console.log('error', error);
     return errorRender
       ? errorRender(error)
-      : 'Something broke!';
+      : <>'Something broke!'</>;
   }
 
   return render({

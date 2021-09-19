@@ -6,5 +6,6 @@ type Query {
 }
 
 type Mutation {
+    attemptLogin(input: AttemptLoginInput!): LoginResult!
     updateAboutPage(input: UpdateAboutPageInput!): AboutPage!
 }

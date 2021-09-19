@@ -16,7 +16,7 @@ export const update = (input: Prisma.AboutPageCreateInput) => {
     return prisma.aboutPage.create({
         data: input,
         include: {
-            links: true
+          links: true
         }
     });
 }

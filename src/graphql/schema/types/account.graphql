@@ -1,0 +1,8 @@
+input AttemptLoginInput {
+  username: String!
+  password: String!
+}
+
+type LoginResult {
+  wasSuccessful: Boolean!
+}

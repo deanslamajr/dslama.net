@@ -4,6 +4,8 @@ import { Form as FinalForm, Field } from 'react-final-form';
 
 import {useUpdateAboutPageMutation, UpdateAboutPageInput, UpdateAboutPageMutation} from '../../graphql/generated/ops';
 
+import {useState as useEditModeState} from '../../contexts/EditModeState';
+
 import {LoadingErrorOrRender} from '../LoadingErrorOrRender';
 import {Modal} from '../Modal';
 import {LoginModal} from '../LoginModal';
@@ -13,9 +15,27 @@ const initialValues = {
 };
 
 export const AboutPageEditModal: React.FC<{}> = ({}) => {
-  const [updateAboutPage, {data, loading, error}] = useUpdateAboutPageMutation();
+  const [editModeState, setEditModeState] = useEditModeState();
+  const [requiresLogin, setRequiresLogin] = React.useState(false);
+  const [updateAboutPage, {data, loading}] = useUpdateAboutPageMutation({
+    onCompleted: (data) => {
+      setEditModeState({
+        ...editModeState,
+        showModal: false
+      })
+    },
+    onError: (error) => {     
+      const isUnauthenticated = error.graphQLErrors.some(error => (
+        error.extensions?.code === 'UNAUTHENTICATED'
+      ));
 
-  const handleSubmit = (values) => {
+      if (isUnauthenticated) {
+        setRequiresLogin(true);
+      }
+    }
+  });
+
+  const handleSubmit = async (values: Record<string, any>) => {
     updateAboutPage({
       variables: {
         input: {
@@ -27,18 +47,16 @@ export const AboutPageEditModal: React.FC<{}> = ({}) => {
   
   return (<Modal>
     <LoadingErrorOrRender<UpdateAboutPageMutation>
-      error={error}
+      error={requiresLogin}
       isLoading={loading}
       queryResult={data}
       render={({ queryResult }) => {
-        console.log('queryResult', queryResult)
-
         return (
           <FinalForm
             onSubmit={values => handleSubmit(values)}
             initialValues={initialValues}
-            render={({ form, valid }) => (
-              <Form>
+            render={({ form, handleSubmit }) => (
+              <Form onSubmit={handleSubmit}>
                 <Field<string> name="title">
                   {({ input, meta }) => {
                     return (
@@ -59,7 +77,7 @@ export const AboutPageEditModal: React.FC<{}> = ({}) => {
           />
         );
       }}
-      errorRender={(error) => <LoginModal />}
+      errorRender={(error) => <LoginModal onSuccessfulLogin={() => setRequiresLogin(false)} />}
     />
   </Modal>);
 }

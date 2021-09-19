@@ -3,6 +3,7 @@ import { resolver as aboutPageResolver } from './about';
 import { resolver as postsPageResolver } from './posts';
 import { resolver as projectsPageResolver } from './projects';
 import { resolver as readingsPageResolver } from './readings';
+import { resolver as attemptLoginResolver } from './mutations/attemptLogin';
 import {resolver as updateAboutPageResolver } from './mutations/updateAboutPage';
 import { scalars } from './scalars';
 
@@ -13,7 +14,8 @@ const Query: Required<QueryResolvers> = {
   readingsPage: readingsPageResolver,
 };
 
-const Mutation: Required<MutationResolvers> = {
+const Mutation: MutationResolvers = {
+  attemptLogin: attemptLoginResolver,
   updateAboutPage: updateAboutPageResolver
 }
 

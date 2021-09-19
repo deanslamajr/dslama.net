@@ -1,0 +1,5 @@
+mutation AttemptLogin($input: AttemptLoginInput!) {
+  attemptLogin(input: $input) {
+    wasSuccessful
+  }
+}

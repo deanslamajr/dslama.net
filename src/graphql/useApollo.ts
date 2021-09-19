@@ -31,7 +31,13 @@ function createApolloClient(context?: ResolverContext) {
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
     link: createIsomorphLink(context),
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+      typePolicies: {
+        AboutPage: {
+          keyFields: [],
+        }
+      }
+    }),
   })
 }
 

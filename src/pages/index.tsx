@@ -35,30 +35,34 @@ const Home: NextPage = () => {
       isLoading={loading}
       queryResult={data}
       render={({ queryResult }) => {
-        const {
-          aboutPage: { bio, pictureURL, links, title },
-        } = queryResult;
-
         return (
           <div>
             <Head>
               <title>dslama.net</title>
             </Head>
             <Container>
-              <Header summary={title || ''} />
+              <Header summary={queryResult?.aboutPage.title || ''} />
               <LogoContainer>
-                <BackgroundImage imageUrl={pictureURL || ''} />
+                <BackgroundImage imageUrl={queryResult?.aboutPage.pictureURL || ''} />
               </LogoContainer>
               <LinksContainer>
-                {(links as Link[]).map(({ name, url }) => (
-                  <LinkItem key={name || ''}>
-                    <LinkAnchor href={url || ''} target="_blank">
-                      {name}
-                    </LinkAnchor>
-                  </LinkItem>
-                ))}
+              {
+                (queryResult?.aboutPage?.links?.length
+                  ? (
+                    (queryResult?.aboutPage.links as Link[])
+                      .map(({ name, url }) => (
+                        <LinkItem key={name || ''}>
+                          <LinkAnchor href={url || ''} target="_blank">
+                            {name}
+                          </LinkAnchor>
+                        </LinkItem>
+                      ))
+                  )
+                  : null
+                )
+              }
               </LinksContainer>
-              <BioCard dangerouslySetInnerHTML={{ __html: bio || '' }} />
+              <BioCard dangerouslySetInnerHTML={{ __html: queryResult?.aboutPage.bio || '' }} />
             </Container>
             {editModeState.showModal && <AboutPageEditModal />}
           </div>

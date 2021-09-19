@@ -22,6 +22,12 @@ An about page web app
     * make changes to `./prisma/schema.prisma`
     * updates the DB - `npx prisma migrate dev --name <descriptive-name-for-changes>`
     * updates the client/types - `npx prisma generate`
+* combine all migrations into a single migration
+  * delete `/prisma/migrations`
+  * `npx prisma migrate dev --name init`
+  * *Warning: all DB data will be cleared*
+    * select option `y` when prompted
+    
 
 ## To Debug Backend
 * `npm run dev:debug`

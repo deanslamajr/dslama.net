@@ -1,10 +1,10 @@
 type Link {
-    name: String
-    url: String
+    name: String!
+    url: String!
 }
 
 type AboutPage {
-    links: [Link]
+    links: [Link!]
     version: Int
     pictureURL: String
     bio: String
@@ -12,12 +12,12 @@ type AboutPage {
 }
 
 input LinkInput {
-    name: String
-    url: String
+    name: String!
+    url: String!
 }
 
 input UpdateAboutPageInput {
-    links: [LinkInput]
+    links: [LinkInput!]
     pictureURL: String
     bio: String
     title: String

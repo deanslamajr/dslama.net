@@ -15,6 +15,7 @@ CREATE TABLE "Link" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "url" TEXT NOT NULL,
+    "pageVersionThatReference" INTEGER NOT NULL,
 
     CONSTRAINT "Link_pkey" PRIMARY KEY ("id")
 );
@@ -32,20 +33,5 @@ CREATE TABLE "Account" (
     CONSTRAINT "Account_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
-CREATE TABLE "_AboutPageToLink" (
-    "A" INTEGER NOT NULL,
-    "B" TEXT NOT NULL
-);
-
--- CreateIndex
-CREATE UNIQUE INDEX "_AboutPageToLink_AB_unique" ON "_AboutPageToLink"("A", "B");
-
--- CreateIndex
-CREATE INDEX "_AboutPageToLink_B_index" ON "_AboutPageToLink"("B");
-
 -- AddForeignKey
-ALTER TABLE "_AboutPageToLink" ADD FOREIGN KEY ("A") REFERENCES "AboutPage"("version") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_AboutPageToLink" ADD FOREIGN KEY ("B") REFERENCES "Link"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Link" ADD CONSTRAINT "Link_pageVersionThatReference_fkey" FOREIGN KEY ("pageVersionThatReference") REFERENCES "AboutPage"("version") ON DELETE RESTRICT ON UPDATE CASCADE;

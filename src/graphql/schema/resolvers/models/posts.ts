@@ -1,7 +1,7 @@
 import getConfig from 'next/config';
 import axios from 'axios';
 
-import { Post } from '../../types/posts.graphqls';
+import { Post } from '../../../generated/graphql';
 
 const { serverRuntimeConfig } = getConfig();
 

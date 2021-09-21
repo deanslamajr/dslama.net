@@ -1,7 +1,7 @@
 import getConfig from 'next/config';
 
 import db from './db';
-import { Reading } from '../../types/readings.graphqls';
+import { Reading } from '../../../generated/graphql';
 
 const { serverRuntimeConfig } = getConfig();
 

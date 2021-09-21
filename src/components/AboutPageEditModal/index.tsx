@@ -1,4 +1,5 @@
 import React from 'react';
+import {ApolloError} from '@apollo/client';
 import { Button, Form, Progress, TextField } from 'grape-ui-react';
 import { Form as FinalForm, Field } from 'react-final-form';
 import arrayMutators from 'final-form-arrays'
@@ -40,7 +41,7 @@ export const AboutPageEditModal: React.FC<AboutPageEditModalProps> = ({
   initialValues
 }) => {
   const [editModeState, setEditModeState] = useEditModeState();
-  const [requiresLogin, setRequiresLogin] = React.useState(false);
+  const [authenticationError, setError] = React.useState<ApolloError | undefined>(undefined);
   const [updateAboutPage, {data, loading}] = useUpdateAboutPageMutation({
     onCompleted: (data) => {
       setEditModeState({
@@ -54,7 +55,7 @@ export const AboutPageEditModal: React.FC<AboutPageEditModalProps> = ({
       ));
 
       if (isUnauthenticated) {
-        setRequiresLogin(true);
+        setError(error);
       }
     }
   });
@@ -72,7 +73,7 @@ export const AboutPageEditModal: React.FC<AboutPageEditModalProps> = ({
   
   return (<Modal>
     <LoadingErrorOrRender<UpdateAboutPageMutation>
-      error={requiresLogin}
+      error={authenticationError}
       isLoading={loading}
       queryResult={data}
       render={({ queryResult }) => {
@@ -199,7 +200,7 @@ export const AboutPageEditModal: React.FC<AboutPageEditModalProps> = ({
           />
         );
       }}
-      errorRender={(error) => <LoginModal onSuccessfulLogin={() => setRequiresLogin(false)} />}
+      errorRender={(error) => <LoginModal onSuccessfulLogin={() => setError(undefined)} />}
     />
   </Modal>);
 }

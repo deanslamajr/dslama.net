@@ -15,6 +15,9 @@ An about page web app
 * `npm run dev`
 
 ## DB
+* to migrate a remote schema
+  * set `DATABASE_URL` in `.env` for the remote DB
+  * `npx prisma migrate deploy`
 * manage data (view, modify, etc.)
     * `npx prisma studio`
     * open browser to `http://localhost:5555/`

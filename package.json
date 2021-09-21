@@ -8,7 +8,7 @@
     "codegen:watch": "npm run codegen -- --watch",
     "dev": "concurrently -k -p \"{time}-{pid}\" npm:codegen:watch \"next dev\"",
     "dev:debug": "concurrently -k -p \"{time}-{pid}\" npm:codegen:watch \"NODE_OPTIONS='--inspect' next dev\"",
-    "build": "npm run codegen && next build",
+    "build": "npm run codegen && prisma generate && next build",
     "start": "next start -p 8080",
     "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx src",
     "typecheck": "tsc --noEmit",

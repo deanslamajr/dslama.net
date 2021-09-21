@@ -11,6 +11,7 @@
     "build": "npm run codegen && next build",
     "start": "next start -p 8080",
     "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx src",
+    "typecheck": "tsc --noEmit",
     "image:build": "sudo docker build -f ../deployment/dslama.net/Dockerfile -t deanslamajr/dslama.net:\"$(git describe)\" .",
     "image:promote": "sudo docker push deanslamajr/dslama.net:\"$(git describe)\"",
     "publish": "npm run image:build && npm run image:promote",

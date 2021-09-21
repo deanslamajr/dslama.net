@@ -5,8 +5,7 @@ import {
   InnerContainer,
   MenuItem,
   MiddleContainer,
-  OuterContainer,
-  EditModeBadge
+  OuterContainer
 } from './Navbar.styles';
 import { Hamburger } from './hamburger';
 import {useState as useEditModeState} from '../../contexts/EditModeState';

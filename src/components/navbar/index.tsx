@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-
 import {
-  InnerContainer,
-  MenuItem,
-  MiddleContainer,
-  OuterContainer
+  TitleBox
 } from './Navbar.styles';
-import { Hamburger } from './hamburger';
+import {
+  Anchor,
+  Header,
+  Nav,
+  Menu,
+  ResponsiveContext,
+} from 'grommet';
 import {useState as useEditModeState} from '../../contexts/EditModeState';
 
 const getTitle = (isEditMode: boolean) => isEditMode ? 'edit' : 'dean slama';
@@ -28,23 +30,15 @@ export const Navbar: React.FunctionComponent<NavbarProps> = ({}) => {
   const [editModeState, updateEditMode] = useEditModeState();
   const router = useRouter();
   const path = getPathFromRoute(router.route);
-
-  const [isExpanded, setIsExpanded] = useState(false);
   const [activeItem, setActiveItem] = useState(path);
 
   const onLinkClick: (item: string) => void = item => {
     const newPath = item.toLowerCase();
-
-    setIsExpanded(false);
     setActiveItem(newPath);
 
     const url = newPath !== 'about' ? `/${newPath}` : '/';
 
     router.push(url);
-  };
-
-  const onMenuClick: () => void = () => {
-    setIsExpanded(!isExpanded);
   };
 
   const toggleEditModal = () => {
@@ -57,23 +51,47 @@ export const Navbar: React.FunctionComponent<NavbarProps> = ({}) => {
   };
 
   return (
-    <OuterContainer>
-      <MiddleContainer>
-        <span onClick={toggleEditModal}>
-          {getTitle(editModeState.isActive)}
-        </span>
-        <Hamburger onMenuClick={onMenuClick} expanded={isExpanded} />
-      </MiddleContainer>
-      <InnerContainer expanded={isExpanded}>
-        {MENU_ITEMS.map(item => (
-          <MenuItem
-            key={item}
-            onClick={() => onLinkClick(item)}
-            isActive={activeItem === item.toLowerCase()}>
-            {item}
-          </MenuItem>
-        ))}
-      </InnerContainer>
-    </OuterContainer>
+    <Header
+      background="brand"
+      elevation="medium"
+      pad="small"
+    >
+      <TitleBox
+        direction="row"
+        align="center"
+        gap="small"
+        onClick={toggleEditModal}
+      >
+        {getTitle(editModeState.isActive)}
+      </TitleBox>
+      <ResponsiveContext.Consumer>
+        {responsive =>
+          responsive === 'small' ? (
+            <Menu
+              items={MENU_ITEMS.map(item => (
+                { label: item, onClick: () => onLinkClick(item) }
+              ))}
+            />
+          ) : (
+            <Nav direction="row">
+              {
+                MENU_ITEMS.map(item => (
+                  <Anchor
+                    as="span"
+                    label={item}
+                    onClick={() => onLinkClick(item)}
+                    weight={(
+                      item === activeItem
+                        ? 'bold'
+                        : 'normal'
+                    )}
+                  />
+                ))
+              }
+            </Nav>
+          )
+        }
+      </ResponsiveContext.Consumer>
+    </Header>
   );
 };

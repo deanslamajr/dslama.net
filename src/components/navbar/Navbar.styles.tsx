@@ -1,6 +1,11 @@
 import styled from 'styled-components';
+import {Box} from 'grommet';
 
 import { breakpoints, shadow } from '../layouts';
+
+export const TitleBox = styled(Box)`
+  font-size: 2rem;
+`;
 
 export const OuterContainer = styled.div`
   ${shadow()}

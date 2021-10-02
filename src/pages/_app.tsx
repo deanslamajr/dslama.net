@@ -1,17 +1,13 @@
 import {AppProps} from 'next/app';
 import Head from 'next/head';
 import React from 'react';
-import { ThemeProvider } from 'styled-components';
+import { Grid, Grommet, Main } from 'grommet';
 import { ApolloProvider } from '@apollo/client'
 
 import { useApollo } from '../graphql/useApollo';
-
 import {Provider as EditModeProvider} from '../contexts/EditModeState'
-
-import { GlobalStyles, OuterContainer } from '../components/layouts';
 import { Navbar } from '../components/navbar';
-
-import { theme } from '../theme';
+import defaultTheme from '../defaultTheme';
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   const apolloClient = useApollo(pageProps.initialApolloState);
@@ -23,17 +19,18 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="shortcut icon" href="/favicon.png" />
       </Head>
-      <ThemeProvider theme={theme}>
+      <Grommet full theme={defaultTheme}>
         <ApolloProvider client={apolloClient}>
-          <GlobalStyles />
           <EditModeProvider>
-            <OuterContainer>
+            <Grid fill rows={["auto", "flex"]}>
               <Navbar />
-              <Component {...pageProps} />
-            </OuterContainer>
+              <Main>
+                <Component {...pageProps} />
+              </Main>
+            </Grid>
           </EditModeProvider>
         </ApolloProvider>
-      </ThemeProvider>
+      </Grommet>
     </>
   );
 };

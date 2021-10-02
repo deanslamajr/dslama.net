@@ -41,13 +41,20 @@ export const Navbar: React.FunctionComponent<NavbarProps> = ({}) => {
     router.push(url);
   };
 
-  const toggleEditModal = () => {
+  const toggleModalVisibility = () => {
     if (editModeState.isActive) {
       updateEditMode({
         ...editModeState,
         showModal: !editModeState.showModal
       });
     }
+  }
+
+  const toggleEditMode = () => {
+    updateEditMode({
+      ...editModeState,
+      isActive: !editModeState.isActive
+    });
   };
 
   return (
@@ -60,10 +67,25 @@ export const Navbar: React.FunctionComponent<NavbarProps> = ({}) => {
         direction="row"
         align="center"
         gap="small"
-        onClick={toggleEditModal}
+        onClick={toggleEditMode}
       >
         {getTitle(editModeState.isActive)}
       </TitleBox>
+      {
+        editModeState.isActive && (
+          <TitleBox
+            direction="row"
+            align="center"
+            gap="small"
+            onClick={toggleModalVisibility}
+          >
+            {editModeState.showModal
+              ? 'Hide'
+              : 'Open'
+            }
+          </TitleBox>
+        )
+      }
       <ResponsiveContext.Consumer>
         {responsive =>
           responsive === 'small' ? (

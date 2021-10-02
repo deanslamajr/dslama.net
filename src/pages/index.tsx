@@ -78,7 +78,8 @@ const Home: NextPage = () => {
                   initialValues={{
                     bio: queryResult?.aboutPage.bio || '',
                     pictureURL: queryResult?.aboutPage.pictureURL || '',
-                    title: queryResult?.aboutPage.title || ''
+                    title: queryResult?.aboutPage.title || '',
+                    links: queryResult?.aboutPage.links || []
                   }}
                 />
               )}

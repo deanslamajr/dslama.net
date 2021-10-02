@@ -1,10 +1,9 @@
 import React from 'react';
-import { Button, Form, Progress, TextField } from 'grape-ui-react';
+import {Button, FormField, Spinner, TextInput} from "grommet";
 import { Form as FinalForm, Field } from 'react-final-form';
 
-import {useAttemptLoginMutation, AttemptLoginInput, AttemptLoginMutation} from '../graphql/generated/ops';
+import {useAttemptLoginMutation, AttemptLoginInput} from '../graphql/generated/ops';
 
-import {LoadingErrorOrRender} from './LoadingErrorOrRender';
 import {Modal} from './Modal';
 
 const initialValues: AttemptLoginInput = {
@@ -37,29 +36,32 @@ const LoginForm: React.FC<LoginFormProps> = ({
       onSubmit={values => handleSubmit(values)}
       initialValues={initialValues}
       render={({ handleSubmit, pristine, submitting, valid }) => (
-        <Form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <div>{message}</div>
           <Field<string> name="username">
             {({ input, meta }) => {
               return (
-                <TextField
-                {...input}
-                type="text"
-                onChange={input.onChange}
-                value={input.value}
-                />
+                <FormField label="username">
+                  <TextInput
+                    {...input}
+                    onChange={input.onChange}
+                    value={input.value}
+                  />
+                </FormField>
               );
             }}
           </Field>
           <Field<string> name="password">
             {({ input, meta }) => {
               return (
-                <TextField
-                {...input}
-                type="password"
-                onChange={input.onChange}
-                value={input.value}
-                />
+                <FormField label="password">
+                  <TextInput
+                    {...input}
+                    type="password"
+                    onChange={input.onChange}
+                    value={input.value}
+                  />
+                </FormField>
               );
             }}
           </Field>
@@ -69,7 +71,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
           >
             Login
           </Button>
-        </Form>
+        </form>
       )}
     />
   )
@@ -100,7 +102,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
       onSubmit={attemptLogin}
     />
     {
-      loading ? <Progress progressType="circular"/> : null
+      loading ? <Spinner /> : null
     }
   </Modal>);
 }

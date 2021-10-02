@@ -1,5 +1,5 @@
 import { ApolloError } from '@apollo/client';
-import { Progress } from 'grape-ui-react';
+import {Spinner } from "grommet";
 
 interface LoadingErrorOrRenderProps<T> {
   error?: ApolloError;
@@ -17,7 +17,7 @@ export const LoadingErrorOrRender = <T,>({
   render,
 }: React.PropsWithChildren<LoadingErrorOrRenderProps<T>>) => {
   if (isLoading) {
-    return <Progress progressType="circular"/>;
+    return <Spinner />;
   }
 
   if (error) {

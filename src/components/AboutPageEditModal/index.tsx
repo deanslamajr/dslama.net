@@ -1,6 +1,6 @@
 import React from 'react';
 import {ApolloError} from '@apollo/client';
-import { Button, Form, Progress, TextField } from 'grape-ui-react';
+import {Button, FormField, TextInput} from "grommet";
 import { Form as FinalForm, Field } from 'react-final-form';
 import arrayMutators from 'final-form-arrays'
 import { FieldArray } from 'react-final-form-arrays'
@@ -91,28 +91,29 @@ export const AboutPageEditModal: React.FC<AboutPageEditModalProps> = ({
               }, 
               handleSubmit
             }) => (
-              <Form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit}>
                 <Field<string> name="title">
                   {({ input, meta }) => {
                     return (
-                      <TextField
-                        {...input}
-                        type="text"
-                        onChange={input.onChange}
-                        value={input.value}
-                      />
+                      <FormField label="title">
+                        <TextInput
+                          {...input}
+                          placeholder="set a title string"
+                          onChange={input.onChange}
+                          value={input.value}
+                        />
+                      </FormField>
                     );
                   }}
                 </Field>
                 <div>
                   <div>Links</div>
                   <div>
-                    <button
-                      type="button"
+                    <Button
                       onClick={() => push('links', undefined)}
                     >
                       Add Link
-                    </button>
+                    </Button>
                   </div>
                   <FieldArray name="links">
                     {({ fields }) =>
@@ -126,13 +127,14 @@ export const AboutPageEditModal: React.FC<AboutPageEditModalProps> = ({
                             >
                               {({ input, meta }) => {
                                 return (
-                                  <TextField
-                                    {...input}
-                                    type="text"
-                                    onChange={input.onChange}
-                                    value={input.value}
-                                    placeholder="Generic Socialmedia Platform"
-                                  />
+                                  <FormField label="name">
+                                    <TextInput
+                                      {...input}
+                                      onChange={input.onChange}
+                                      value={input.value}
+                                      placeholder="Generic Socialmedia Platform"
+                                    />
+                                  </FormField>
                                 );
                               }}
                             </Field>
@@ -143,25 +145,22 @@ export const AboutPageEditModal: React.FC<AboutPageEditModalProps> = ({
                             >
                               {({ input, meta }) => {
                                 return (
-                                  <div>
-                                    <TextField
+                                  <FormField label="url" error={meta.touched ? meta.error : undefined}>
+                                    <TextInput
                                       {...input}
-                                      type="text"
                                       onChange={input.onChange}
                                       value={input.value}
                                       placeholder="https://www.socialmedia.com"
                                     />
-                                    {meta.error && meta.touched && <span>{meta.error}</span>}
-                                  </div>
+                                  </FormField>
                                 );
                               }}
                             </Field>
-                            <span
+                            <Button
                               onClick={() => fields.remove(index)}
-                              style={{ cursor: 'pointer' }}
                             >
                               ❌
-                            </span>
+                            </Button>
                           </div>
                         ))
                         : <div>No Links</div>
@@ -171,31 +170,33 @@ export const AboutPageEditModal: React.FC<AboutPageEditModalProps> = ({
                 <Field<string> name="pictureURL">
                   {({ input, meta }) => {
                     return (
-                      <TextField
+                    <FormField label="banner pic url">
+                      <TextInput
                         {...input}
-                        type="text"
                         onChange={input.onChange}
                         value={input.value}
                       />
+                    </FormField>
                     );
                   }}
                 </Field>
                 <Field<string> name="bio">
                   {({ input, meta }) => {
                     return (
-                      <TextField
+                    <FormField label="bio">
+                      <TextInput
                         {...input}
-                        type="text"
                         onChange={input.onChange}
                         value={input.value}
                       />
+                    </FormField>
                     );
                   }}
                 </Field>
                 <Button onClick={() => form.submit()}>
                   Save Changes
                 </Button>
-              </Form>
+              </form>
             )}
           />
         );

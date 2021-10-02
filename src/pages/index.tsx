@@ -11,6 +11,8 @@ import {
   LogoContainer,
 } from '../components/About.styles';
 
+import {appTitle} from '../constants';
+
 import { LoadingErrorOrRender } from '../components/LoadingErrorOrRender';
 import { Header } from '../components/header';
 import {AboutPageEditModal} from '../components/AboutPageEditModal';
@@ -30,59 +32,61 @@ const Home: NextPage = () => {
   const [editModeState] = useEditModeState();
 
   return (
-    <LoadingErrorOrRender<FetchAboutQuery>
-      error={error}
-      isLoading={loading}
-      queryResult={data}
-      render={({ queryResult }) => {
-        return (
-          <div>
-            <Head>
-              <title>dslama.net</title>
-            </Head>
-            <Container>
-              <Header summary={queryResult?.aboutPage.title || ''} />
-              <LogoContainer>
-                <BackgroundImage imageUrl={queryResult?.aboutPage.pictureURL || ''} />
-              </LogoContainer>
-              <LinksContainer>
-              {
-                (queryResult?.aboutPage?.links?.length
-                  ? (
-                    (queryResult?.aboutPage.links as Link[])
-                      .map(({ name, url }) => (
-                        <LinkItem key={name || ''}>
-                          <LinkAnchor href={url || ''} target="_blank">
-                            {name}
-                          </LinkAnchor>
-                        </LinkItem>
-                      ))
+    <>
+      <Head>
+        <title>{appTitle}</title>
+      </Head>
+      <LoadingErrorOrRender<FetchAboutQuery>
+        error={error}
+        isLoading={loading}
+        queryResult={data}
+        render={({ queryResult }) => {
+          return (
+            <div>
+              <Container>
+                <Header summary={queryResult?.aboutPage.title || ''} />
+                <LogoContainer>
+                  <BackgroundImage imageUrl={queryResult?.aboutPage.pictureURL || ''} />
+                </LogoContainer>
+                <LinksContainer>
+                {
+                  (queryResult?.aboutPage?.links?.length
+                    ? (
+                      (queryResult?.aboutPage.links as Link[])
+                        .map(({ name, url }) => (
+                          <LinkItem key={name || ''}>
+                            <LinkAnchor href={url || ''} target="_blank">
+                              {name}
+                            </LinkAnchor>
+                          </LinkItem>
+                        ))
+                    )
+                    : (
+                      <LinkItem key={''}>
+                        <LinkAnchor href={''} target="_blank">
+                        </LinkAnchor>
+                      </LinkItem>
+                    )
                   )
-                  : (
-                    <LinkItem key={''}>
-                      <LinkAnchor href={''} target="_blank">
-                      </LinkAnchor>
-                    </LinkItem>
-                  )
-                )
-              }
-              </LinksContainer>
-              <BioCard dangerouslySetInnerHTML={{ __html: queryResult?.aboutPage.bio || '' }} />
-            </Container>
+                }
+                </LinksContainer>
+                <BioCard dangerouslySetInnerHTML={{ __html: queryResult?.aboutPage.bio || '' }} />
+              </Container>
 
-            {editModeState.showModal && (
-              <AboutPageEditModal
-                initialValues={{
-                  bio: queryResult?.aboutPage.bio || '',
-                  pictureURL: queryResult?.aboutPage.pictureURL || '',
-                  title: queryResult?.aboutPage.title || ''
-                }}
-              />
-            )}
-          </div>
-        );
-      }}
-    />
+              {editModeState.showModal && (
+                <AboutPageEditModal
+                  initialValues={{
+                    bio: queryResult?.aboutPage.bio || '',
+                    pictureURL: queryResult?.aboutPage.pictureURL || '',
+                    title: queryResult?.aboutPage.title || ''
+                  }}
+                />
+              )}
+            </div>
+          );
+        }}
+      />
+    </>
   );
 };
 

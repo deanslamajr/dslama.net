@@ -1,6 +1,18 @@
 import React from 'react';
 import {ApolloError} from '@apollo/client';
-import {Button, FormField, TextInput} from "grommet";
+import {
+  Box,
+  Button,
+  FormField,
+  Text,
+  TextArea,
+  TextInput
+} from "grommet";
+import {
+  Add,
+  FormCheckmark,
+  FormTrash
+} from 'grommet-icons'
 import { Form as FinalForm, Field } from 'react-final-form';
 import arrayMutators from 'final-form-arrays'
 import { FieldArray } from 'react-final-form-arrays'
@@ -71,137 +83,198 @@ export const AboutPageEditModal: React.FC<AboutPageEditModalProps> = ({
     });
   };
   
-  return (<Modal>
-    <LoadingErrorOrRender<UpdateAboutPageMutation>
-      error={authenticationError}
-      isLoading={loading}
-      queryResult={data}
-      render={({ queryResult }) => {
-        return (
-          <FinalForm
-            onSubmit={values => handleSubmit(values)}
-            initialValues={initialValues}
-            mutators={{
-              ...arrayMutators
-            }}
-            render={({
-              form,
-              form: {
-                mutators: { push, pop }
-              }, 
-              handleSubmit
-            }) => (
-              <form onSubmit={handleSubmit}>
-                <Field<string> name="title">
-                  {({ input, meta }) => {
-                    return (
-                      <FormField label="title">
-                        <TextInput
-                          {...input}
-                          placeholder="set a title string"
-                          onChange={input.onChange}
-                          value={input.value}
-                        />
-                      </FormField>
-                    );
-                  }}
-                </Field>
-                <div>
-                  <div>Links</div>
-                  <div>
-                    <Button
-                      onClick={() => push('links', undefined)}
+  return (
+    <Modal
+      onClose={() => setEditModeState({
+        ...editModeState,
+        showModal: false
+      })}
+    >
+      <LoadingErrorOrRender<UpdateAboutPageMutation>
+        error={authenticationError}
+        isLoading={loading}
+        queryResult={data}
+        render={({ queryResult }) => {
+          return (
+            <FinalForm
+              onSubmit={values => handleSubmit(values)}
+              initialValues={initialValues}
+              mutators={{
+                ...arrayMutators
+              }}
+              render={({
+                form,
+                form: {
+                  mutators: { push, pop }
+                }, 
+                handleSubmit
+              }) => (
+                <form onSubmit={handleSubmit}>
+                  <Box
+                    align="start"
+                    alignContent="center"
+                    pad="large"
+                    width="full"
+                  >
+                    <Field<string> name="title">
+                      {({ input, meta }) => {
+                        return (
+                          <FormField
+                            label="title"
+                            width="full"
+                          >
+                            <TextInput
+                              {...input}
+                              placeholder="set a title string"
+                              onChange={input.onChange}
+                              value={input.value}
+                            />
+                          </FormField>
+                        );
+                      }}
+                    </Field>
+                    <FormField
+                      label="links"
+                      contentProps={{
+                        border: undefined,
+                        fill: 'horizontal',
+                        pad: {left: 'medium'}
+                      }}
+                      width="100%"
                     >
-                      Add Link
+                      <Button
+                        secondary
+                        hoverIndicator={true}
+                        fill="horizontal"
+                        onClick={() => push('links', undefined)}
+                      >
+                        <Box pad="xsmall" direction="row" align="center" gap="small">
+                          <Add color="brand"/>
+                          <Text>Add Link</Text>
+                        </Box>
+                      </Button>
+                      <FieldArray name="links">
+                        {({ fields }) => (
+                          fields?.map((name, index) => (
+                            <Box
+                              key={name}
+                              margin={{
+                                top: 'small',
+                                bottom: 'small'
+                              }}  
+                            >
+                              <Text>Link #{index + 1}</Text>
+                              <Field
+                                name={`${name}.name`}
+                                component="input"
+                              >
+                                {({ input, meta }) => {
+                                  return (
+                                    <FormField
+                                      label="name"
+                                      margin={{bottom: 'xsmall'}}
+                                    >
+                                      <TextInput
+                                        {...input}
+                                        onChange={input.onChange}
+                                        value={input.value}
+                                        placeholder="Generic Socialmedia Platform"
+                                      />
+                                    </FormField>
+                                  );
+                                }}
+                              </Field>
+                              <Field
+                                name={`${name}.url`}
+                                component="input"
+                                validate={isValidUrl}
+                              >
+                                {({ input, meta }) => {
+                                  return (
+                                    <FormField
+                                      label="url"
+                                      error={meta.touched ? meta.error : undefined}
+                                      margin={{bottom: 'xsmall'}}
+                                    >
+                                      <TextInput
+                                        {...input}
+                                        onChange={input.onChange}
+                                        value={input.value}
+                                        placeholder="https://www.socialmedia.com"
+                                      />
+                                    </FormField>
+                                  );
+                                }}
+                              </Field>
+                              <Button
+                                secondary
+                                hoverIndicator={true}
+                                fill="horizontal"
+                                onClick={() => fields.remove(index)}
+                              >
+                                <Box pad="xsmall" direction="row" align="center" gap="small">
+                                  <FormTrash color="brand"/>
+                                  <Text>Remove Link #{index + 1}</Text>
+                                </Box>
+                              </Button>
+                            </Box>
+                          ))
+                        )}
+                      </FieldArray>
+                    </FormField>
+                    <Field<string> name="pictureURL">
+                      {({ input, meta }) => {
+                        return (
+                        <FormField
+                          label="banner pic url"
+                          width="full"
+                        >
+                          <TextInput
+                            {...input}
+                            onChange={input.onChange}
+                            value={input.value}
+                          />
+                        </FormField>
+                        );
+                      }}
+                    </Field>
+                    <Field<string> name="bio">
+                      {({ input, meta }) => {
+                        return (
+                        <FormField
+                          label="bio"
+                          width="full"
+                        >
+                          <TextArea
+                            {...input}
+                            onChange={input.onChange}
+                            value={input.value}
+                            rows={10}
+                          />
+                        </FormField>
+                        );
+                      }}
+                    </Field>
+                    <Button
+                      primary
+                      fill
+                      onClick={() => form.submit()}
+                      alignSelf="center"
+                      hoverIndicator={true}
+                    >
+                      <Box pad="small" direction="row" align="center" gap="small">
+                        <FormCheckmark color="accent-1"/>
+                        <Text textAlign="center">Save Changes</Text>
+                      </Box>
                     </Button>
-                  </div>
-                  <FieldArray name="links">
-                    {({ fields }) =>
-                      (fields && fields.length)
-                        ? fields.map((name, index) => (
-                          <div key={name}>
-                            <label>{index + 1}</label>
-                            <Field
-                              name={`${name}.name`}
-                              component="input"
-                            >
-                              {({ input, meta }) => {
-                                return (
-                                  <FormField label="name">
-                                    <TextInput
-                                      {...input}
-                                      onChange={input.onChange}
-                                      value={input.value}
-                                      placeholder="Generic Socialmedia Platform"
-                                    />
-                                  </FormField>
-                                );
-                              }}
-                            </Field>
-                            <Field
-                              name={`${name}.url`}
-                              component="input"
-                              validate={isValidUrl}
-                            >
-                              {({ input, meta }) => {
-                                return (
-                                  <FormField label="url" error={meta.touched ? meta.error : undefined}>
-                                    <TextInput
-                                      {...input}
-                                      onChange={input.onChange}
-                                      value={input.value}
-                                      placeholder="https://www.socialmedia.com"
-                                    />
-                                  </FormField>
-                                );
-                              }}
-                            </Field>
-                            <Button
-                              onClick={() => fields.remove(index)}
-                            >
-                              ❌
-                            </Button>
-                          </div>
-                        ))
-                        : <div>No Links</div>
-                    }
-                  </FieldArray>
-                </div>
-                <Field<string> name="pictureURL">
-                  {({ input, meta }) => {
-                    return (
-                    <FormField label="banner pic url">
-                      <TextInput
-                        {...input}
-                        onChange={input.onChange}
-                        value={input.value}
-                      />
-                    </FormField>
-                    );
-                  }}
-                </Field>
-                <Field<string> name="bio">
-                  {({ input, meta }) => {
-                    return (
-                    <FormField label="bio">
-                      <TextInput
-                        {...input}
-                        onChange={input.onChange}
-                        value={input.value}
-                      />
-                    </FormField>
-                    );
-                  }}
-                </Field>
-                <Button onClick={() => form.submit()}>
-                  Save Changes
-                </Button>
-              </form>
-            )}
-          />
-        );
-      }}
-      errorRender={(error) => <LoginModal onSuccessfulLogin={() => setError(undefined)} />}
-    />
-  </Modal>);
+                  </Box>
+                </form>
+              )}
+            />
+          );
+        }}
+        errorRender={(error) => <LoginModal onSuccessfulLogin={() => setError(undefined)} />}
+      />
+    </Modal>
+  );
 }

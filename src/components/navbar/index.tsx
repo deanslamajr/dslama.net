@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import {
-  TitleBox
-} from './Navbar.styles';
-import {
   Anchor,
+  Box,
   Header,
   Nav,
   Menu,
   ResponsiveContext,
+  Text
 } from 'grommet';
 import {useState as useEditModeState} from '../../contexts/EditModeState';
 
-const getTitle = (isEditMode: boolean) => isEditMode ? 'edit' : 'dean slama';
+const getTitle = () => 'dean slama';
 
 const MENU_ITEMS: string[] = ['about', 'posts', 'projects', 'readings'];
 
@@ -42,12 +41,12 @@ export const Navbar: React.FunctionComponent<NavbarProps> = ({}) => {
   };
 
   const toggleModalVisibility = () => {
-    if (editModeState.isActive) {
+    // if (editModeState.isActive) {
       updateEditMode({
         ...editModeState,
         showModal: !editModeState.showModal
       });
-    }
+    // }
   }
 
   const toggleEditMode = () => {
@@ -63,29 +62,18 @@ export const Navbar: React.FunctionComponent<NavbarProps> = ({}) => {
       elevation="medium"
       pad="small"
     >
-      <TitleBox
+      <Box
         direction="row"
-        align="center"
-        gap="small"
-        onClick={toggleEditMode}
       >
-        {getTitle(editModeState.isActive)}
-      </TitleBox>
-      {
-        editModeState.isActive && (
-          <TitleBox
-            direction="row"
-            align="center"
-            gap="small"
-            onClick={toggleModalVisibility}
-          >
-            {editModeState.showModal
-              ? 'Hide'
-              : 'Open'
-            }
-          </TitleBox>
-        )
-      }
+        <Text
+          size="xlarge"
+          weight="bold"
+          margin={{right: 'small'}}
+          onClick={toggleModalVisibility}
+        >
+          {getTitle()}
+        </Text>
+      </Box>
       <ResponsiveContext.Consumer>
         {responsive =>
           responsive === 'small' ? (
@@ -99,6 +87,7 @@ export const Navbar: React.FunctionComponent<NavbarProps> = ({}) => {
               {
                 MENU_ITEMS.map(item => (
                   <Anchor
+                    key={item}
                     as="span"
                     label={item}
                     onClick={() => onLinkClick(item)}

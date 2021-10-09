@@ -13,7 +13,9 @@ import {
 
 import { formatDate } from '../utils';
 import {appTitle} from '../constants';
+import {PostsPageEditModal} from '../components/PostsPageEditModal';
 import { LoadingErrorOrRender } from '../components/LoadingErrorOrRender';
+import {useState as useEditModeState} from '../contexts/EditModeState';
 import getServerSidePropsFactory from '../graphql/getServerSidePropsFactory';
 import {
   useFetchPostsQuery,
@@ -34,7 +36,10 @@ const Posts: NextPage = () => {
         isLoading={loading}
         queryResult={data}
         render={({ queryResult }) => {
-          const { posts, summary } = (queryResult as FetchPostsQuery).postsPage;
+          const postsPageData = (queryResult as FetchPostsQuery).postsPage;
+          const { posts, summary } = postsPageData;
+
+          const [editModeState] = useEditModeState();
 
           return (
             <ResponsiveContext.Consumer>
@@ -42,72 +47,80 @@ const Posts: NextPage = () => {
                 const isMobile = responsive === 'small';
 
                 return (
-                  <Box
-                    direction="column"
-                    align="center"
-                    width="full"
-                  >
-                    <Grid
-                      columns={[
-                        isMobile ? 'auto' : 'xlarge'
-                      ]}
+                  <>
+                    <Box
+                      direction="column"
+                      align="center"
+                      width="full"
                     >
-                      <Box
-                        direction="column"
-                        align="center"
-                        height="small"
-                        pad="xlarge"
-                      >
-                        <Text
-                          textAlign="center"
-                          size="large"
-                        >
-                          {summary || ''}
-                        </Text>
-                      </Box>
                       <Grid
-                        fill="horizontal"
-                        gap="large"
-                        rows="auto"
-                        columns={['flex']}
-                        justify="center"
+                        columns={[
+                          isMobile ? 'auto' : 'xlarge'
+                        ]}
                       >
-                        {posts && posts.map(post => (
-                          <Card
-                            onClick={() => {
-                              post?.url && window.open(post.url, "_blank");
-                            }}
-                            height="full"
-                            width={isMobile ? 'auto' : 'xlarge'}
-                            background="light-1"
-                            hoverIndicator={true}
+                        <Box
+                          direction="column"
+                          align="center"
+                          height="small"
+                          pad="xlarge"
+                        >
+                          <Text
+                            textAlign="center"
+                            size="large"
                           >
-                            <CardHeader
-                              alignSelf="center"
-                              pad="large"
+                            {summary || ''}
+                          </Text>
+                        </Box>
+                        <Grid
+                          fill="horizontal"
+                          gap="large"
+                          rows="auto"
+                          columns={['flex']}
+                          justify="center"
+                        >
+                          {posts && posts.map((post, index) => (
+                            <Card
+                              key={post?.title || `post-${index}`}
+                              onClick={() => {
+                                post?.url && window.open(post.url, "_blank");
+                              }}
+                              height="full"
+                              width={isMobile ? 'auto' : 'xlarge'}
+                              background="light-1"
+                              hoverIndicator={true}
                             >
-                              <Text
-                                size="xlarge"
-                                textAlign="center"
+                              <CardHeader
+                                alignSelf="center"
+                                pad="large"
                               >
-                              {post?.title || ''}
-                              </Text>
-                            </CardHeader>
-                            <CardBody pad="medium">
-                              <Text
-                                textAlign="justify"
-                                size="medium">
-                                {post?.snippet || ''}
-                              </Text>
-                            </CardBody>
-                            <CardFooter pad={{horizontal: "small"}} background="light-2">
-                              <div>{formatDate(post?.originalPublishDate)}</div>
-                            </CardFooter>
-                          </Card>                
-                        ))}
+                                <Text
+                                  size="xlarge"
+                                  textAlign="center"
+                                >
+                                {post?.title || ''}
+                                </Text>
+                              </CardHeader>
+                              <CardBody pad="medium">
+                                <Text
+                                  textAlign="justify"
+                                  size="medium">
+                                  {post?.snippet || ''}
+                                </Text>
+                              </CardBody>
+                              <CardFooter pad={{horizontal: "small"}} background="light-2">
+                                <div>{formatDate(post?.originalPublishDate)}</div>
+                              </CardFooter>
+                            </Card>                
+                          ))}
+                        </Grid>
                       </Grid>
-                    </Grid>
-                  </Box>
+                    </Box>
+                    {editModeState.showModal && (
+                      <PostsPageEditModal
+                        initialValues={postsPageData}
+                      />
+                    )}
+                  </>
                 )
               }}
             </ResponsiveContext.Consumer>

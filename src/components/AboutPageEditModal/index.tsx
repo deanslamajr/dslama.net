@@ -20,22 +20,12 @@ import { FieldArray } from 'react-final-form-arrays'
 import {useUpdateAboutPageMutation, UpdateAboutPageInput, UpdateAboutPageMutation} from '../../graphql/generated/ops';
 
 import {useState as useEditModeState} from '../../contexts/EditModeState';
-
+import {isValidUrl} from '../../utils';
 import {LoadingErrorOrRender} from '../LoadingErrorOrRender';
 import {Modal} from '../Modal';
 import {LoginModal} from '../LoginModal';
 
-function isValidUrl(potentialUrl: string) {
-  let errorMessage: string | undefined = undefined;
-  
-  try {
-    new URL(potentialUrl);
-  } catch (_) {
-    errorMessage = 'Must be valid url e.g. https://google.com';
-  }
 
-  return errorMessage;
-}
 
 type AboutPageEditModalProps = {
   initialValues: {
@@ -73,7 +63,6 @@ export const AboutPageEditModal: React.FC<AboutPageEditModalProps> = ({
   });
 
   const handleSubmit = async (values: Record<string, any>) => {
-    console.log('values', values)
     updateAboutPage({
       variables: {
         input: {

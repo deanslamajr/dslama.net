@@ -1,45 +1,6 @@
 import styled from 'styled-components';
-import {Box} from 'grommet';
 
-import { breakpoints, shadow } from '../layouts';
-
-export const TitleBox = styled(Box)`
-  font-size: 2rem;
-`;
-
-export const OuterContainer = styled.div`
-  ${shadow()}
-  margin-top: 1rem;
-  display: flex;
-  justify-content: space-between;
-  font-family: ${props => props.theme.fonts};
-  background-color: #004741;
-  color: ${props => props.theme.colors.text};
-  border-radius: 2px;
-  position: sticky;
-  top: 0;
-  z-index: ${props => props.theme.zIndex.highest};
-  ${breakpoints.tabletMax`
-    margin-top: 0;
-    border-radius: 0;
-  `}
-  ${breakpoints.phoneMax`
-    margin-top: 0;
-    flex-direction: column;
-    padding: .5rem .2rem 0;
-  `}
-`;
-
-export const MiddleContainer = styled.span`
-  display: flex;
-  font-size: 2rem;
-  justify-content: space-between;
-  padding: 0.4rem 0.2rem 0;
-  cursor: default;
-  ${breakpoints.phoneMax`
-    padding: 0;
-  `}
-`;
+import { breakpoints } from '../layouts';
 
 export interface ExpandableContainerProps {
   expanded: boolean;

@@ -8,6 +8,7 @@
     "codegen:watch": "npm run codegen -- --watch",
     "predev": "prisma generate",
     "dev": "concurrently -k -p \"{time}-{pid}\" npm:codegen:watch \"next dev\"",
+    "clean:dev": "npm run clean && npm run dev",
     "dev:debug": "concurrently -k -p \"{time}-{pid}\" npm:codegen:watch \"NODE_OPTIONS='--inspect' next dev\"",
     "build": "npm run codegen && prisma generate && next build",
     "start": "next start -p 8080",

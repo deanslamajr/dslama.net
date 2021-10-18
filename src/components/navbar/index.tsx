@@ -57,52 +57,59 @@ export const Navbar: React.FunctionComponent<NavbarProps> = ({}) => {
   };
 
   return (
-    <Header
-      background="brand"
-      elevation="medium"
-      pad="small"
+    <Box
+      fill
+      direction="row"
+      justify="center"
     >
-      <Box
-        direction="row"
+      <Header
+        background="brand"
+        elevation="medium"
+        pad="small"
+        width="xxlarge"
       >
-        <Text
-          size="xlarge"
-          weight="bold"
-          margin={{right: 'small'}}
-          onClick={toggleModalVisibility}
+        <Box
+          direction="row"
         >
-          {getTitle()}
-        </Text>
-      </Box>
-      <ResponsiveContext.Consumer>
-        {responsive =>
-          responsive === 'small' ? (
-            <Menu
-              items={MENU_ITEMS.map(item => (
-                { label: item, onClick: () => onLinkClick(item) }
-              ))}
-            />
-          ) : (
-            <Nav direction="row">
-              {
-                MENU_ITEMS.map(item => (
-                  <Anchor
-                    key={item}
-                    as="span"
-                    label={item}
-                    onClick={() => onLinkClick(item)}
-                    weight={(
-                      item === activeItem
-                        ? 'bold'
-                        : 'normal'
-                    )}
-                  />
-                ))
-              }
-            </Nav>
-          )
-        }
-      </ResponsiveContext.Consumer>
-    </Header>
+          <Text
+            size="xlarge"
+            weight="bold"
+            margin={{right: 'small'}}
+            onClick={toggleModalVisibility}
+          >
+            {getTitle()}
+          </Text>
+        </Box>
+        <ResponsiveContext.Consumer>
+          {responsive =>
+            responsive === 'small' ? (
+              <Menu
+                items={MENU_ITEMS.map(item => (
+                  { label: item, onClick: () => onLinkClick(item) }
+                ))}
+              />
+            ) : (
+              <Nav direction="row">
+                {
+                  MENU_ITEMS.map(item => (
+                    <Anchor
+                      key={item}
+                      as="span"
+                      label={item}
+                      onClick={() => onLinkClick(item)}
+                      weight={(
+                        item === activeItem
+                          ? 'bold'
+                          : 'normal'
+                      )}
+                    />
+                  ))
+                }
+              </Nav>
+            )
+          }
+        </ResponsiveContext.Consumer>
+      </Header>
+    </Box>
   );
 };

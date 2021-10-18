@@ -2,13 +2,13 @@ import {AppProps} from 'next/app';
 import Head from 'next/head';
 import Router from 'next/router';
 import React from 'react';
-import { Grid, Grommet, Main } from 'grommet';
+import { Box, Grid, Grommet, Main } from 'grommet';
 import { ApolloProvider } from '@apollo/client'
 
 import { useApollo } from '../graphql/useApollo';
-import {Provider as EditModeProvider} from '../contexts/EditModeState'
-import { Navbar } from '../components/navbar';
-import {FullPageLoadSpinner} from '../components/FullPageLoadSpinner';
+import {Provider as EditModeProvider} from '../contexts/EditModeState';
+import {MainLayout} from '../components/MainLayout';
+
 import defaultTheme from '../defaultTheme';
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
@@ -32,13 +32,9 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
       <Grommet full theme={defaultTheme}>
         <ApolloProvider client={apolloClient}>
           <EditModeProvider>
-            <Grid fill rows={["auto", "flex"]}>
-              <Navbar />
-              <Main>
+            <MainLayout isChangingRoute={isChangingRoute}>
                 <Component {...pageProps} />
-              </Main>
-              <FullPageLoadSpinner show={isChangingRoute} />
-            </Grid>
+            </MainLayout>              
           </EditModeProvider>
         </ApolloProvider>
       </Grommet>

@@ -48,15 +48,17 @@ const Posts: NextPage = () => {
 
                 return (
                   <>
-                    <Box
+                    {/* <Box
                       direction="column"
                       align="center"
-                      width="full"
-                    >
+                      alignContent="center"
+                      width="xxlarge"
+                    > */}
                       <Grid
                         columns={[
-                          isMobile ? 'auto' : 'xlarge'
+                          isMobile ? 'auto' : 'auto'
                         ]}
+                        margin={{horizontal: "large"}}
                       >
                         <Box
                           direction="column"
@@ -85,7 +87,7 @@ const Posts: NextPage = () => {
                                 post?.url && window.open(post.url, "_blank");
                               }}
                               height="full"
-                              width={isMobile ? 'auto' : 'xlarge'}
+                              width={isMobile ? 'auto' : 'full'}
                               background="light-1"
                               hoverIndicator={true}
                             >
@@ -114,7 +116,7 @@ const Posts: NextPage = () => {
                           ))}
                         </Grid>
                       </Grid>
-                    </Box>
+                    {/* </Box> */}
                     {editModeState.showModal && (
                       <PostsPageEditModal
                         initialValues={postsPageData}

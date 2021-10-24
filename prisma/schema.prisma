@@ -29,6 +29,24 @@ model Link {
   pageVersionThatReference  Int
 }
 
+model PostsPage {
+  version     Int      @default(autoincrement()) @id
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  summary     String
+  posts       Post[]
+}
+
+model Post {
+  id                        String @default(uuid()) @id
+  url                       String
+  originalPublishDate       DateTime
+  title                     String
+  snippet                   String
+  postsPage                 PostsPage @relation(fields: [pageVersionThatReference], references: [version])
+  pageVersionThatReference  Int
+}
+
 model Account {
   id          String @default(uuid()) @id
   createdAt   DateTime @default(now())

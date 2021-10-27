@@ -48,75 +48,68 @@ const Posts: NextPage = () => {
 
                 return (
                   <>
-                    {/* <Box
-                      direction="column"
-                      align="center"
-                      alignContent="center"
-                      width="xxlarge"
-                    > */}
-                      <Grid
-                        columns={[
-                          isMobile ? 'auto' : 'auto'
-                        ]}
-                        margin={{horizontal: "large"}}
+                    <Grid
+                      columns={[
+                        isMobile ? 'auto' : 'auto'
+                      ]}
+                      margin={{horizontal: "large"}}
+                    >
+                      <Box
+                        direction="column"
+                        align="center"
+                        height="small"
+                        pad="xlarge"
                       >
-                        <Box
-                          direction="column"
-                          align="center"
-                          height="small"
-                          pad="xlarge"
+                        <Text
+                          textAlign="center"
+                          size="large"
                         >
-                          <Text
-                            textAlign="center"
-                            size="large"
+                          {summary || ''}
+                        </Text>
+                      </Box>
+                      <Grid
+                        fill="horizontal"
+                        gap="large"
+                        rows="auto"
+                        columns={['flex']}
+                        justify="center"
+                      >
+                        {posts && posts.map((post, index) => (
+                          <Card
+                            key={post?.title || `post-${index}`}
+                            onClick={() => {
+                              post?.url && window.open(post.url, "_blank");
+                            }}
+                            height="full"
+                            width={isMobile ? 'auto' : 'full'}
+                            background="light-1"
+                            hoverIndicator={true}
                           >
-                            {summary || ''}
-                          </Text>
-                        </Box>
-                        <Grid
-                          fill="horizontal"
-                          gap="large"
-                          rows="auto"
-                          columns={['flex']}
-                          justify="center"
-                        >
-                          {posts && posts.map((post, index) => (
-                            <Card
-                              key={post?.title || `post-${index}`}
-                              onClick={() => {
-                                post?.url && window.open(post.url, "_blank");
-                              }}
-                              height="full"
-                              width={isMobile ? 'auto' : 'full'}
-                              background="light-1"
-                              hoverIndicator={true}
+                            <CardHeader
+                              alignSelf="center"
+                              pad="large"
                             >
-                              <CardHeader
-                                alignSelf="center"
-                                pad="large"
+                              <Text
+                                size="xlarge"
+                                textAlign="center"
                               >
-                                <Text
-                                  size="xlarge"
-                                  textAlign="center"
-                                >
-                                {post?.title || ''}
-                                </Text>
-                              </CardHeader>
-                              <CardBody pad="medium">
-                                <Text
-                                  textAlign="justify"
-                                  size="medium">
-                                  {post?.snippet || ''}
-                                </Text>
-                              </CardBody>
-                              <CardFooter pad={{horizontal: "small"}} background="light-2">
-                                <div>{formatDate(post?.originalPublishDate)}</div>
-                              </CardFooter>
-                            </Card>                
-                          ))}
-                        </Grid>
+                              {post?.title || ''}
+                              </Text>
+                            </CardHeader>
+                            <CardBody pad="medium">
+                              <Text
+                                textAlign="justify"
+                                size="medium">
+                                {post?.snippet || ''}
+                              </Text>
+                            </CardBody>
+                            <CardFooter pad={{horizontal: "small"}} background="light-2">
+                              <div>{formatDate(post?.originalPublishDate)}</div>
+                            </CardFooter>
+                          </Card>                
+                        ))}
                       </Grid>
-                    {/* </Box> */}
+                    </Grid>
                     {editModeState.showModal && (
                       <PostsPageEditModal
                         initialValues={postsPageData}

@@ -1,11 +1,20 @@
 import { NextPage } from 'next';
 import Head from 'next/head';
+import {
+  Box,
+  Card,
+  CardBody,
+  CardHeader,
+  CardFooter,
+  Grid,
+  ResponsiveContext,
+  Text
+} from 'grommet';
 
 import { formatDate } from '../utils';
-
+import {appTitle} from '../constants';
 import { LoadingErrorOrRender } from '../components/LoadingErrorOrRender';
-import { Header } from '../components/header';
-import { Card } from '../components/Card';
+import {useState as useEditModeState} from '../contexts/EditModeState';
 
 import getServerSidePropsFactory from '../graphql/getServerSidePropsFactory';
 import {
@@ -20,7 +29,7 @@ const ReadingsPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>dslama.net - readings</title>
+        <title>{appTitle} - projects</title>
       </Head>
       <LoadingErrorOrRender<FetchReadingsQuery>
         error={error}
@@ -32,24 +41,87 @@ const ReadingsPage: NextPage = () => {
             summary,
           } = (queryResult as FetchReadingsQuery).readingsPage;
 
+          const [editModeState] = useEditModeState();
+
           return (
-            <div>
-              <div>
-                <Header summary={summary || ''} />
-              </div>
-              {readings &&
-                readings.map(reading => (
-                  <Card
-                    href={reading?.url || ''}
-                    key={reading?.id || ''}
-                    quoteHasHtml
-                    quote={reading?.quote || ''}
-                    title={reading?.title || ''}>
-                    <div>{`${reading?.author} @ ${reading?.publication}`}</div>
-                    <div>{formatDate(reading?.publishDate)}</div>
-                  </Card>
-                ))}
-            </div>
+            <ResponsiveContext.Consumer>
+              {responsive => {
+                const isMobile = responsive === 'small';
+
+                return (
+                  <>
+                    <Grid
+                      columns={[
+                        isMobile ? 'auto' : 'auto'
+                      ]}
+                      margin={{horizontal: "large"}}
+                    >
+                      <Box
+                        direction="column"
+                        align="center"
+                        height="small"
+                        pad="xlarge"
+                      >
+                        <Text
+                          textAlign="center"
+                          size="large"
+                        >
+                          {summary || ''}
+                        </Text>
+                      </Box>
+                      <Grid
+                        fill="horizontal"
+                        gap="large"
+                        rows="auto"
+                        columns={['flex']}
+                        justify="center"
+                      >
+                        {readings && readings.map((reading, index) => (
+                          <Card
+                            key={reading?.id || `reading-${index}`}
+                            onClick={() => {
+                              reading?.url && window.open(reading.url, "_blank");
+                            }}
+                            height="full"
+                            width={isMobile ? 'auto' : 'full'}
+                            background="light-1"
+                            hoverIndicator={true}
+                          >
+                            <CardHeader
+                              alignSelf="center"
+                              pad="large"
+                            >
+                              <Text
+                                size="xlarge"
+                                textAlign="center"
+                              >
+                              {reading?.title || ''}
+                              </Text>
+                            </CardHeader>
+                            <CardBody pad="medium">
+                              <Text
+                                textAlign="justify"
+                                size="medium">
+                                {reading?.quote || ''}
+                              </Text>
+                            </CardBody>
+                            <CardFooter pad={{horizontal: "small"}} background="light-2">
+                              <div>{`${reading?.author} @ ${reading?.publication}`}</div>
+                              <div>{formatDate(reading?.publishDate)}</div>
+                            </CardFooter>
+                          </Card>                
+                        ))}
+                      </Grid>
+                    </Grid>
+                    {/* {editModeState.showModal && (
+                      <PostsPageEditModal
+                        initialValues={postsPageData}
+                      />
+                    )} */}
+                  </>
+                )
+              }}
+            </ResponsiveContext.Consumer>
           );
         }}
       />

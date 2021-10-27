@@ -1,17 +1,20 @@
 import { NextPage } from 'next';
 import Head from 'next/head';
+import {
+  Box,
+  Card,
+  CardBody,
+  CardHeader,
+  Anchor,
+  Grid,
+  ResponsiveContext,
+  Text
+} from 'grommet';
 
 import { LoadingErrorOrRender } from '../components/LoadingErrorOrRender';
-import { Header } from '../components/header';
-import { OuterContainer, Quote, ShadowCard, Title } from '../components/Card';
+import {useState as useEditModeState} from '../contexts/EditModeState';
 
-import {
-  Description,
-  ProjectLink,
-  SourceLink,
-} from '../components/Projects.styles';
-
-
+import {appTitle} from '../constants';
 import getServerSidePropsFactory from '../graphql/getServerSidePropsFactory';
 import {
   useFetchProjectsQuery,
@@ -23,58 +26,121 @@ const Projects: NextPage = () => {
   const { data, loading, error } = useFetchProjectsQuery();
 
   return (
-    <LoadingErrorOrRender<FetchProjectsQuery>
-      error={error}
-      isLoading={loading}
-      queryResult={data}
-      render={({ queryResult }) => {
-        const {
-          projects,
-          summary,
-        } = (queryResult as FetchProjectsQuery).projectsPage;
+    <>
+      <Head>
+        <title>{appTitle} - projects</title>
+      </Head>
+      <LoadingErrorOrRender<FetchProjectsQuery>
+        error={error}
+        isLoading={loading}
+        queryResult={data}
+        render={({ queryResult }) => {
+          const {
+            projects,
+            summary,
+          } = (queryResult as FetchProjectsQuery).projectsPage;
 
-        return (
-          <div>
-            <Head>
-              <title>dslama.net - projects</title>
-            </Head>
-            <div>
-              <Header summary={summary || ''} />
-              {projects &&
-                projects.map(project => (
-                  <OuterContainer key={project?.id}>
-                    <ShadowCard>
-                      <Title>
-                        <ProjectLink
-                          href={project?.appUrl || ''}
-                          target="_blank">
-                          {project?.name}
-                        </ProjectLink>
-                        {project?.sourceUrl && (
-                          <>
-                            -
-                            <SourceLink
-                              href={project.sourceUrl}
-                              target="_blank">
-                              source
-                            </SourceLink>
-                          </>
-                        )}
-                      </Title>
-                      <Description>{project?.description}</Description>
-                      <Quote
-                        dangerouslySetInnerHTML={{
-                          __html: project?.summary || '',
-                        }}
+          const [editModeState] = useEditModeState();
+
+          return (
+            <ResponsiveContext.Consumer>
+              {responsive => {
+                const isMobile = responsive === 'small';
+
+                return (
+                  <>
+                    <Grid
+                      columns={[
+                        isMobile ? 'auto' : 'auto'
+                      ]}
+                      margin={{horizontal: "large"}}
+                    >
+                      <Box
+                        direction="column"
+                        align="center"
+                        height="small"
+                        pad="xlarge"
+                      >
+                        <Text
+                          textAlign="center"
+                          size="large"
+                        >
+                          {summary || ''}
+                        </Text>
+                      </Box>
+                      <Grid
+                        fill="horizontal"
+                        gap="large"
+                        rows="auto"
+                        columns={['flex']}
+                        justify="center"
+                      >
+                        {projects && projects.map((project, index) => (
+                          <Card
+                            key={project?.id || `project-${index}`}
+                            height="full"
+                            width={isMobile ? 'auto' : 'full'}
+                            background="light-1"
+                          >
+                            <CardHeader
+                              alignSelf="center"
+                              pad={{top: 'large', bottom: 'small'}}
+                              direction="row"
+                              width="full"
+                              justify="center"
+                            >
+                              <Anchor
+                                size="xlarge"
+                                onClick={() => {
+                                  project?.appUrl && window.open(project.appUrl, "_blank");
+                                }}
+                              >
+                              {project?.name || ''}
+                              </Anchor>
+                              {
+                                  project?.sourceUrl && (
+                                    <Anchor
+                                      onClick={() => {
+                                        project?.sourceUrl && window.open(project.sourceUrl, "_blank");
+                                      }}
+                                      margin={{left: 'small'}}
+                                    >
+                                      <div>source</div>
+                                    </Anchor>
+                                  )
+                                }
+                            </CardHeader>
+                            <CardBody pad="medium">
+                              <Text
+                                size="large"
+                                textAlign="center"
+                                margin={{bottom: 'large'}}
+                              >
+                              {project?.description || ''}
+                              </Text>
+                              <Text
+                                textAlign="justify"
+                                size="medium">
+                                {project?.summary || ''}
+                              </Text>
+                            </CardBody>
+                          </Card>                
+                        ))}
+                      </Grid>
+                    </Grid>
+                    {/* {editModeState.showModal && (
+                      <PostsPageEditModal
+                        initialValues={postsPageData}
                       />
-                    </ShadowCard>
-                  </OuterContainer>
-                ))}
-            </div>
-          </div>
-        );
-      }}
-    />
+                    )} */}
+                  </>
+                )
+              }}
+            </ResponsiveContext.Consumer>
+          );
+        }}
+      />
+    </>
   );
 };
 

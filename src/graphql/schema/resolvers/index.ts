@@ -5,6 +5,7 @@ import { resolver as aboutPageResolver } from './queries/about';
 import { resolver as postsPageResolver } from './queries/posts';
 import { resolver as attemptLoginResolver } from './mutations/attemptLogin';
 import {resolver as updateAboutPageResolver } from './mutations/updateAboutPage';
+import { resolver as updatePostsPageResolver } from './mutations/updatePostsPage';
 import { scalars } from './scalars';
 
 const Query: Required<QueryResolvers> = {
@@ -14,9 +15,10 @@ const Query: Required<QueryResolvers> = {
   readingsPage: readingsPageResolver,
 };
 
-const Mutation: MutationResolvers = {
+const Mutation: Required<MutationResolvers> = {
   attemptLogin: attemptLoginResolver,
-  updateAboutPage: updateAboutPageResolver
+  updateAboutPage: updateAboutPageResolver,
+  updatePostsPage: updatePostsPageResolver
 }
 
 export default { ...scalars, Mutation, Query };

@@ -1,0 +1,9 @@
+fragment PostsPageFragment on PostsPage {
+  posts {
+      url
+      originalPublishDate
+      title
+      snippet
+  }
+  summary
+}

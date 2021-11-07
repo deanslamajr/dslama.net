@@ -45,8 +45,8 @@ export const AboutPageEditModal: React.FC<AboutPageEditModalProps> = ({
     });
   }, [editModeState, setEditModeState]);
 
-  const [updateAboutPage, {data, loading}] = useUpdateAboutPageMutation({
-    onCompleted: (data) => {
+  const [updateAboutPage, {loading}] = useUpdateAboutPageMutation({
+    onCompleted: () => {
       closeModal();
     },
     onError: (error) => {     

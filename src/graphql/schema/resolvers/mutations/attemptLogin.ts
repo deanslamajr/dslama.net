@@ -8,7 +8,7 @@ import {
   update as updateAccount
 } from '../postgresql/account';
 
-export const resolver: MutationResolvers<ContextInterface>['attemptLogin'] = async (
+export const resolver: Required<MutationResolvers<ContextInterface>>['attemptLogin'] = async (
   _parent, args, context, _info
 ) => {
   const { input } = args;

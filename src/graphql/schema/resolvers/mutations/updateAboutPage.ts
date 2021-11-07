@@ -4,7 +4,7 @@ import { LinkInput, MutationResolvers } from '../../../generated/graphql';
 import {update} from '../postgresql/aboutPage';
 import {ContextInterface} from '../../context';
 
-export const resolver: MutationResolvers<ContextInterface>['updateAboutPage'] = async (
+export const resolver: Required<MutationResolvers<ContextInterface>>['updateAboutPage'] = async (
   _parent, args, context, _info
 ) => {
 

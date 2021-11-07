@@ -1,11 +1,6 @@
+# import PostsPageFragment from '../fragments/PostsPageFragment.graphql'
 query FetchPosts {
     postsPage {
-        posts {
-            url
-            originalPublishDate
-            title
-            snippet
-        }
-        summary
+        ...PostsPageFragment
     }
 }

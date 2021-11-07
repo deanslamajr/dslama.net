@@ -35,6 +35,9 @@ function createApolloClient(context?: ResolverContext) {
       typePolicies: {
         AboutPage: {
           keyFields: [],
+        },
+        PostsPage: {
+          keyFields: [],
         }
       }
     }),

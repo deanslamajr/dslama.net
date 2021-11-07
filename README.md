@@ -12,25 +12,28 @@ An about page web app
     * `cp ./.env.example ./.env`
     * set values for the variables in `.env`
 * `npm run clean:dev`
+## To Debug Backend
+* `npm run dev:debug`
+* In vscode, run `Attach` script in the debug menu
 
-## DB
-* modify schema
+# DB tasks
+## modify schema
     * make changes to `./prisma/schema.prisma`
     * apply these changes to the DB - `npx prisma migrate dev --name <descriptive-name-for-changes>`
     * apply the changes to the client/types - `npx prisma generate`
-* manage data (view, modify, etc.)
+## manage data (view, modify, etc.)
     * `npx prisma studio`
     * open browser to `http://localhost:5555/`
-* to migrate a remote schema to the current local schema config
+## to migrate a remote schema
+  * `git checkout` the commit with the changes
   * set `DATABASE_URL` in `.env` for the remote DB
   * `npx prisma migrate deploy`
-* combine all migrations into a single migration
+## combine all migrations into a single migration
   * delete `/prisma/migrations`
   * `npx prisma migrate dev --name init`
   * *Warning: all DB data will be cleared*
     * select option `y` when prompted
-    
 
-## To Debug Backend
-* `npm run dev:debug`
-* In vscode, run `Attach` script in the debug menu
+# Deployments
+* If there are changes to the DB schema, follow the "to migrate a remote schema" section above
+* `npm publish:<version-bump-method>`

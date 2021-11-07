@@ -21,7 +21,7 @@ import createDecorator from 'final-form-focus'
 
 const focusOnErrors = createDecorator()
 
-// import {useUpdateAboutPageMutation, UpdateAboutPageInput, UpdateAboutPageMutation} from '../../graphql/generated/ops';
+import {useUpdatePostsPageMutation, UpdateAboutPageInput, UpdateAboutPageMutation} from '../graphql/generated/ops';
 
 import {useState as useEditModeState} from '../contexts/EditModeState';
 import {isValidUrl} from '../utils';
@@ -66,35 +66,44 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
     });
   }, [editModeState, setEditModeState]);
 
-  // const [updateAboutPage, {data, loading}] = useUpdateAboutPageMutation({
-  //   onCompleted: (data) => {
-  //     setEditModeState({
-  //       ...editModeState,
-  //       showModal: false
-  //     })
-  //   },
-  //   onError: (error) => {     
-  //     const isUnauthenticated = error.graphQLErrors.some(error => (
-  //       error.extensions?.code === 'UNAUTHENTICATED'
-  //     ));
+  const [updatePostsPage, {loading}] = useUpdatePostsPageMutation({
+    onCompleted: () => {
+      closeModal()
+    },
+    onError: (error) => {     
+      const isUnauthenticated = error.graphQLErrors.some(error => (
+        error.extensions?.code === 'UNAUTHENTICATED'
+      ));
 
-  //     if (isUnauthenticated) {
-  //       setError(error);
-  //     }
-  //   }
-  // });
+      if (isUnauthenticated) {
+        setError(error);
+      }
+    }
+  });
 
   const handleSubmit = async (values: Record<string, any>, form: FormApi) => {
+    type Values = {
+      summary: string;
+    };
+    const transformFormValuesForMutationPayload = ({
+      summary
+    }: Values) => {
+      return {
+        input: {
+          summary
+        }
+      }
+    };
+    
     console.log('values', values)
     console.log('form', form)
     console.log('form.getState()', form.getState())
-    // updateAboutPage({
-    //   variables: {
-    //     input: {
-    //       ...values
-    //     }
-    //   }
-    // });
+
+    const mutationInput = transformFormValuesForMutationPayload(values as Values);
+
+    updatePostsPage({
+      variables: mutationInput
+    });
   };
 
   const augmentedInitialValues = React.useMemo(() => ({
@@ -130,7 +139,7 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
           : (
             <Modal
               disableSave={pristine}
-              // isLoading={loading}
+              isLoading={loading}
               onSaveClick={() => form.submit()}
               onClose={() => closeModal()}
             >

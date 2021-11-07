@@ -4,7 +4,6 @@ An about page web app
 
 # Development
 * `nvm use`
-* `npm run clean`
 * A connection to a properly migrated DB is required to run this app
     * A docker-compose is provided to simplify setting up a locally hosted postgresql server
         * Ensure that [Docker Compose](https://docs.docker.com/compose/install/) is available on the command line
@@ -12,7 +11,7 @@ An about page web app
 * Set environment variables
     * `cp ./.env.example ./.env`
     * set values for the variables in `.env`
-* `npm run dev`
+* `npm run clean:dev`
 
 ## DB
 * modify schema

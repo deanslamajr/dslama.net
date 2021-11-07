@@ -10,7 +10,7 @@ export const resolver: Resolver<PostsPage> = async (
   const data = await fetchMostRecentPostsPageData();
 
   return {
-    summary: data?.summary,
-    posts: data?.posts,
+    summary: data?.summary || '',
+    posts: data?.posts || [],
   };
 };

@@ -1,7 +1,7 @@
 import {AuthenticationError} from 'apollo-server-micro';
 import { Prisma } from '@prisma/client'
 
-import { LinkInput, MutationResolvers } from '../../../generated/graphql';
+import { LinkInput, MutationResolvers, PostInput } from '../../../generated/graphql';
 import {update} from '../postgresql/postsPage';
 import {ContextInterface} from '../../context';
 
@@ -17,6 +17,13 @@ export const resolver: Required<MutationResolvers<ContextInterface>>['updatePost
 
     // Summary
     updateArgs.summary = input.summary;
+
+    // Posts
+    if (input.posts.length) {
+      updateArgs.posts = {
+        create: [...input.posts]
+      };
+    }
 
     const data = await update(updateArgs);
   

@@ -1,15 +1,23 @@
 type Post {
-    url: String
-    originalPublishDate: Date
-    title: String
-    snippet: String
+    url: String!
+    originalPublishDate: Date!
+    title: String!
+    snippet: String!
 }
 
 type PostsPage {
-    posts: [Post]
-    summary: String
+    posts: [Post!]!
+    summary: String!
+}
+
+input PostInput {
+  originalPublishDate: Date!
+  snippet: String!
+  title: String!
+  url: String!
 }
 
 input UpdatePostsPageInput {
+    posts: [PostInput!]!
     summary: String!
 }

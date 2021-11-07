@@ -39,3 +39,5 @@ export function isValidUrl(potentialUrl: string) {
 
   return errorMessage;
 }
+
+export const isRequired = (value?: string) => Boolean(value) ? undefined : 'This field is required.'

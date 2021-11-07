@@ -36,4 +36,5 @@ An about page web app
 
 # Deployments
 * If there are changes to the DB schema, follow the "to migrate a remote schema" section above
+* `npm run build` - Verify build before creating image
 * `npm publish:<version-bump-method>`

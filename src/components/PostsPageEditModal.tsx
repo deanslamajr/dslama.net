@@ -2,7 +2,7 @@ import React from 'react';
 import {ApolloError} from '@apollo/client';
 import {
   Box,
-  Header,
+  DateInput,
   Button,
   FormField,
   Text,
@@ -19,34 +19,33 @@ import arrayMutators from 'final-form-arrays'
 import { FieldArray } from 'react-final-form-arrays'
 import createDecorator from 'final-form-focus'
 
-const focusOnErrors = createDecorator()
-
-import {useUpdatePostsPageMutation, UpdateAboutPageInput, UpdateAboutPageMutation} from '../graphql/generated/ops';
+import {useUpdatePostsPageMutation} from '../graphql/generated/ops';
 
 import {useState as useEditModeState} from '../contexts/EditModeState';
-import {isValidUrl} from '../utils';
+import {isRequired, isValidUrl} from '../utils';
 import {Modal} from './Modal';
 import {LoginModal} from './LoginModal';
 
 import {
-  FetchPostsQuery
+  FetchPostsQuery,
+  PostInput
 } from '../graphql/generated/ops';
 import { FormApi } from 'final-form';
 
-type Post = Required<
-Omit<NonNullable<NonNullable<FetchPostsQuery['postsPage']['posts']>[number]>, '__typename'>
->;
+const focusOnErrors = createDecorator();
 
-const EMPTY_POST: Post = {
+type Post = NonNullable<FetchPostsQuery['postsPage']['posts']>[number];
+
+const EMPTY_POST: PostInput = {
   url: '',
   originalPublishDate: '',
   title: '',
   snippet: ''
 };
 
-const initializeNewPost = (): Post => ({
+const initializeNewPost = (): PostInput => ({
   ...EMPTY_POST,
-  originalPublishDate: Date.now()
+  originalPublishDate: (new Date(Date.now())).toISOString()
 })
 
 type PostsPageEditModalProps = {
@@ -83,21 +82,42 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
 
   const handleSubmit = async (values: Record<string, any>, form: FormApi) => {
     type Values = {
+      newPosts: Array<{
+        originalPublishDate: string;
+        snippet: string;
+        title: string;
+        url: string;
+      }>;
+      posts: PostInput[];
       summary: string;
     };
     const transformFormValuesForMutationPayload = ({
+      newPosts,
+      posts,
       summary
     }: Values) => {
+      const transformPost = ({
+        originalPublishDate,
+        snippet,
+        title,
+        url
+      }: Post) => ({
+        originalPublishDate,
+        snippet,
+        title,
+        url
+      });
+
       return {
         input: {
+          posts: [
+            ...newPosts.map(transformPost),
+            ...posts.map(transformPost)
+          ],
           summary
         }
       }
     };
-    
-    console.log('values', values)
-    console.log('form', form)
-    console.log('form.getState()', form.getState())
 
     const mutationInput = transformFormValuesForMutationPayload(values as Values);
 
@@ -202,11 +222,13 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
                               <Field
                                 name={`${name}.title`}
                                 component="input"
+                                validate={isRequired}
                               >
-                                {({ input }) => {
+                                {({ input, meta }) => {
                                   return (
                                     <FormField
                                       label="title"
+                                      error={meta.touched ? meta.error : undefined}
                                       margin={{bottom: 'xsmall'}}
                                     >
                                       <TextInput
@@ -244,10 +266,12 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
                               <Field
                                 name={`${name}.snippet`}
                                 component="input"
+                                validate={isRequired}
                               >
-                                {({ input }) => (
+                                {({ input, meta }) => (
                                   <FormField
                                     label="snippet"
+                                    error={meta.touched ? meta.error : undefined}
                                     width="full"
                                   >
                                     <TextArea
@@ -255,6 +279,20 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
                                       onChange={input.onChange}
                                       value={input.value}
                                       rows={10}
+                                    />
+                                  </FormField>
+                                )}
+                              </Field>
+                              <Field name={`${name}.originalPublishDate`}>
+                                {({ input }) => (
+                                  <FormField
+                                    label="When was this originally published?"
+                                    width="full"
+                                  >
+                                    <DateInput
+                                      format="mm/dd/yyyy"
+                                      value={input.value}
+                                      onChange={({ value }) => input.onChange(value)}
                                     />
                                   </FormField>
                                 )}

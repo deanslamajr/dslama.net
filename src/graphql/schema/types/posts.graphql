@@ -9,3 +9,7 @@ type PostsPage {
     posts: [Post]
     summary: String
 }
+
+input UpdatePostsPageInput {
+    summary: String!
+}

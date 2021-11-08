@@ -26,9 +26,12 @@ export const resolver: Required<MutationResolvers<ContextInterface>>['updatePost
     }
 
     const data = await update(updateArgs);
+    const sortedPosts = data.posts.sort(
+      (a, b) => b.originalPublishDate.getTime() - a.originalPublishDate.getTime()
+    );
   
     return {
-      posts: data.posts,
+      posts: sortedPosts,
       summary: data.summary
     };
   }

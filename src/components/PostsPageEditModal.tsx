@@ -128,7 +128,7 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
 
   const augmentedInitialValues = React.useMemo(() => ({
     ...initialValues,
-    newPosts: []
+    newPosts: editModeState.postsFromConsole || []
   }), [initialValues]);
   
   return (

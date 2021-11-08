@@ -9,10 +9,19 @@ import React, {
   useState,
 } from 'react';
 import { useRouter } from 'next/router'
+import {
+  FetchPostsQuery
+} from '../graphql/generated/ops';
+
+type Post = Omit<
+  FetchPostsQuery['postsPage']['posts'][number],
+  '__typename' 
+>;
 
 type State = {
     isActive: boolean;
     showModal: boolean;
+    postsFromConsole: Post[] | null;
 };
 
 type Setter = Dispatch<SetStateAction<State>>;
@@ -27,7 +36,8 @@ const getInitializedState = (queryString?: string | string[]): State => {
   
   return {
     isActive,
-    showModal: false
+    showModal: false,
+    postsFromConsole: null
   };
 }
 

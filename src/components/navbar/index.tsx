@@ -41,12 +41,41 @@ export const Navbar: React.FunctionComponent<NavbarProps> = ({}) => {
   };
 
   const toggleModalVisibility = () => {
-    // if (editModeState.isActive) {
-      updateEditMode({
-        ...editModeState,
-        showModal: !editModeState.showModal
-      });
-    // }
+    const parseUnsafeInput = (unsafeInput: unknown) => {
+      type Post = NonNullable<typeof editModeState.postsFromConsole>[number];
+
+      const parsedPostsFromUnsafeInput = [] as Post[];
+
+      if (unsafeInput && Array.isArray(unsafeInput)) {
+        unsafeInput.forEach(possiblyAPost => {
+          if (
+            typeof possiblyAPost === 'object' &&
+            typeof possiblyAPost.url === 'string' &&
+            typeof possiblyAPost.title === 'string' &&
+            typeof possiblyAPost.snippet === 'string' &&
+            typeof possiblyAPost.originalPublishDate === 'number'
+          ) {
+            parsedPostsFromUnsafeInput.push({
+              title: possiblyAPost.title,
+              originalPublishDate: possiblyAPost.originalPublishDate,
+              url: possiblyAPost.url,
+              snippet: possiblyAPost.snippet
+            } as Post);
+          }
+        });
+      }
+
+      return parsedPostsFromUnsafeInput;
+    }
+
+    // @ts-ignore
+    const postsFromConsole = parseUnsafeInput(window.__postsFromConsole);
+    
+    updateEditMode({
+      ...editModeState,
+      showModal: !editModeState.showModal,
+      postsFromConsole
+    });
   }
 
   const toggleEditMode = () => {

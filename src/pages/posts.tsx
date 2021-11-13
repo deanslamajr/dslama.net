@@ -36,7 +36,7 @@ const Posts: NextPage = () => {
         isLoading={loading}
         queryResult={data}
         render={({ queryResult }) => {
-          const postsPageData = (queryResult as FetchPostsQuery).postsPage;
+          const postsPageData = queryResult.postsPage;
           const { posts, summary } = postsPageData;
 
           const [editModeState] = useEditModeState();
@@ -76,9 +76,9 @@ const Posts: NextPage = () => {
                       >
                         {posts && posts.map((post, index) => (
                           <Card
-                            key={post?.title || `post-${index}`}
+                            key={post.title || `post-${index}`}
                             onClick={() => {
-                              post?.url && window.open(post.url, "_blank");
+                              post.url && window.open(post.url, "_blank");
                             }}
                             height="full"
                             width={isMobile ? 'auto' : 'full'}
@@ -93,18 +93,18 @@ const Posts: NextPage = () => {
                                 size="xlarge"
                                 textAlign="center"
                               >
-                              {post?.title || ''}
+                              {post.title || ''}
                               </Text>
                             </CardHeader>
                             <CardBody pad="medium">
                               <Text
                                 textAlign="justify"
                                 size="medium">
-                                {post?.snippet || ''}
+                                {post.snippet || ''}
                               </Text>
                             </CardBody>
                             <CardFooter pad={{horizontal: "small"}} background="light-2">
-                              <div>{formatDate(post?.originalPublishDate)}</div>
+                              <div>{formatDate(post.originalPublishDate)}</div>
                             </CardFooter>
                           </Card>                
                         ))}

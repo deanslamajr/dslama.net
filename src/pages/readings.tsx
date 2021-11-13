@@ -14,7 +14,7 @@ import {
 import { formatDate } from '../utils';
 import {appTitle} from '../constants';
 import { LoadingErrorOrRender } from '../components/LoadingErrorOrRender';
-import {useState as useEditModeState} from '../contexts/EditModeState';
+// import {useState as useEditModeState} from '../contexts/EditModeState';
 
 import getServerSidePropsFactory from '../graphql/getServerSidePropsFactory';
 import {
@@ -39,9 +39,9 @@ const ReadingsPage: NextPage = () => {
           const {
             readings,
             summary,
-          } = (queryResult as FetchReadingsQuery).readingsPage;
+          } = queryResult.readingsPage;
 
-          const [editModeState] = useEditModeState();
+          // const [editModeState] = useEditModeState();
 
           return (
             <ResponsiveContext.Consumer>

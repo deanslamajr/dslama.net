@@ -44,43 +44,38 @@ const Home: NextPage = () => {
           return (
             <div>
               <Container>
-                <Header summary={queryResult?.aboutPage.title || ''} />
+                <Header summary={queryResult.aboutPage.title || ''} />
                 <LogoContainer>
-                  <BackgroundImage imageUrl={queryResult?.aboutPage.pictureURL || ''} />
+                  <BackgroundImage imageUrl={queryResult.aboutPage.pictureURL || ''} />
                 </LogoContainer>
                 <LinksContainer>
-                {
-                  (queryResult?.aboutPage?.links?.length
-                    ? (
-                      (queryResult?.aboutPage.links as Link[])
-                        .map(({ name, url }) => (
-                          <LinkItem key={name || ''}>
-                            <LinkAnchor href={url || ''} target="_blank">
-                              {name}
-                            </LinkAnchor>
-                          </LinkItem>
-                        ))
+                  {
+                    (queryResult.aboutPage.links?.length
+                      ? (
+                        (queryResult.aboutPage.links as Link[])
+                          .map(({ name, url }) => (
+                            <LinkItem key={name || ''}>
+                              <LinkAnchor href={url || ''} target="_blank">
+                                {name}
+                              </LinkAnchor>
+                            </LinkItem>
+                          ))
+                      )
+                      : (
+                        <LinkItem key={''}>
+                          <LinkAnchor href={''} target="_blank">
+                          </LinkAnchor>
+                        </LinkItem>
+                      )
                     )
-                    : (
-                      <LinkItem key={''}>
-                        <LinkAnchor href={''} target="_blank">
-                        </LinkAnchor>
-                      </LinkItem>
-                    )
-                  )
-                }
+                  }
                 </LinksContainer>
-                <BioCard dangerouslySetInnerHTML={{ __html: queryResult?.aboutPage.bio || '' }} />
+                <BioCard dangerouslySetInnerHTML={{ __html: queryResult.aboutPage.bio || '' }} />
               </Container>
 
               {editModeState.showModal && (
                 <AboutPageEditModal
-                  initialValues={{
-                    bio: queryResult?.aboutPage.bio || '',
-                    pictureURL: queryResult?.aboutPage.pictureURL || '',
-                    title: queryResult?.aboutPage.title || '',
-                    links: queryResult?.aboutPage.links || []
-                  }}
+                  initialValues={queryResult}
                 />
               )}
             </div>

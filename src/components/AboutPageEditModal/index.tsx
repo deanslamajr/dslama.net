@@ -13,7 +13,7 @@ import { Form as FinalForm, Field } from 'react-final-form';
 import arrayMutators from 'final-form-arrays'
 import { FieldArray } from 'react-final-form-arrays'
 
-import {useUpdateAboutPageMutation} from '../../graphql/generated/ops';
+import {useUpdateAboutPageMutation, FetchAboutQuery} from '../../graphql/generated/ops';
 
 import {useState as useEditModeState} from '../../contexts/EditModeState';
 import {isValidUrl} from '../../utils';
@@ -21,15 +21,7 @@ import {Modal} from '../Modal';
 import {LoginModal} from '../LoginModal';
 
 type AboutPageEditModalProps = {
-  initialValues: {
-    links?: Array<{
-      name: string;
-      url: string;
-    }>;
-    pictureURL: string;
-    bio: string;
-    title: string;
-  }
+  initialValues: FetchAboutQuery;
 }
 
 export const AboutPageEditModal: React.FC<AboutPageEditModalProps> = ({
@@ -69,11 +61,33 @@ export const AboutPageEditModal: React.FC<AboutPageEditModalProps> = ({
       }
     });
   };
+
+  const transformedInitialValues = React.useMemo(() => {
+    const {
+      aboutPage: {
+        bio,
+        links,
+        pictureURL,
+        title
+      }
+    } = initialValues;
+    
+    const transformedLinks = links?.map(({name, url}) => (
+      {name, url}
+    ));
+
+    return {
+      links: transformedLinks || [],
+      pictureURL: pictureURL || '',
+      bio: bio || '',
+      title: title || ''
+    };
+  }, [initialValues]);
   
   return (
     <FinalForm
       onSubmit={values => handleSubmit(values)}
-      initialValues={initialValues}
+      initialValues={transformedInitialValues}
       mutators={{
         ...arrayMutators
       }}

@@ -38,7 +38,7 @@ const Projects: NextPage = () => {
           const {
             projects,
             summary,
-          } = (queryResult as FetchProjectsQuery).projectsPage;
+          } = queryResult.projectsPage;
 
           const [editModeState] = useEditModeState();
 

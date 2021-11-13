@@ -6,7 +6,7 @@ interface LoadingErrorOrRenderProps<T> {
   errorRender?: (error: ApolloError) => JSX.Element;
   isLoading: boolean;
   queryResult: T | undefined | null;
-  render: (props: { queryResult: T | undefined | null }) => JSX.Element;
+  render: (props: { queryResult: T }) => JSX.Element;
 }
 
 export const LoadingErrorOrRender = <T,>({
@@ -26,7 +26,9 @@ export const LoadingErrorOrRender = <T,>({
       : <>'Something broke!'</>;
   }
 
-  return render({
-    queryResult,
-  });
+  if (queryResult === null || queryResult === undefined) {
+    return null;
+  }
+
+  return render({queryResult});
 };

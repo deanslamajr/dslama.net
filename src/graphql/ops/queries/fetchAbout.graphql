@@ -1,6 +1,7 @@
 query FetchAbout {
     aboutPage {
         links {
+            id
             name
             url
         }

@@ -19,38 +19,49 @@ import arrayMutators from 'final-form-arrays'
 import { FieldArray } from 'react-final-form-arrays'
 import createDecorator from 'final-form-focus'
 
-import {useUpdatePostsPageMutation} from '../graphql/generated/ops';
+import {
+  UpdateProjectsPageMutationVariables,
+  useUpdateProjectsPageMutation
+} from '../../graphql/generated/ops';
 
-import {useState as useEditModeState} from '../contexts/EditModeState';
-import {isRequired, isValidUrl} from '../utils';
-import {Modal} from './Modal';
-import {LoginModal} from './LoginModal';
+import {useState as useEditModeState} from '../../contexts/EditModeState';
+import {isRequired, isValidUrl} from '../../utils';
+import {Modal} from '../Modal';
+import {LoginModal} from '../LoginModal';
 
 import {
-  FetchPostsQuery,
+  FetchProjectsQuery,
   PostInput
-} from '../graphql/generated/ops';
+} from '../../graphql/generated/ops';
 import { FormApi } from 'final-form';
 
 const focusOnErrors = createDecorator();
 
-type Post = NonNullable<FetchPostsQuery['postsPage']['posts']>[number];
+type MutableProject = Omit<
+  NonNullable<FetchProjectsQuery['projectsPage']['projects']>[number],
+  'id' | '__typename'
+>;
 
-const EMPTY_POST: PostInput = {
-  url: '',
+const EMPTY_PROJECT: MutableProject = {
   originalPublishDate: '',
-  title: '',
-  snippet: ''
+  name: '',
+  description: '',
+  summary: '',
+  appUrl: '',
+  sourceUrl: ''
 };
 
-const initializeNewPost = (): PostInput => ({
-  ...EMPTY_POST,
+const initializeNewProject = (): MutableProject => ({
+  ...EMPTY_PROJECT,
   originalPublishDate: (new Date(Date.now())).toISOString()
 })
 
 type PostsPageEditModalProps = {
-  initialValues: Omit<FetchPostsQuery['postsPage'], '__typename'>
-}
+  initialValues: {
+    summary: FetchProjectsQuery['projectsPage']['summary'];
+    projects: MutableProject[];
+  };
+};
 
 export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
   initialValues
@@ -65,7 +76,7 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
     });
   }, [editModeState, setEditModeState]);
 
-  const [updatePostsPage, {loading}] = useUpdatePostsPageMutation({
+  const [updateProjectsPage, {loading}] = useUpdateProjectsPageMutation({
     onCompleted: () => {
       closeModal()
     },
@@ -82,37 +93,18 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
 
   const handleSubmit = async (values: Record<string, any>, form: FormApi) => {
     type Values = {
-      newPosts: Array<{
-        originalPublishDate: string;
-        snippet: string;
-        title: string;
-        url: string;
-      }>;
-      posts: PostInput[];
+      newProjects: MutableProject[];
       summary: string;
     };
-    const transformFormValuesForMutationPayload = ({
-      newPosts,
-      posts,
-      summary
-    }: Values) => {
-      const transformPost = ({
-        originalPublishDate,
-        snippet,
-        title,
-        url
-      }: Post) => ({
-        originalPublishDate,
-        snippet,
-        title,
-        url
-      });
 
+    const transformFormValuesForMutationPayload = ({
+      newProjects,
+      summary
+    }: Values): UpdateProjectsPageMutationVariables => {
       return {
         input: {
-          posts: [
-            ...newPosts.map(transformPost),
-            ...posts.map(transformPost)
+          projects: [
+            ...newProjects
           ],
           summary
         }
@@ -121,20 +113,22 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
 
     const mutationInput = transformFormValuesForMutationPayload(values as Values);
 
-    updatePostsPage({
+    console.log('mutationInput', mutationInput)
+
+    updateProjectsPage({
       variables: mutationInput
     });
   };
 
-  const augmentedInitialValues = React.useMemo(() => ({
-    ...initialValues,
-    newPosts: editModeState.postsFromConsole || []
-  }), [initialValues]);
+  // const augmentedInitialValues = React.useMemo(() => ({
+  //   ...initialValues,
+  //   newProjects: editModeState.postsFromConsole || []
+  // }), [initialValues]);
   
   return (
     <FinalForm
       onSubmit={(values, form) => handleSubmit(values, form)}
-      initialValues={augmentedInitialValues}
+      initialValues={initialValues}
       mutators={{
         ...arrayMutators
       }}
@@ -191,11 +185,11 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
                       secondary
                       hoverIndicator={true}
                       fill="horizontal"
-                      onClick={() => push('newPosts', initializeNewPost())}
+                      onClick={() => push('newProjects', initializeNewProject())}
                     >
                       <Box pad="xsmall" direction="row" align="center" gap="small">
                         <Add color="brand"/>
-                        <Text>Add Post</Text>
+                        <Text>Add Project</Text>
                       </Box>
                     </Button>
                     <FormField
@@ -207,7 +201,7 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
                       width="100%"
                     >
                       <FieldArray
-                        name="newPosts"
+                        name="newProjects"
                         subscription={{}}
                       >
                         {({ fields }) => (
@@ -220,14 +214,14 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
                               }}  
                             >
                               <Field
-                                name={`${name}.title`}
+                                name={`${name}.name`}
                                 component="input"
                                 validate={isRequired}
                               >
                                 {({ input, meta }) => {
                                   return (
                                     <FormField
-                                      label="title"
+                                      label="name"
                                       error={meta.touched ? meta.error : undefined}
                                       margin={{bottom: 'xsmall'}}
                                     >
@@ -235,21 +229,21 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
                                         {...input}
                                         onChange={input.onChange}
                                         value={input.value}
-                                        placeholder="This is a Contrived Title"
+                                        placeholder="This is a Contrived Project Name"
                                       />
                                     </FormField>
                                   );
                                 }}
                               </Field>
                               <Field
-                                name={`${name}.url`}
+                                name={`${name}.appUrl`}
                                 component="input"
                                 validate={isValidUrl}
                               >
                                 {({ input, meta }) => {
                                   return (
                                     <FormField
-                                      label="url"
+                                      label="project url"
                                       error={meta.touched ? meta.error : undefined}
                                       margin={{bottom: 'xsmall'}}
                                     >
@@ -257,20 +251,62 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
                                         {...input}
                                         onChange={input.onChange}
                                         value={input.value}
-                                        placeholder="https://www.someblog.com"
+                                        placeholder="https://someApp.dslama.net"
                                       />
                                     </FormField>
                                   );
                                 }}
                               </Field>
                               <Field
-                                name={`${name}.snippet`}
+                                name={`${name}.sourceUrl`}
+                                component="input"
+                                validate={isValidUrl}
+                              >
+                                {({ input, meta }) => {
+                                  return (
+                                    <FormField
+                                      label="source url"
+                                      error={meta.touched ? meta.error : undefined}
+                                      margin={{bottom: 'xsmall'}}
+                                    >
+                                      <TextInput
+                                        {...input}
+                                        onChange={input.onChange}
+                                        value={input.value}
+                                        placeholder="https://www.github.com/deanslama/someAppName"
+                                      />
+                                    </FormField>
+                                  );
+                                }}
+                              </Field>
+                              <Field
+                                name={`${name}.description`}
                                 component="input"
                                 validate={isRequired}
                               >
                                 {({ input, meta }) => (
                                   <FormField
-                                    label="snippet"
+                                    label="description"
+                                    error={meta.touched ? meta.error : undefined}
+                                    width="full"
+                                  >
+                                    <TextArea
+                                      {...input}
+                                      onChange={input.onChange}
+                                      value={input.value}
+                                      rows={2}
+                                    />
+                                  </FormField>
+                                )}
+                              </Field>
+                              <Field
+                                name={`${name}.summary`}
+                                component="input"
+                                validate={isRequired}
+                              >
+                                {({ input, meta }) => (
+                                  <FormField
+                                    label="summary"
                                     error={meta.touched ? meta.error : undefined}
                                     width="full"
                                   >
@@ -314,7 +350,7 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
                       </FieldArray>
                     </FormField>  
                   <FormField
-                    label="edit existing posts"
+                    label="edit existing projects"
                     contentProps={{
                       border: undefined,
                       fill: 'horizontal',
@@ -323,7 +359,7 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
                     width="100%"
                   >
                     <FieldArray
-                      name="posts"
+                      name="projects"
                       subscription={{}}  
                     >
                       {({ fields }) => (
@@ -336,34 +372,34 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
                             }}  
                           >
                             <Field
-                              name={`${name}.title`}
+                              name={`${name}.name`}
                               component="input"
                             >
                               {({ input }) => {
                                 return (
                                   <FormField
-                                    label="title"
+                                    label="project name"
                                     margin={{bottom: 'xsmall'}}
                                   >
                                     <TextInput
                                       {...input}
                                       onChange={input.onChange}
                                       value={input.value}
-                                      placeholder="This is a Contrived Title"
+                                      placeholder="This is a Contrived Project Title"
                                     />
                                   </FormField>
                                 );
                               }}
                             </Field>
                             <Field
-                              name={`${name}.url`}
+                              name={`${name}.appUrl`}
                               component="input"
                               validate={isValidUrl}
                             >
                               {({ input, meta }) => {
                                 return (
                                   <FormField
-                                    label="url"
+                                    label="project url"
                                     error={meta.submitError || meta.touched ? meta.error : undefined}
                                     margin={{bottom: 'xsmall'}}
                                   >
@@ -378,12 +414,52 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
                               }}
                             </Field>
                             <Field
-                              name={`${name}.snippet`}
+                              name={`${name}.sourceUrl`}
+                              component="input"
+                              validate={isValidUrl}
+                            >
+                              {({ input, meta }) => {
+                                return (
+                                  <FormField
+                                    label="source url"
+                                    error={meta.submitError || meta.touched ? meta.error : undefined}
+                                    margin={{bottom: 'xsmall'}}
+                                  >
+                                    <TextInput
+                                      {...input}
+                                      onChange={input.onChange}
+                                      value={input.value}
+                                      placeholder="https://www.someblog.com"
+                                    />
+                                  </FormField>
+                                );
+                              }}
+                            </Field>
+                            <Field
+                              name={`${name}.description`}
                               component="input"
                             >
                               {({ input }) => (
                                 <FormField
-                                  label="snippet"
+                                  label="description"
+                                  width="full"
+                                >
+                                  <TextArea
+                                    {...input}
+                                    onChange={input.onChange}
+                                    value={input.value}
+                                    rows={2}
+                                  />
+                                </FormField>
+                              )}
+                            </Field>
+                            <Field
+                              name={`${name}.summary`}
+                              component="input"
+                            >
+                              {({ input }) => (
+                                <FormField
+                                  label="summary"
                                   width="full"
                                 >
                                   <TextArea
@@ -403,7 +479,7 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
                             >
                               <Box pad="xsmall" direction="row" align="center" gap="small">
                                 <FormTrash color="brand"/>
-                                <Text>Delete Post</Text>
+                                <Text>Delete Project</Text>
                               </Box>
                             </Button>
                           </Box>

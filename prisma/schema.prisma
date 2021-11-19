@@ -11,6 +11,16 @@ generator client {
   binaryTargets   = ["native", "linux-musl"]
 }
 
+model Account {
+  id          String @default(uuid()) @id
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  username    String
+  password    String
+  isActive    Boolean
+  lastLoginAt DateTime
+}
+
 model AboutPage {
   version     Int      @default(autoincrement()) @id
   createdAt   DateTime @default(now())
@@ -67,12 +77,23 @@ model Project {
   pageVersionThatReference  Int
 }
 
-model Account {
-  id          String @default(uuid()) @id
+model ReadingsPage {
+  version     Int      @default(autoincrement()) @id
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  username    String
-  password    String
-  isActive    Boolean
-  lastLoginAt DateTime
+  summary     String
+  readings    Reading[]
+}
+
+model Reading {
+  id                        String @default(uuid()) @id
+  title                     String
+  author                    String
+  foundDate                 DateTime
+  publishDate               DateTime
+  quote                     String
+  publication               String
+  url                       String
+  readingsPage              ReadingsPage @relation(fields: [pageVersionThatReference], references: [version])
+  pageVersionThatReference  Int
 }

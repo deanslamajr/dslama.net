@@ -25,7 +25,6 @@
   },
   "dependencies": {
     "@apollo/client": "^3.4.10",
-    "@awspilot/dynamodb": "^2.0.0",
     "@prisma/client": "^3.0.2",
     "apollo-server-micro": "^2.10.1",
     "aws-sdk": "^2.643.0",

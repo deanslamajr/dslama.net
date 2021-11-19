@@ -1,0 +1,6 @@
+# import ProjectsPageFragment from '../fragments/ProjectsPageFragment.graphql'
+mutation UpdateProjectsPage($input: UpdateProjectsPageInput!) {
+  updateProjectsPage(input: $input) {
+    ...ProjectsPageFragment
+  }
+}

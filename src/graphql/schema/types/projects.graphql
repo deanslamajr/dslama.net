@@ -1,13 +1,28 @@
 type Project {
     id: ID!
-    appUrl: String
-    description: String
-    name: String
-    sourceUrl: String
-    summary: String
+    name: String!
+    originalPublishDate: Date!
+    description: String!
+    appUrl: String!
+    sourceUrl: String!
+    summary: String!
 }
 
 type ProjectsPage {
-    summary: String
-    projects: [Project]
+    summary: String!
+    projects: [Project!]!
+}
+
+input ProjectsInput {
+  name: String!
+  originalPublishDate: Date!
+  description: String!
+  appUrl: String!
+  sourceUrl: String!
+  summary: String!
+}
+
+input UpdateProjectsPageInput {
+    projects: [ProjectsInput!]!
+    summary: String!
 }

@@ -1,0 +1,13 @@
+
+fragment ProjectsPageFragment on ProjectsPage {
+  projects {
+      id
+      name
+      originalPublishDate
+      description
+      summary
+      appUrl
+      sourceUrl
+  }
+  summary
+}

@@ -1,13 +1,6 @@
+# import ProjectsPageFragment from '../fragments/ProjectsPageFragment.graphql'
 query FetchProjects {
     projectsPage {
-        projects {
-            id
-            appUrl
-            description
-            name
-            sourceUrl
-            summary
-        }
-        summary
+        ...ProjectsPageFragment
     }
 }

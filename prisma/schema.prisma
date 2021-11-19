@@ -47,6 +47,26 @@ model Post {
   pageVersionThatReference  Int
 }
 
+model ProjectsPage {
+  version     Int      @default(autoincrement()) @id
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  summary     String
+  projects    Project[]
+}
+
+model Project {
+  id                        String @default(uuid()) @id
+  name                      String
+  originalPublishDate       DateTime
+  description               String
+  summary                   String
+  appUrl                    String
+  sourceUrl                 String
+  projectsPage              ProjectsPage @relation(fields: [pageVersionThatReference], references: [version])
+  pageVersionThatReference  Int
+}
+
 model Account {
   id          String @default(uuid()) @id
   createdAt   DateTime @default(now())

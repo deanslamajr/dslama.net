@@ -13,6 +13,7 @@ import {
 
 import { LoadingErrorOrRender } from '../components/LoadingErrorOrRender';
 import {useState as useEditModeState} from '../contexts/EditModeState';
+import {PostsPageEditModal} from '../components/ProjectsPageEditModal'
 
 import {appTitle} from '../constants';
 import getServerSidePropsFactory from '../graphql/getServerSidePropsFactory';
@@ -35,10 +36,11 @@ const Projects: NextPage = () => {
         isLoading={loading}
         queryResult={data}
         render={({ queryResult }) => {
+          const projectsPageData = queryResult.projectsPage;
           const {
             projects,
             summary,
-          } = queryResult.projectsPage;
+          } = projectsPageData;
 
           const [editModeState] = useEditModeState();
 
@@ -128,11 +130,11 @@ const Projects: NextPage = () => {
                         ))}
                       </Grid>
                     </Grid>
-                    {/* {editModeState.showModal && (
+                    {editModeState.showModal && (
                       <PostsPageEditModal
-                        initialValues={postsPageData}
+                        initialValues={projectsPageData}
                       />
-                    )} */}
+                    )}
                   </>
                 )
               }}

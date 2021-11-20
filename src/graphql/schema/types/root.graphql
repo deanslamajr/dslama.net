@@ -10,4 +10,5 @@ type Mutation {
     updateAboutPage(input: UpdateAboutPageInput!): AboutPage!
     updatePostsPage(input: UpdatePostsPageInput!): PostsPage!
     updateProjectsPage(input: UpdateProjectsPageInput!): ProjectsPage!
+    updateReadingsPage(input: UpdateReadingsPageInput!): ReadingsPage!
 }

@@ -1,0 +1,14 @@
+
+fragment ReadingsPageFragment on ReadingsPage {
+  readings {
+      author
+      id
+      foundDate
+      publication
+      publishDate
+      quote
+      title
+      url
+  }
+  summary
+}

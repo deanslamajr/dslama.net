@@ -113,8 +113,6 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
 
     const mutationInput = transformFormValuesForMutationPayload(values as Values);
 
-    console.log('mutationInput', mutationInput)
-
     updateProjectsPage({
       variables: mutationInput
     });

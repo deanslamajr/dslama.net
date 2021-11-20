@@ -38,7 +38,7 @@ type Post = NonNullable<FetchPostsQuery['postsPage']['posts']>[number];
 
 const EMPTY_POST: PostInput = {
   url: '',
-  originalPublishDate: '',
+  originalPublishDate: 0,
   title: '',
   snippet: ''
 };

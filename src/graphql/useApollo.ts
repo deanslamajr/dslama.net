@@ -38,6 +38,12 @@ function createApolloClient(context?: ResolverContext) {
         },
         PostsPage: {
           keyFields: [],
+        },
+        ProjectsPage: {
+          keyFields: [],
+        },
+        ReadingsPage: {
+          keyFields: [],
         }
       }
     }),

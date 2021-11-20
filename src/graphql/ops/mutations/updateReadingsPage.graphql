@@ -1,0 +1,6 @@
+# import ReadingsPageFragment from '../fragments/ReadingsPageFragment.graphql'
+mutation UpdateReadingsPage($input: UpdateReadingsPageInput!) {
+  updateReadingsPage(input: $input) {
+    ...ReadingsPageFragment
+  }
+}

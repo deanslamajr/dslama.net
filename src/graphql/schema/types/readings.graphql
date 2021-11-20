@@ -1,15 +1,30 @@
 type Reading {
-    author: String
+    author: String!
     id: ID!
-    foundDate: Date
-    publication: String
-    publishDate: Date
-    quote: String
-    title: String
-    url: String
+    foundDate: Date!
+    publication: String!
+    publishDate: Date!
+    quote: String!
+    title: String!
+    url: String!
 }
 
 type ReadingsPage {
     summary: String
     readings: [Reading!]
+}
+
+input ReadingInput {
+  author: String!
+  foundDate: Date!
+  publication: String!
+  publishDate: Date!
+  quote: String!
+  title: String!
+  url: String!
+}
+
+input UpdateReadingsPageInput {
+    readings: [ReadingInput!]!
+    summary: String!
 }

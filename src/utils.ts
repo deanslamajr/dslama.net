@@ -1,4 +1,8 @@
-export const formatDate: (epochDate?: number) => string = epochDate => {
+import {
+  Scalars
+} from './graphql/generated/ops';
+
+export const formatDate: (epochDate?: number | string | null) => string = epochDate => {
   if (!epochDate) {
     return '';
   }
@@ -41,3 +45,11 @@ export function isValidUrl(potentialUrl: string) {
 }
 
 export const isRequired = (value?: string) => Boolean(value) ? undefined : 'This field is required.'
+
+export const transformGqlDateForDateInput = (gqlDate: Scalars['Date']): string => {
+  return new Date(gqlDate).toISOString();
+};
+
+export const transformDateInputValueToGqlDate = (dateFromDateInput: string): Scalars['Date'] => {
+  return new Date(dateFromDateInput).getTime();
+};

@@ -13,8 +13,10 @@ import {
 
 import { formatDate } from '../utils';
 import {appTitle} from '../constants';
+import {useState as useEditModeState} from '../contexts/EditModeState';
+
 import { LoadingErrorOrRender } from '../components/LoadingErrorOrRender';
-// import {useState as useEditModeState} from '../contexts/EditModeState';
+import {ReadingsPageEditModal} from '../components/editModals/readings';
 
 import getServerSidePropsFactory from '../graphql/getServerSidePropsFactory';
 import {
@@ -41,7 +43,7 @@ const ReadingsPage: NextPage = () => {
             summary,
           } = queryResult.readingsPage;
 
-          // const [editModeState] = useEditModeState();
+          const [editModeState] = useEditModeState();
 
           return (
             <ResponsiveContext.Consumer>
@@ -113,11 +115,11 @@ const ReadingsPage: NextPage = () => {
                         ))}
                       </Grid>
                     </Grid>
-                    {/* {editModeState.showModal && (
-                      <PostsPageEditModal
-                        initialValues={postsPageData}
+                    {editModeState.showModal && (
+                      <ReadingsPageEditModal
+                        initialValues={queryResult.readingsPage}
                       />
-                    )} */}
+                    )}
                   </>
                 )
               }}

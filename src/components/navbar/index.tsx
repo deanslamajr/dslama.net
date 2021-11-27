@@ -10,6 +10,7 @@ import {
   Text
 } from 'grommet';
 import {useState as useEditModeState} from '../../contexts/EditModeState';
+import {parseInputFromConsole} from './parseInputFromConsole';
 
 const getTitle = () => 'dean slama';
 
@@ -41,49 +42,14 @@ export const Navbar: React.FunctionComponent<NavbarProps> = ({}) => {
   };
 
   const toggleModalVisibility = () => {
-    const parseUnsafeInput = (unsafeInput: unknown) => {
-      type Post = NonNullable<typeof editModeState.postsFromConsole>[number];
-
-      const parsedPostsFromUnsafeInput = [] as Post[];
-
-      if (unsafeInput && Array.isArray(unsafeInput)) {
-        unsafeInput.forEach(possiblyAPost => {
-          if (
-            typeof possiblyAPost === 'object' &&
-            typeof possiblyAPost.url === 'string' &&
-            typeof possiblyAPost.title === 'string' &&
-            typeof possiblyAPost.snippet === 'string' &&
-            typeof possiblyAPost.originalPublishDate === 'number'
-          ) {
-            parsedPostsFromUnsafeInput.push({
-              title: possiblyAPost.title,
-              originalPublishDate: possiblyAPost.originalPublishDate,
-              url: possiblyAPost.url,
-              snippet: possiblyAPost.snippet
-            } as Post);
-          }
-        });
-      }
-
-      return parsedPostsFromUnsafeInput;
-    }
-
-    // @ts-ignore
-    const postsFromConsole = parseUnsafeInput(window.__postsFromConsole);
+    const resolvedInputFromConsole = parseInputFromConsole();
     
     updateEditMode({
       ...editModeState,
       showModal: !editModeState.showModal,
-      postsFromConsole
+      resolvedInputFromConsole
     });
   }
-
-  const toggleEditMode = () => {
-    updateEditMode({
-      ...editModeState,
-      isActive: !editModeState.isActive
-    });
-  };
 
   return (
     <Box

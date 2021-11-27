@@ -20,12 +20,13 @@ import { FieldArray } from 'react-final-form-arrays'
 import createDecorator from 'final-form-focus'
 
 import {
+  ProjectsInput,
   UpdateProjectsPageMutationVariables,
   useUpdateProjectsPageMutation
 } from '../../graphql/generated/ops';
 
 import {useState as useEditModeState} from '../../contexts/EditModeState';
-import {isRequired, isValidUrl} from '../../utils';
+import {isRequired, isValidUrl, transformDateInputValueToGqlDate} from '../../utils';
 import {Modal} from '../Modal';
 import {LoginModal} from '../LoginModal';
 
@@ -39,8 +40,10 @@ const focusOnErrors = createDecorator();
 
 type MutableProject = Omit<
   NonNullable<FetchProjectsQuery['projectsPage']['projects']>[number],
-  'id' | '__typename'
->;
+  'id' | '__typename' | 'originalPublishDate'
+>  & {
+  originalPublishDate: string;
+};
 
 const EMPTY_PROJECT: MutableProject = {
   originalPublishDate: '',
@@ -57,10 +60,7 @@ const initializeNewProject = (): MutableProject => ({
 })
 
 type PostsPageEditModalProps = {
-  initialValues: {
-    summary: FetchProjectsQuery['projectsPage']['summary'];
-    projects: MutableProject[];
-  };
+  initialValues: FetchProjectsQuery['projectsPage'];
 };
 
 export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
@@ -94,17 +94,36 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
   const handleSubmit = async (values: Record<string, any>, form: FormApi) => {
     type Values = {
       newProjects: MutableProject[];
+      projects: MutableProject[];
       summary: string;
     };
 
     const transformFormValuesForMutationPayload = ({
       newProjects,
+      projects,
       summary
     }: Values): UpdateProjectsPageMutationVariables => {
+      const transformProject = ({
+        name,
+        originalPublishDate,
+        description,
+        summary,
+        appUrl,
+        sourceUrl
+      }: MutableProject): ProjectsInput => ({
+        originalPublishDate: transformDateInputValueToGqlDate(originalPublishDate),
+        name,
+        description,
+        summary,
+        appUrl,
+        sourceUrl
+      });
+
       return {
         input: {
           projects: [
-            ...newProjects
+            ...projects.map(transformProject),
+            ...newProjects.map(transformProject)
           ],
           summary
         }

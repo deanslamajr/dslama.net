@@ -31,7 +31,7 @@ const ReadingsPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>{appTitle} - projects</title>
+        <title>{appTitle} - readings</title>
       </Head>
       <LoadingErrorOrRender<FetchReadingsQuery>
         error={error}

@@ -9,19 +9,18 @@ import React, {
   useState,
 } from 'react';
 import { useRouter } from 'next/router'
-import {
-  FetchPostsQuery
-} from '../graphql/generated/ops';
+import {MutableReading} from '../components/editModals/readings'
+import {MutablePost} from '../components/editModals/PostsPageEditModal';
 
-type Post = Omit<
-  FetchPostsQuery['postsPage']['posts'][number],
-  '__typename' 
->;
+export type ResolvedInputFromConsole = {
+  posts?: MutablePost[];
+  readings?: MutableReading[];
+} | null;
 
 type State = {
     isActive: boolean;
     showModal: boolean;
-    postsFromConsole: Post[] | null;
+    resolvedInputFromConsole: ResolvedInputFromConsole;
 };
 
 type Setter = Dispatch<SetStateAction<State>>;
@@ -37,7 +36,7 @@ const getInitializedState = (queryString?: string | string[]): State => {
   return {
     isActive,
     showModal: false,
-    postsFromConsole: null
+    resolvedInputFromConsole: null
   };
 }
 

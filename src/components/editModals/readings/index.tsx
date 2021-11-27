@@ -16,6 +16,7 @@ import { Form as FinalForm, Field } from 'react-final-form';
 import arrayMutators from 'final-form-arrays'
 import { FieldArray } from 'react-final-form-arrays'
 import createDecorator from 'final-form-focus'
+import { FormApi } from 'final-form';
 
 import {
   UpdateReadingsPageMutationVariables,
@@ -42,11 +43,10 @@ import {
   UrlInput
 } from './fields';
 
-import { FormApi } from 'final-form';
 
 const focusOnErrors = createDecorator();
 
-type MutableReading = Omit<
+export type MutableReading = Omit<
   NonNullable<FetchReadingsQuery['readingsPage']['readings']>[number],
   'id' | '__typename' | 'publishDate' | 'foundDate'
 > & {
@@ -150,8 +150,6 @@ export const ReadingsPageEditModal: React.FC<ReadingsPageEditModalProps> = ({
   const augmentedInitialValues = React.useMemo<InitialValues>(() => {
     const summary = initialValues.summary || '';
 
-    // const newReadings = editModeState.readingsFromConsole || [];
-
     const existingReadings: MutableReading[] = initialValues.readings?.map((reading) => {
       return {
         author: reading.author,
@@ -166,7 +164,7 @@ export const ReadingsPageEditModal: React.FC<ReadingsPageEditModalProps> = ({
 
     return {
       summary,
-      newReadings: [] as MutableReading[],
+      newReadings: editModeState.resolvedInputFromConsole?.readings || [],
       readings: existingReadings
     };
   }, [initialValues]);

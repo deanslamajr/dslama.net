@@ -14,6 +14,7 @@ import {
   FormClose,
   FormTrash
 } from 'grommet-icons'
+import { FormApi } from 'final-form';
 import { Form as FinalForm, Field } from 'react-final-form';
 import arrayMutators from 'final-form-arrays'
 import { FieldArray } from 'react-final-form-arrays'
@@ -21,8 +22,13 @@ import createDecorator from 'final-form-focus'
 
 import {useUpdatePostsPageMutation} from '../../graphql/generated/ops';
 
+
 import {useState as useEditModeState} from '../../contexts/EditModeState';
-import {isRequired, isValidUrl} from '../../utils';
+import {
+  isRequired,
+  isValidUrl,
+  transformDateInputValueToGqlDate
+} from '../../utils';
 import {Modal} from '../Modal';
 import {LoginModal} from '../LoginModal';
 
@@ -30,20 +36,24 @@ import {
   FetchPostsQuery,
   PostInput
 } from '../../graphql/generated/ops';
-import { FormApi } from 'final-form';
 
 const focusOnErrors = createDecorator();
 
-type Post = NonNullable<FetchPostsQuery['postsPage']['posts']>[number];
+export type MutablePost = Omit<
+  NonNullable<FetchPostsQuery['postsPage']['posts']>[number],
+  '__typename' | 'originalPublishDate'
+> & {
+  originalPublishDate: string;
+};
 
-const EMPTY_POST: PostInput = {
+const EMPTY_POST: MutablePost = {
   url: '',
-  originalPublishDate: 0,
+  originalPublishDate: '',
   title: '',
   snippet: ''
 };
 
-const initializeNewPost = (): PostInput => ({
+const initializeNewPost = (): MutablePost => ({
   ...EMPTY_POST,
   originalPublishDate: (new Date(Date.now())).toISOString()
 })
@@ -88,7 +98,7 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
         title: string;
         url: string;
       }>;
-      posts: PostInput[];
+      posts: MutablePost[];
       summary: string;
     };
     const transformFormValuesForMutationPayload = ({
@@ -101,8 +111,8 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
         snippet,
         title,
         url
-      }: Post) => ({
-        originalPublishDate,
+      }: MutablePost): PostInput => ({
+        originalPublishDate: transformDateInputValueToGqlDate(originalPublishDate),
         snippet,
         title,
         url
@@ -128,7 +138,7 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
 
   const augmentedInitialValues = React.useMemo(() => ({
     ...initialValues,
-    newPosts: editModeState.postsFromConsole || []
+    newPosts: editModeState.resolvedInputFromConsole?.posts || []
   }), [initialValues]);
   
   return (

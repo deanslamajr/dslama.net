@@ -26,7 +26,7 @@ import {
 } from '../../graphql/generated/ops';
 
 import {useState as useEditModeState} from '../../contexts/EditModeState';
-import {isRequired, isValidUrl, transformDateInputValueToGqlDate} from '../../utils';
+import {isRequired, isValidUrl, transformGqlDateForDateInput, transformDateInputValueToGqlDate} from '../../utils';
 import {Modal} from '../Modal';
 import {LoginModal} from '../LoginModal';
 
@@ -38,7 +38,7 @@ import { FormApi } from 'final-form';
 
 const focusOnErrors = createDecorator();
 
-type MutableProject = Omit<
+export type MutableProject = Omit<
   NonNullable<FetchProjectsQuery['projectsPage']['projects']>[number],
   'id' | '__typename' | 'originalPublishDate'
 >  & {
@@ -141,11 +141,37 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
   //   ...initialValues,
   //   newProjects: editModeState.postsFromConsole || []
   // }), [initialValues]);
+
+  type InitialValues = {
+    summary: string;
+    newProjects: MutableProject[];
+    projects: MutableProject[];
+  };
+  const augmentedInitialValues = React.useMemo<InitialValues>(() => {
+    const summary = initialValues.summary || '';
+
+    const existingProjects: MutableProject[] = initialValues.projects?.map((project) => {
+      return {
+        name: project.name,
+        originalPublishDate: transformGqlDateForDateInput(project.originalPublishDate),
+        description: project.description,
+        appUrl: project.appUrl,
+        sourceUrl: project.sourceUrl,
+        summary: project.summary
+      }
+    }) || [] as MutableProject[];
+
+    return {
+      summary,
+      newProjects: editModeState.resolvedInputFromConsole?.projects || [],
+      projects: existingProjects
+    };
+  }, [initialValues]);
   
   return (
     <FinalForm
       onSubmit={(values, form) => handleSubmit(values, form)}
-      initialValues={initialValues}
+      initialValues={augmentedInitialValues}
       mutators={{
         ...arrayMutators
       }}

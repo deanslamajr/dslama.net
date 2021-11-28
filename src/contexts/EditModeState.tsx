@@ -11,9 +11,11 @@ import React, {
 import { useRouter } from 'next/router'
 import {MutableReading} from '../components/editModals/readings'
 import {MutablePost} from '../components/editModals/PostsPageEditModal';
+import {MutableProject} from '../components/editModals/ProjectsPageEditModal';
 
 export type ResolvedInputFromConsole = {
   posts?: MutablePost[];
+  projects?: MutableProject[];
   readings?: MutableReading[];
 } | null;
 

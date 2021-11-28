@@ -3,6 +3,7 @@ import {
 } from '../../contexts/EditModeState';
 import {MutableReading} from '../editModals/readings';
 import {MutablePost} from '../editModals/PostsPageEditModal';
+import {MutableProject} from '../editModals/ProjectsPageEditModal';
 
 declare global {
   interface Window {
@@ -82,6 +83,41 @@ const parseReadings = (readings: any): MutableReading[] | undefined => {
   return parsedReadings;
 };
 
+const isAProject = (possiblyAProject: any): possiblyAProject is MutableProject => (
+  typeof possiblyAProject === 'object' &&
+  // typeof possiblyAProject.originalPublishDate === 'number' &&
+  typeof possiblyAProject.description === 'string' &&
+  typeof possiblyAProject.appUrl === 'string' &&
+  typeof possiblyAProject.sourceUrl === 'string' &&
+  typeof possiblyAProject.summary === 'string' &&
+  typeof possiblyAProject.name === 'string'
+);
+
+const parseProjects = (projects: any): MutableProject[] | undefined => {
+  let parsedProjects: MutableProject[] | undefined;
+
+  if (projects && Array.isArray(projects)) {
+    projects
+      .filter(isAProject)
+      .forEach(readingFromConsoleInput => {
+        if (!parsedProjects) {
+          parsedProjects = [] as MutableProject[];
+        }
+
+        parsedProjects.push({
+          name: readingFromConsoleInput.name,
+          originalPublishDate: readingFromConsoleInput.originalPublishDate.toString(),
+          description: readingFromConsoleInput.description,
+          appUrl: readingFromConsoleInput.appUrl,
+          sourceUrl: readingFromConsoleInput.sourceUrl,
+          summary: readingFromConsoleInput.summary
+        });
+      });
+  }
+
+  return parsedProjects;
+};
+
 export const parseInputFromConsole = (): ResolvedInputFromConsole => {
   let resolvedInputFromConsole: ResolvedInputFromConsole = null;
 
@@ -91,10 +127,12 @@ export const parseInputFromConsole = (): ResolvedInputFromConsole => {
     
     const parsedPosts = parsePosts(unsafeInput.posts);
     const parsedReadings = parseReadings(unsafeInput.readings);
+    const parsedProjects = parseProjects(unsafeInput.projects);
 
-    if (parsedPosts || parsedReadings) {
+    if (parsedPosts || parsedReadings || parsedProjects) {
       resolvedInputFromConsole = {
         posts: parsedPosts,
+        projects: parsedProjects,
         readings: parsedReadings
       };
     }

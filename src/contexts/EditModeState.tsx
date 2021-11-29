@@ -10,8 +10,8 @@ import React, {
 } from 'react';
 import { useRouter } from 'next/router'
 import {MutableReading} from '../components/editModals/readings'
-import {MutablePost} from '../components/editModals/PostsPageEditModal';
-import {MutableProject} from '../components/editModals/ProjectsPageEditModal';
+import {MutablePost} from '../components/editModals/posts';
+import {MutableProject} from '../components/editModals/projects';
 
 export type ResolvedInputFromConsole = {
   posts?: MutablePost[];

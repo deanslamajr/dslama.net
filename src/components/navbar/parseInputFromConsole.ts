@@ -2,8 +2,8 @@ import {
   ResolvedInputFromConsole
 } from '../../contexts/EditModeState';
 import {MutableReading} from '../editModals/readings';
-import {MutablePost} from '../editModals/PostsPageEditModal';
-import {MutableProject} from '../editModals/ProjectsPageEditModal';
+import {MutablePost} from '../editModals/posts';
+import {MutableProject} from '../editModals/projects';
 
 declare global {
   interface Window {

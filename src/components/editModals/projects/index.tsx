@@ -5,7 +5,7 @@ import {
   Button,
   FormField,
   Text,
-  TextInput as GrommetTextInput
+  TextInput
 } from "grommet";
 import {Add} from 'grommet-icons'
 import { Form as FinalForm, Field } from 'react-final-form';
@@ -14,58 +14,47 @@ import { FieldArray } from 'react-final-form-arrays'
 import createDecorator from 'final-form-focus'
 import { FormApi } from 'final-form';
 
-import {
-  UpdateReadingsPageMutationVariables,
-  ReadingInput,
-  useUpdateReadingsPageMutation,
-  FetchReadingsQuery
-} from '../../../graphql/generated/ops';
-
-import {
-  transformGqlDateForDateInput,
-  transformDateInputValueToGqlDate
-} from '../../../utils';
-
 import {useState as useEditModeState} from '../../../contexts/EditModeState';
+import {transformGqlDateForDateInput, transformDateInputValueToGqlDate} from '../../../utils';
 import {Modal} from '../../Modal';
 import {LoginModal} from '../../LoginModal';
-import {ReadingCard} from './ReadingCard';
+import {ProjectCard} from './ProjectCard';
+
+import {
+  FetchProjectsQuery,
+  ProjectsInput,
+  UpdateProjectsPageMutationVariables,
+  useUpdateProjectsPageMutation
+} from '../../../graphql/generated/ops';
 
 const focusOnErrors = createDecorator();
 
-export type MutableReading = Omit<
-  NonNullable<FetchReadingsQuery['readingsPage']['readings']>[number],
-  'id' | '__typename' | 'publishDate' | 'foundDate'
-> & {
-  publishDate: string;
-  foundDate: string;
+export type MutableProject = Omit<
+  NonNullable<FetchProjectsQuery['projectsPage']['projects']>[number],
+  'id' | '__typename' | 'originalPublishDate'
+>  & {
+  originalPublishDate: string;
 };
 
-const EMPTY_READING: MutableReading = {
-  publishDate: '',
-  foundDate: '',
-  title: '',
-  quote: '',
-  author: '',
-  publication: '',
-  url: ''
+const EMPTY_PROJECT: MutableProject = {
+  originalPublishDate: '',
+  name: '',
+  description: '',
+  summary: '',
+  appUrl: '',
+  sourceUrl: ''
 };
 
-const initializeNewReading = (): MutableReading => {
-  const todaysDate = (new Date(Date.now())).toISOString();
+const initializeNewProject = (): MutableProject => ({
+  ...EMPTY_PROJECT,
+  originalPublishDate: (new Date(Date.now())).toISOString()
+})
 
-  return {
-    ...EMPTY_READING,
-    publishDate: todaysDate,
-    foundDate: todaysDate
-  };
+type PostsPageEditModalProps = {
+  initialValues: FetchProjectsQuery['projectsPage'];
 };
 
-type ReadingsPageEditModalProps = {
-  initialValues: FetchReadingsQuery['readingsPage'];
-};
-
-export const ReadingsPageEditModal: React.FC<ReadingsPageEditModalProps> = ({
+export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
   initialValues
 }) => {
   const [editModeState, setEditModeState] = useEditModeState();
@@ -78,7 +67,7 @@ export const ReadingsPageEditModal: React.FC<ReadingsPageEditModalProps> = ({
     });
   }, [editModeState, setEditModeState]);
 
-  const [updateReadingsPage, {loading}] = useUpdateReadingsPageMutation({
+  const [updateProjectsPage, {loading}] = useUpdateProjectsPageMutation({
     onCompleted: () => {
       closeModal()
     },
@@ -95,28 +84,38 @@ export const ReadingsPageEditModal: React.FC<ReadingsPageEditModalProps> = ({
 
   const handleSubmit = async (values: Record<string, any>, form: FormApi) => {
     type Values = {
-      newReadings: MutableReading[];
-      readings: MutableReading[];
+      newProjects: MutableProject[];
+      projects: MutableProject[];
       summary: string;
     };
 
     const transformFormValuesForMutationPayload = ({
-      newReadings,
-      readings,
+      newProjects,
+      projects,
       summary
-    }: Values): UpdateReadingsPageMutationVariables => {
-      const transformedReadings: ReadingInput[] = [
-        ...readings,
-        ...newReadings
-      ].map((reading) => ({
-        ...reading,
-        publishDate: transformDateInputValueToGqlDate(reading.publishDate),
-        foundDate: transformDateInputValueToGqlDate(reading.foundDate) 
-      }));
+    }: Values): UpdateProjectsPageMutationVariables => {
+      const transformProject = ({
+        name,
+        originalPublishDate,
+        description,
+        summary,
+        appUrl,
+        sourceUrl
+      }: MutableProject): ProjectsInput => ({
+        originalPublishDate: transformDateInputValueToGqlDate(originalPublishDate),
+        name,
+        description,
+        summary,
+        appUrl,
+        sourceUrl
+      });
 
       return {
         input: {
-          readings: transformedReadings,
+          projects: [
+            ...projects.map(transformProject),
+            ...newProjects.map(transformProject)
+          ],
           summary
         }
       }
@@ -124,35 +123,35 @@ export const ReadingsPageEditModal: React.FC<ReadingsPageEditModalProps> = ({
 
     const mutationInput = transformFormValuesForMutationPayload(values as Values);
 
-    updateReadingsPage({
+    updateProjectsPage({
       variables: mutationInput
     });
   };
 
   type InitialValues = {
     summary: string;
-    newReadings: MutableReading[];
-    readings: MutableReading[];
+    newProjects: MutableProject[];
+    projects: MutableProject[];
   };
+
   const augmentedInitialValues = React.useMemo<InitialValues>(() => {
     const summary = initialValues.summary || '';
 
-    const existingReadings: MutableReading[] = initialValues.readings?.map((reading) => {
+    const existingProjects: MutableProject[] = initialValues.projects?.map((project) => {
       return {
-        author: reading.author,
-        url: reading.url,
-        title: reading.title,
-        foundDate: transformGqlDateForDateInput(reading.foundDate),
-        publishDate: transformGqlDateForDateInput(reading.publishDate),
-        publication: reading.publication,
-        quote: reading.quote
+        name: project.name,
+        originalPublishDate: transformGqlDateForDateInput(project.originalPublishDate),
+        description: project.description,
+        appUrl: project.appUrl,
+        sourceUrl: project.sourceUrl,
+        summary: project.summary
       }
-    }) || [] as MutableReading[];
+    }) || [] as MutableProject[];
 
     return {
       summary,
-      newReadings: editModeState.resolvedInputFromConsole?.readings || [],
-      readings: existingReadings
+      newProjects: editModeState.resolvedInputFromConsole?.projects || [],
+      projects: existingProjects
     };
   }, [initialValues]);
   
@@ -202,7 +201,7 @@ export const ReadingsPageEditModal: React.FC<ReadingsPageEditModalProps> = ({
                           label="page summary"
                           width="full"
                         >
-                          <GrommetTextInput
+                          <TextInput
                             {...input}
                             placeholder="What is this page about?"
                             onChange={input.onChange}
@@ -212,42 +211,42 @@ export const ReadingsPageEditModal: React.FC<ReadingsPageEditModalProps> = ({
                       );
                     }}
                   </Field>
-                  <Button
-                    secondary
-                    hoverIndicator={true}
-                    fill="horizontal"
-                    onClick={() => push('newReadings', initializeNewReading())}
-                  >
-                    <Box pad="xsmall" direction="row" align="center" gap="small">
-                      <Add color="brand"/>
-                      <Text>Add Reading</Text>
-                    </Box>
-                  </Button>
-                  <FormField
-                    contentProps={{
-                      border: undefined,
-                      fill: 'horizontal',
-                      pad: {left: 'medium'}
-                    }}
-                    width="100%"
-                  >
-                    <FieldArray
-                      name="newReadings"
-                      subscription={{}}
+                    <Button
+                      secondary
+                      hoverIndicator={true}
+                      fill="horizontal"
+                      onClick={() => push('newProjects', initializeNewProject())}
                     >
-                      {({ fields }) => (
-                        fields.map((name, index) => (
-                          <ReadingCard
-                            onRemoveCard={() => fields.remove(index)}
-                            parentFieldName={name}
-                            removeButtonLabel='Cancel'
-                          />
-                        ))
-                      )}
-                    </FieldArray>
-                  </FormField>  
+                      <Box pad="xsmall" direction="row" align="center" gap="small">
+                        <Add color="brand"/>
+                        <Text>Add Project</Text>
+                      </Box>
+                    </Button>
+                    <FormField
+                      contentProps={{
+                        border: undefined,
+                        fill: 'horizontal',
+                        pad: {left: 'medium'}
+                      }}
+                      width="100%"
+                    >
+                      <FieldArray
+                        name="newProjects"
+                        subscription={{}}
+                      >
+                        {({ fields }) => (
+                          fields.map((name, index) => (
+                            <ProjectCard
+                              onRemoveCard={() => fields.remove(index)}
+                              parentFieldName={name}
+                              removeButtonLabel='Cancel'
+                            />
+                          ))
+                        )}
+                      </FieldArray>
+                    </FormField>  
                   <FormField
-                    label="edit existing readings"
+                    label="edit existing projects"
                     contentProps={{
                       border: undefined,
                       fill: 'horizontal',
@@ -256,15 +255,15 @@ export const ReadingsPageEditModal: React.FC<ReadingsPageEditModalProps> = ({
                     width="100%"
                   >
                     <FieldArray
-                      name="readings"
+                      name="projects"
                       subscription={{}}  
                     >
                       {({ fields }) => (
                         fields?.map((name, index) => (
-                          <ReadingCard
+                          <ProjectCard
                             onRemoveCard={() => fields.remove(index)}
                             parentFieldName={name}
-                            removeButtonLabel='Delete Reading'
+                            removeButtonLabel='Delete Project'
                           />
                         ))
                       )}

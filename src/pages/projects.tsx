@@ -13,7 +13,7 @@ import {
 
 import { LoadingErrorOrRender } from '../components/LoadingErrorOrRender';
 import {useState as useEditModeState} from '../contexts/EditModeState';
-import {PostsPageEditModal} from '../components/editModals/ProjectsPageEditModal'
+import {PostsPageEditModal} from '../components/editModals/projects'
 
 import {appTitle} from '../constants';
 import getServerSidePropsFactory from '../graphql/getServerSidePropsFactory';

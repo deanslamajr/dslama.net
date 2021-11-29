@@ -13,12 +13,13 @@ import { Form as FinalForm, Field } from 'react-final-form';
 import arrayMutators from 'final-form-arrays'
 import { FieldArray } from 'react-final-form-arrays'
 
-import {useUpdateAboutPageMutation, FetchAboutQuery} from '../../graphql/generated/ops';
+import {useUpdateAboutPageMutation, FetchAboutQuery} from '../../../graphql/generated/ops';
 
-import {useState as useEditModeState} from '../../contexts/EditModeState';
-import {isValidUrl} from '../../utils';
-import {Modal} from '../Modal';
-import {LoginModal} from '../LoginModal';
+import {useState as useEditModeState} from '../../../contexts/EditModeState';
+import {isValidUrl} from '../../../utils';
+import {Modal} from '../../Modal';
+import {LoginModal} from '../../LoginModal';
+import {LinkCard} from './LinkCard';
 
 type AboutPageEditModalProps = {
   initialValues: FetchAboutQuery;
@@ -162,68 +163,11 @@ export const AboutPageEditModal: React.FC<AboutPageEditModalProps> = ({
                     >
                       {({ fields }) => (
                         fields.map((name, index) => (
-                          <Box
-                            key={name}
-                            margin={{
-                              top: 'small',
-                              bottom: 'small'
-                            }}  
-                          >
-                            <Text>Link #{index + 1}</Text>
-                            <Field
-                              name={`${name}.name`}
-                              component="input"
-                            >
-                              {({ input, meta }) => {
-                                return (
-                                  <FormField
-                                    label="name"
-                                    margin={{bottom: 'xsmall'}}
-                                  >
-                                    <TextInput
-                                      {...input}
-                                      onChange={input.onChange}
-                                      value={input.value}
-                                      placeholder="Generic Socialmedia Platform"
-                                    />
-                                  </FormField>
-                                );
-                              }}
-                            </Field>
-                            <Field
-                              name={`${name}.url`}
-                              component="input"
-                              validate={isValidUrl}
-                            >
-                              {({ input, meta }) => {
-                                return (
-                                  <FormField
-                                    label="url"
-                                    error={meta.touched ? meta.error : undefined}
-                                    margin={{bottom: 'xsmall'}}
-                                  >
-                                    <TextInput
-                                      {...input}
-                                      onChange={input.onChange}
-                                      value={input.value}
-                                      placeholder="https://www.socialmedia.com"
-                                    />
-                                  </FormField>
-                                );
-                              }}
-                            </Field>
-                            <Button
-                              secondary
-                              hoverIndicator={true}
-                              fill="horizontal"
-                              onClick={() => fields.remove(index)}
-                            >
-                              <Box pad="xsmall" direction="row" align="center" gap="small">
-                                <FormTrash color="brand"/>
-                                <Text>Remove Link #{index + 1}</Text>
-                              </Box>
-                            </Button>
-                          </Box>
+                          <LinkCard
+                            onRemoveCard={() => fields.remove(index)}
+                            parentFieldName={name}
+                            removeButtonLabel='Delete Link'
+                          />
                         ))
                       )}
                     </FieldArray>

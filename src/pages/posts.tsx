@@ -13,7 +13,7 @@ import {
 
 import { formatDate } from '../utils';
 import {appTitle} from '../constants';
-import {PostsPageEditModal} from '../components/editModals/PostsPageEditModal';
+import {PostsPageEditModal} from '../components/editModals/posts';
 import { LoadingErrorOrRender } from '../components/LoadingErrorOrRender';
 import {useState as useEditModeState} from '../contexts/EditModeState';
 import getServerSidePropsFactory from '../graphql/getServerSidePropsFactory';

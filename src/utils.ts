@@ -32,10 +32,14 @@ export const formatDate: (epochDate?: number | string | null) => string = epochD
   return formattedDate;
 };
 
-export function isValidUrl(potentialUrl: string) {
+export function isValidUrl(potentialUrl?: string) {
   let errorMessage: string | undefined = undefined;
   
   try {
+    if (!potentialUrl) {
+      throw new Error();
+    }
+    
     new URL(potentialUrl);
   } catch (_) {
     errorMessage = 'Must be valid url e.g. https://google.com';

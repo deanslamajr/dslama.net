@@ -1,0 +1,63 @@
+import React from 'react';
+import {
+  Box,
+  Button,
+  Card,
+  Text
+} from "grommet";
+import {FormClose} from 'grommet-icons'
+
+import {TextInput} from '../fields';
+import {
+  isRequired,
+  isValidUrl
+} from '../../../utils';
+
+type LinkCardProps = {
+  onRemoveCard: () => void;
+  parentFieldName: string;
+  removeButtonLabel: string;
+}
+
+export const LinkCard: React.FC<LinkCardProps> = ({
+  onRemoveCard,
+  parentFieldName,
+  removeButtonLabel
+}) => {
+
+  return (
+    <Box
+      key={parentFieldName}
+      margin={{
+        top: 'small',
+        bottom: 'small'
+      }}  
+    >
+      <Card background="light-1" round="x-small" pad="medium">
+        <TextInput
+          fieldName='name'
+          placeholder='Generic Socialmedia Platform'
+          parentFieldName={parentFieldName}
+          validate={isRequired}
+        />
+        <TextInput
+          fieldName='url'
+          placeholder='https://www.socialmedia.com'
+          parentFieldName={parentFieldName}
+          validate={isValidUrl}
+        />
+        <Button
+          secondary
+          hoverIndicator={{color: "status-critical", opacity: 'weak'}}
+          fill="horizontal"
+          onClick={onRemoveCard}
+        >
+          <Box pad="xsmall" direction="row" align="center" gap="small">
+            <FormClose color="status-critical"/>
+            <Text>{removeButtonLabel}</Text>
+          </Box>
+        </Button>
+      </Card>
+    </Box>
+  )
+};

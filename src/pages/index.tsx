@@ -15,7 +15,7 @@ import {appTitle} from '../constants';
 
 import { LoadingErrorOrRender } from '../components/LoadingErrorOrRender';
 import { Header } from '../components/header';
-import {AboutPageEditModal} from '../components/editModals/AboutPageEditModal';
+import {AboutPageEditModal} from '../components/editModals/about';
 
 import {useState as useEditModeState} from '../contexts/EditModeState';
 

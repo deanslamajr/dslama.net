@@ -8,64 +8,50 @@ import {
   TextInput as GrommetTextInput
 } from "grommet";
 import {Add} from 'grommet-icons'
+import { FormApi } from 'final-form';
 import { Form as FinalForm, Field } from 'react-final-form';
 import arrayMutators from 'final-form-arrays'
 import { FieldArray } from 'react-final-form-arrays'
 import createDecorator from 'final-form-focus'
-import { FormApi } from 'final-form';
-
-import {
-  UpdateReadingsPageMutationVariables,
-  ReadingInput,
-  useUpdateReadingsPageMutation,
-  FetchReadingsQuery
-} from '../../../graphql/generated/ops';
-
-import {
-  transformGqlDateForDateInput,
-  transformDateInputValueToGqlDate
-} from '../../../utils';
 
 import {useState as useEditModeState} from '../../../contexts/EditModeState';
+import {transformDateInputValueToGqlDate} from '../../../utils';
 import {Modal} from '../../Modal';
 import {LoginModal} from '../../LoginModal';
-import {ReadingCard} from './ReadingCard';
+import {PostCard} from './PostCard';
+
+import {
+  FetchPostsQuery,
+  PostInput,
+  useUpdatePostsPageMutation
+} from '../../../graphql/generated/ops';
 
 const focusOnErrors = createDecorator();
 
-export type MutableReading = Omit<
-  NonNullable<FetchReadingsQuery['readingsPage']['readings']>[number],
-  'id' | '__typename' | 'publishDate' | 'foundDate'
+export type MutablePost = Omit<
+  NonNullable<FetchPostsQuery['postsPage']['posts']>[number],
+  '__typename' | 'originalPublishDate'
 > & {
-  publishDate: string;
-  foundDate: string;
+  originalPublishDate: string;
 };
 
-const EMPTY_READING: MutableReading = {
-  publishDate: '',
-  foundDate: '',
+const EMPTY_POST: MutablePost = {
+  url: '',
+  originalPublishDate: '',
   title: '',
-  quote: '',
-  author: '',
-  publication: '',
-  url: ''
+  snippet: ''
 };
 
-const initializeNewReading = (): MutableReading => {
-  const todaysDate = (new Date(Date.now())).toISOString();
+const initializeNewPost = (): MutablePost => ({
+  ...EMPTY_POST,
+  originalPublishDate: (new Date(Date.now())).toISOString()
+})
 
-  return {
-    ...EMPTY_READING,
-    publishDate: todaysDate,
-    foundDate: todaysDate
-  };
-};
+type PostsPageEditModalProps = {
+  initialValues: Omit<FetchPostsQuery['postsPage'], '__typename'>
+}
 
-type ReadingsPageEditModalProps = {
-  initialValues: FetchReadingsQuery['readingsPage'];
-};
-
-export const ReadingsPageEditModal: React.FC<ReadingsPageEditModalProps> = ({
+export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
   initialValues
 }) => {
   const [editModeState, setEditModeState] = useEditModeState();
@@ -78,7 +64,7 @@ export const ReadingsPageEditModal: React.FC<ReadingsPageEditModalProps> = ({
     });
   }, [editModeState, setEditModeState]);
 
-  const [updateReadingsPage, {loading}] = useUpdateReadingsPageMutation({
+  const [updatePostsPage, {loading}] = useUpdatePostsPageMutation({
     onCompleted: () => {
       closeModal()
     },
@@ -95,28 +81,38 @@ export const ReadingsPageEditModal: React.FC<ReadingsPageEditModalProps> = ({
 
   const handleSubmit = async (values: Record<string, any>, form: FormApi) => {
     type Values = {
-      newReadings: MutableReading[];
-      readings: MutableReading[];
+      newPosts: Array<{
+        originalPublishDate: string;
+        snippet: string;
+        title: string;
+        url: string;
+      }>;
+      posts: MutablePost[];
       summary: string;
     };
-
     const transformFormValuesForMutationPayload = ({
-      newReadings,
-      readings,
+      newPosts,
+      posts,
       summary
-    }: Values): UpdateReadingsPageMutationVariables => {
-      const transformedReadings: ReadingInput[] = [
-        ...readings,
-        ...newReadings
-      ].map((reading) => ({
-        ...reading,
-        publishDate: transformDateInputValueToGqlDate(reading.publishDate),
-        foundDate: transformDateInputValueToGqlDate(reading.foundDate) 
-      }));
+    }: Values) => {
+      const transformPost = ({
+        originalPublishDate,
+        snippet,
+        title,
+        url
+      }: MutablePost): PostInput => ({
+        originalPublishDate: transformDateInputValueToGqlDate(originalPublishDate),
+        snippet,
+        title,
+        url
+      });
 
       return {
         input: {
-          readings: transformedReadings,
+          posts: [
+            ...newPosts.map(transformPost),
+            ...posts.map(transformPost)
+          ],
           summary
         }
       }
@@ -124,37 +120,15 @@ export const ReadingsPageEditModal: React.FC<ReadingsPageEditModalProps> = ({
 
     const mutationInput = transformFormValuesForMutationPayload(values as Values);
 
-    updateReadingsPage({
+    updatePostsPage({
       variables: mutationInput
     });
   };
 
-  type InitialValues = {
-    summary: string;
-    newReadings: MutableReading[];
-    readings: MutableReading[];
-  };
-  const augmentedInitialValues = React.useMemo<InitialValues>(() => {
-    const summary = initialValues.summary || '';
-
-    const existingReadings: MutableReading[] = initialValues.readings?.map((reading) => {
-      return {
-        author: reading.author,
-        url: reading.url,
-        title: reading.title,
-        foundDate: transformGqlDateForDateInput(reading.foundDate),
-        publishDate: transformGqlDateForDateInput(reading.publishDate),
-        publication: reading.publication,
-        quote: reading.quote
-      }
-    }) || [] as MutableReading[];
-
-    return {
-      summary,
-      newReadings: editModeState.resolvedInputFromConsole?.readings || [],
-      readings: existingReadings
-    };
-  }, [initialValues]);
+  const augmentedInitialValues = React.useMemo(() => ({
+    ...initialValues,
+    newPosts: editModeState.resolvedInputFromConsole?.posts || []
+  }), [initialValues]);
   
   return (
     <FinalForm
@@ -212,42 +186,42 @@ export const ReadingsPageEditModal: React.FC<ReadingsPageEditModalProps> = ({
                       );
                     }}
                   </Field>
-                  <Button
-                    secondary
-                    hoverIndicator={true}
-                    fill="horizontal"
-                    onClick={() => push('newReadings', initializeNewReading())}
-                  >
-                    <Box pad="xsmall" direction="row" align="center" gap="small">
-                      <Add color="brand"/>
-                      <Text>Add Reading</Text>
-                    </Box>
-                  </Button>
-                  <FormField
-                    contentProps={{
-                      border: undefined,
-                      fill: 'horizontal',
-                      pad: {left: 'medium'}
-                    }}
-                    width="100%"
-                  >
-                    <FieldArray
-                      name="newReadings"
-                      subscription={{}}
+                    <Button
+                      secondary
+                      hoverIndicator={{color: "status-ok", opacity: 'weak'}}
+                      fill="horizontal"
+                      onClick={() => push('newPosts', initializeNewPost())}
                     >
-                      {({ fields }) => (
-                        fields.map((name, index) => (
-                          <ReadingCard
-                            onRemoveCard={() => fields.remove(index)}
-                            parentFieldName={name}
-                            removeButtonLabel='Cancel'
-                          />
-                        ))
-                      )}
-                    </FieldArray>
-                  </FormField>  
+                      <Box pad="xsmall" direction="row" align="center" gap="small">
+                        <Add color="status-ok"/>
+                        <Text>Add Post</Text>
+                      </Box>
+                    </Button>
+                    <FormField
+                      contentProps={{
+                        border: undefined,
+                        fill: 'horizontal',
+                        pad: {left: 'medium'}
+                      }}
+                      width="100%"
+                    >
+                      <FieldArray
+                        name="newPosts"
+                        subscription={{}}
+                      >
+                        {({ fields }) => (
+                          fields.map((name, index) => (
+                            <PostCard
+                              onRemoveCard={() => fields.remove(index)}
+                              parentFieldName={name}
+                              removeButtonLabel='Cancel'
+                            />
+                          ))
+                        )}
+                      </FieldArray>
+                    </FormField>  
                   <FormField
-                    label="edit existing readings"
+                    label="edit existing posts"
                     contentProps={{
                       border: undefined,
                       fill: 'horizontal',
@@ -256,15 +230,15 @@ export const ReadingsPageEditModal: React.FC<ReadingsPageEditModalProps> = ({
                     width="100%"
                   >
                     <FieldArray
-                      name="readings"
+                      name="posts"
                       subscription={{}}  
                     >
                       {({ fields }) => (
                         fields?.map((name, index) => (
-                          <ReadingCard
+                          <PostCard
                             onRemoveCard={() => fields.remove(index)}
                             parentFieldName={name}
-                            removeButtonLabel='Delete Reading'
+                            removeButtonLabel='Delete Post'
                           />
                         ))
                       )}

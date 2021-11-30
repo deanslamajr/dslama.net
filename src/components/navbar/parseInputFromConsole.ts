@@ -4,6 +4,7 @@ import {
 import {MutableReading} from '../editModals/readings';
 import {MutablePost} from '../editModals/posts';
 import {MutableProject} from '../editModals/projects';
+import {transformGqlDateForDateInput} from '../../utils';
 
 declare global {
   interface Window {
@@ -15,7 +16,11 @@ declare global {
   }
 }
 
-const isAPost = (possiblyAPost: any): possiblyAPost is MutablePost => (
+type PostFromConsole = Omit<MutablePost, 'originalPublishDate'> & {
+  originalPublishDate: number;
+};
+
+const isAPost = (possiblyAPost: any): possiblyAPost is PostFromConsole => (
   typeof possiblyAPost === 'object' &&
   typeof possiblyAPost.url === 'string' &&
   typeof possiblyAPost.title === 'string' &&
@@ -36,7 +41,7 @@ const parsePosts = (posts: any): MutablePost[] | undefined => {
 
         parsedPosts.push({
           title: postFromConsoleInput.title,
-          originalPublishDate: postFromConsoleInput.originalPublishDate,
+          originalPublishDate: transformGqlDateForDateInput(postFromConsoleInput.originalPublishDate),
           url: postFromConsoleInput.url,
           snippet: postFromConsoleInput.snippet
         });
@@ -46,7 +51,15 @@ const parsePosts = (posts: any): MutablePost[] | undefined => {
   return parsedPosts;
 };
 
-const isAReading = (possiblyAReading: any): possiblyAReading is MutableReading => (
+type ReadingFromConsole = Omit<
+  MutableReading,
+  'foundDate'| 'publishDate'
+> & {
+  foundDate: number;
+  publishDate: number;
+};
+
+const isAReading = (possiblyAReading: any): possiblyAReading is ReadingFromConsole => (
   typeof possiblyAReading === 'object' &&
   typeof possiblyAReading.author === 'string' &&
   typeof possiblyAReading.foundDate === 'number' &&
@@ -70,8 +83,8 @@ const parseReadings = (readings: any): MutableReading[] | undefined => {
 
         parsedReadings.push({
           author: readingFromConsoleInput.author,
-          foundDate: readingFromConsoleInput.foundDate.toString(),
-          publishDate: readingFromConsoleInput.publishDate.toString(),
+          foundDate: transformGqlDateForDateInput(readingFromConsoleInput.foundDate),
+          publishDate: transformGqlDateForDateInput(readingFromConsoleInput.publishDate),
           publication: readingFromConsoleInput.publication,
           quote: readingFromConsoleInput.quote,
           title: readingFromConsoleInput.title,
@@ -83,9 +96,16 @@ const parseReadings = (readings: any): MutableReading[] | undefined => {
   return parsedReadings;
 };
 
-const isAProject = (possiblyAProject: any): possiblyAProject is MutableProject => (
+type ProjectFromConsole = Omit<
+MutableProject,
+  'originalPublishDate'
+> & {
+  originalPublishDate: number;
+};
+
+const isAProject = (possiblyAProject: any): possiblyAProject is ProjectFromConsole => (
   typeof possiblyAProject === 'object' &&
-  // typeof possiblyAProject.originalPublishDate === 'number' &&
+  typeof possiblyAProject.originalPublishDate === 'number' &&
   typeof possiblyAProject.description === 'string' &&
   typeof possiblyAProject.appUrl === 'string' &&
   typeof possiblyAProject.sourceUrl === 'string' &&
@@ -106,7 +126,7 @@ const parseProjects = (projects: any): MutableProject[] | undefined => {
 
         parsedProjects.push({
           name: readingFromConsoleInput.name,
-          originalPublishDate: readingFromConsoleInput.originalPublishDate.toString(),
+          originalPublishDate: transformGqlDateForDateInput(readingFromConsoleInput.originalPublishDate),
           description: readingFromConsoleInput.description,
           appUrl: readingFromConsoleInput.appUrl,
           sourceUrl: readingFromConsoleInput.sourceUrl,

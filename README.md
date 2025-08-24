@@ -12,6 +12,7 @@ An about page web app
     * `cp ./.env.example ./.env`
     * set values for the variables in `.env`
 * `npm run clean:dev`
+
 ## To Debug Backend
 * `npm run dev:debug`
 * In vscode, run `Attach` script in the debug menu

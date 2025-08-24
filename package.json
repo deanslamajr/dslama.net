@@ -11,6 +11,7 @@
     "clean:dev": "npm run clean && npm run dev",
     "dev:debug": "concurrently -k -p \"{time}-{pid}\" npm:codegen:watch \"NODE_OPTIONS='--inspect' next dev\"",
     "build": "npm run codegen && prisma generate && next build",
+    "migrate": "prisma migrate reset",
     "start": "next start -p 8080",
     "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx src",
     "typecheck": "tsc --noEmit --pretty",

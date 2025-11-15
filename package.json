@@ -16,7 +16,7 @@
     "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx src",
     "typecheck": "tsc --noEmit --pretty",
     "typecheck:watch": "npm run typecheck -- --watch --preserveWatchOutput",
-    "image:build": "docker buildx build --platform linux/amd64,linux/arm64 -f ../deployment/dslama.net/Dockerfile -t deanslamajr/dslama.net:\"$(git describe)\" .",
+    "image:build": "docker buildx build --platform linux/amd64,linux/arm64 -f ../deployment/dslama.net/Dockerfile -t us-central1-docker.pkg.dev/development-262721/dslama-net/full:\"$(git describe)\" .",
     "image:promote": "docker push deanslamajr/dslama.net:\"$(git describe)\"",
     "publish": "npm run image:build && npm run image:promote",
     "publish:test": "npm version prerelease --preid=g\"$(git rev-parse --short=5 HEAD)\" && npm run publish",

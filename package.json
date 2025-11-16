@@ -1,6 +1,6 @@
 {
   "name": "dslama.net",
-  "version": "3.2.0",
+  "version": "3.1.5",
   "private": true,
   "scripts": {
     "clean": "rm -rf node_modules && npm i",
@@ -11,8 +11,8 @@
     "clean:dev": "npm run clean && npm run dev",
     "dev:debug": "concurrently -k -p \"{time}-{pid}\" npm:codegen:watch \"NODE_OPTIONS='--inspect' next dev\"",
     "build": "npm run codegen && prisma generate && next build",
-    "studio": "npx prisma studio",
-    "migrate": "prisma migrate reset",
+    "studio": "npx prisma studio --schema ./prisma/migration.schema.prisma",
+    "migrate": "prisma migrate reset --schema ./prisma/migration.schema.prisma",
     "start": "next start -p 8080",
     "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx src",
     "typecheck": "tsc --noEmit --pretty",

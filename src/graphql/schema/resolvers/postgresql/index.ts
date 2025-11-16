@@ -20,11 +20,11 @@ export const prisma =
     // set url (line 6) in prisma/schema.prisma to empty string.
     // This should work for running the app but will break npm run migrate & npm run studio
     // 
-    // datasources: {
-    //   db: {
-    //     url: `postgresql://${DB_USER}:${DB_PASS}@${DB_HOST}/${DB_NAME}`,
-    //   },
-    // },
+    datasources: {
+      db: {
+        url: `postgresql://${DB_USER}:${DB_PASS}@${DB_HOST}/${DB_NAME}`,
+      },
+    },
   });
 
 if (process.env.NODE_ENV !== 'production') {

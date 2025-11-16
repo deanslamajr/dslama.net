@@ -19,15 +19,16 @@ An about page web app
 
 # DB tasks
 ## modify schema
-    * make changes to `./prisma/schema.prisma`
-    * apply these changes to the DB - `npx prisma migrate dev --name <descriptive-name-for-changes>`
-    * apply the changes to the client/types - `npx prisma generate`
+  * make changes to `./prisma/schema.prisma`
+  * apply these changes to the DB - `npx prisma migrate dev --name <descriptive-name-for-changes>`
+  * apply the changes to the client/types - `npx prisma generate`
 ## manage data (view, modify, etc.)
-    * `npx prisma studio`
-    * open browser to `http://localhost:5555/`
+  * set `DATABASE_URL_LOCAL_USE_ONLY` in `.env` for the remote DB
+  * `npm run studio`
+  * open browser to `http://localhost:5555/`
 ## to migrate a remote schema
   * `git checkout` the commit with the changes
-  * set `DB_USER`, `DB_PASS`, `DB_HOST`, and `DB_NAME` in `.env` for the remote DB
+  * set `DATABASE_URL_LOCAL_USE_ONLY` in `.env` for the remote DB
   * `npx prisma migrate deploy`
 ## combine all migrations into a single migration
   * delete `/prisma/migrations`

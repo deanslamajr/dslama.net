@@ -27,7 +27,7 @@ An about page web app
     * open browser to `http://localhost:5555/`
 ## to migrate a remote schema
   * `git checkout` the commit with the changes
-  * set `DATABASE_URL` in `.env` for the remote DB
+  * set `DB_USER`, `DB_PASS`, `DB_HOST`, and `DB_NAME` in `.env` for the remote DB
   * `npx prisma migrate deploy`
 ## combine all migrations into a single migration
   * delete `/prisma/migrations`

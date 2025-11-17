@@ -1,6 +1,6 @@
 {
   "name": "dslama.net",
-  "version": "3.3.1",
+  "version": "3.3.2",
   "private": true,
   "scripts": {
     "clean": "rm -rf node_modules && npm i",

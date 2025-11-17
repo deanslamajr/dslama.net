@@ -5,14 +5,7 @@ const {
   serverRuntimeConfig: { DB_USER, DB_PASS, DB_HOST, DB_NAME },
 } = getConfig();
 
-console.log('DB_USER', DB_USER)
-console.log('DB_PASS', DB_PASS)
-console.log('DB_HOST', DB_HOST)
-console.log('DB_NAME', DB_NAME)
-
 const url = `postgresql://${DB_USER}:${DB_PASS}@${DB_HOST}/${DB_NAME}`;
-
-console.log('url', url)
 
 // PrismaClient is attached to the `global` object in development to prevent
 // exhausting your database connection limit.

@@ -6,8 +6,10 @@ import { resolver as aboutPageResolver } from './queries/about';
 import { resolver as postsPageResolver } from './queries/posts';
 import { resolver as projectsPageResolver } from './queries/projects';
 import { resolver as readingsPageResolver } from './queries/readings';
+import { resolver as viewerResolver } from './queries/viewer';
 
 import { resolver as attemptLoginResolver } from './mutations/attemptLogin';
+import { resolver as logoutResolver } from './mutations/logout';
 import {resolver as updateAboutPageResolver } from './mutations/updateAboutPage';
 import { resolver as updatePostsPageResolver } from './mutations/updatePostsPage';
 import { resolver as updateProjectsPageResolver } from './mutations/updateProjectsPage';
@@ -17,11 +19,13 @@ const Query: Required<QueryResolvers> = {
   aboutPage: aboutPageResolver,
   postsPage: postsPageResolver,
   projectsPage: projectsPageResolver,
-  readingsPage: readingsPageResolver
+  readingsPage: readingsPageResolver,
+  viewer: viewerResolver
 };
 
 const Mutation: Required<MutationResolvers> = {
   attemptLogin: attemptLoginResolver,
+  logout: logoutResolver,
   updateAboutPage: updateAboutPageResolver,
   updatePostsPage: updatePostsPageResolver,
   updateProjectsPage: updateProjectsPageResolver,

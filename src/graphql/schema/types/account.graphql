@@ -6,3 +6,7 @@ input AttemptLoginInput {
 type LoginResult {
   wasSuccessful: Boolean!
 }
+type Viewer {
+  id: ID!
+  username: String!
+}

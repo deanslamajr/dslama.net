@@ -3,10 +3,12 @@ type Query {
     postsPage: PostsPage!
     projectsPage: ProjectsPage!
     readingsPage: ReadingsPage!
+    viewer: Viewer
 }
 
 type Mutation {
     attemptLogin(input: AttemptLoginInput!): LoginResult!
+    logout: Boolean!
     updateAboutPage(input: UpdateAboutPageInput!): AboutPage!
     updatePostsPage(input: UpdatePostsPageInput!): PostsPage!
     updateProjectsPage(input: UpdateProjectsPageInput!): ProjectsPage!

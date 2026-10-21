@@ -24,6 +24,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
 }) => {
   const [hasIncorrectCreds, setHasIncorrectCreds] = React.useState(false);
   const [attemptLogin, {data, loading}] = useAttemptLoginMutation({
+    refetchQueries: ['FetchViewer'],
     onCompleted: (data) => {
       if (data.attemptLogin.wasSuccessful) {
         onSuccessfulLogin();

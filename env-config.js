@@ -23,8 +23,24 @@ const serverSecrets = {
 
 const serverEnvironment = Object.assign({}, clientEnvironment, serverSecrets);
 
+const MIN_SESSION_SECRET_LENGTH = 32;
+const PLACEHOLDER_SESSION_SECRET = 'CHANGE_ME_32_RANDOM_BYTES';
+
+const assertSessionSecret = secret => {
+  if (
+    !secret ||
+    secret.length < MIN_SESSION_SECRET_LENGTH ||
+    secret === PLACEHOLDER_SESSION_SECRET
+  ) {
+    throw new Error(
+      `SESSION_COOKIE_SECRET must be at least ${MIN_SESSION_SECRET_LENGTH} characters and must not be the example value. Generate one with: openssl rand -base64 32`
+    );
+  }
+};
+
 module.exports = {
   serverEnvironment,
   serverSecrets,
   clientEnvironment,
+  assertSessionSecret,
 };

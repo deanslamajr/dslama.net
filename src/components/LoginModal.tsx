@@ -23,14 +23,24 @@ export const LoginModal: React.FC<LoginModalProps> = ({
   onSuccessfulLogin
 }) => {
   const [hasIncorrectCreds, setHasIncorrectCreds] = React.useState(false);
-  const [attemptLogin, {data, loading}] = useAttemptLoginMutation({
+  const [errorMessage, setErrorMessage] = React.useState<string | undefined>(undefined);
+  const [attemptLogin, {loading}] = useAttemptLoginMutation({
     refetchQueries: ['FetchViewer'],
     onCompleted: (data) => {
+      setErrorMessage(undefined);
       if (data.attemptLogin.wasSuccessful) {
         onSuccessfulLogin();
       } else {
         setHasIncorrectCreds(true);
       }
+    },
+    onError: (error) => {
+      const isRateLimited = error.graphQLErrors.some(e => e.extensions?.code === 'RATE_LIMITED');
+      setErrorMessage(
+        isRateLimited
+          ? 'Too many login attempts. Wait 15 minutes and try again.'
+          : 'Login failed. Try again.'
+      );
     }
   });
 
@@ -46,9 +56,11 @@ export const LoginModal: React.FC<LoginModalProps> = ({
   };
 
   const getMessage = () => (
-    hasIncorrectCreds
-      ? 'Login Failed! Try Again.'
-      : message || ''
+    errorMessage || (
+      hasIncorrectCreds
+        ? 'Login Failed! Try Again.'
+        : message || ''
+    )
   );
 
   return (

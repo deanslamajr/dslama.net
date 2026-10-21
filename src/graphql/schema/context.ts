@@ -22,6 +22,7 @@ export type IncomingMessageWithSession = IncomingMessage & {
 };
 
 export type ContextInterface = {
+  clientIp: string;
   session: {
     start: (account: { id: string; sessionVersion: number }) => void;
     get: () => SessionInterface | null;
@@ -34,11 +35,24 @@ type ResolveContextParams = {
   res: ServerResponse;
 };
 
+// The Google load balancer appends "<client-ip>,<load-balancer-ip>" to X-Forwarded-For.
+// Entries left of those two come from the client and can be forged.
+export const getClientIp = (req: IncomingMessage): string => {
+  const header = req.headers['x-forwarded-for'];
+  const value = Array.isArray(header) ? header.join(',') : header || '';
+  const parts = value.split(',').map(part => part.trim()).filter(Boolean);
+  if (parts.length >= 2) {
+    return parts[parts.length - 2];
+  }
+  return req.socket.remoteAddress || 'unknown';
+};
+
 export const resolveContext = ({
   req,
 }: {
   req: IncomingMessageWithSession;
 }): ContextInterface => ({
+  clientIp: getClientIp(req),
   session: {
     start: account => {
       req.session = {

@@ -1,6 +1,7 @@
 import {
   Scalars
 } from './graphql/generated/ops';
+import { HTTP_PROTOCOLS, isAllowedUrl } from './contentPolicy';
 
 export const formatDate: (epochDate?: number | string | null) => string = epochDate => {
   if (!epochDate) {
@@ -32,20 +33,11 @@ export const formatDate: (epochDate?: number | string | null) => string = epochD
   return formattedDate;
 };
 
-export function isValidUrl(potentialUrl?: string) {
-  let errorMessage: string | undefined = undefined;
-  
-  try {
-    if (!potentialUrl) {
-      throw new Error();
-    }
-    
-    new URL(potentialUrl);
-  } catch (_) {
-    errorMessage = 'Must be valid url e.g. https://google.com';
+export function isValidUrl(potentialUrl?: string, protocols: string[] = HTTP_PROTOCOLS) {
+  if (potentialUrl && isAllowedUrl(potentialUrl, protocols)) {
+    return undefined;
   }
-
-  return errorMessage;
+  return `Must be a valid ${protocols.map(p => p.replace(':', '')).join(' or ')} URL, for example https://example.com`;
 }
 
 export const isRequired = (value?: string) => Boolean(value) ? undefined : 'This field is required.'

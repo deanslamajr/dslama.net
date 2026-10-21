@@ -78,7 +78,7 @@ const Posts: NextPage = () => {
                           <Card
                             key={post.title || `post-${index}`}
                             onClick={() => {
-                              post.url && window.open(post.url, "_blank");
+                              post.url && window.open(post.url, "_blank", "noopener,noreferrer");
                             }}
                             height="full"
                             width={isMobile ? 'auto' : 'full'}

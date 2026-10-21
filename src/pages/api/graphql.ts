@@ -12,24 +12,20 @@ const {
   serverRuntimeConfig: { NODE_ENV },
 } = getConfig();
 
-const formatError = (error: GraphQLError): GraphQLFormattedError => {
-  // In production, return generic errors
-  // forward only the code for the client to use
-  if (NODE_ENV === 'production') {
-    // @TODO better logging
-    console.error(error);
+// Messages for these codes are written by this app and are safe to show.
+const PUBLIC_ERROR_CODES = ['BAD_USER_INPUT', 'UNAUTHENTICATED', 'RATE_LIMITED', 'GRAPHQL_VALIDATION_FAILED'];
 
-    return new GraphQLError(
-      'Internal server error',
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      { code: error?.extensions?.code }
-    );
+const formatError = (error: GraphQLError): GraphQLFormattedError => {
+  if (NODE_ENV !== 'production') {
+    return error;
   }
-  return error;
+  const code = error?.extensions?.code;
+  if (PUBLIC_ERROR_CODES.indexOf(code) !== -1) {
+    return { message: error.message, extensions: { code } };
+  }
+  // @TODO better logging (L-08)
+  console.error(error);
+  return { message: 'Internal server error', extensions: { code } };
 };
 
 const apolloServer = new ApolloServer({

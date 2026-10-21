@@ -1,9 +1,15 @@
 import {AuthenticationError} from 'apollo-server-micro';
 import { Prisma } from '@prisma/client'
 
-import { LinkInput, MutationResolvers, PostInput } from '../../../generated/graphql';
+import { MutationResolvers } from '../../../generated/graphql';
 import {update} from '../postgresql/postsPage';
 import {ContextInterface} from '../../context';
+import { HTTP_PROTOCOLS, LIMITS } from '../../../../contentPolicy';
+import {
+  assertMaxItems,
+  assertMaxLength,
+  normalizeUrl,
+} from '../../validation';
 
 export const resolver: Required<MutationResolvers<ContextInterface>>['updatePostsPage'] = async (
   _parent,
@@ -16,12 +22,18 @@ export const resolver: Required<MutationResolvers<ContextInterface>>['updatePost
     const updateArgs = {} as Prisma.PostsPageCreateInput;
 
     // Summary
-    updateArgs.summary = input.summary;
+    updateArgs.summary = assertMaxLength(input.summary, LIMITS.longText, 'summary');
 
     // Posts
-    if (input.posts.length) {
+    const posts = assertMaxItems(input.posts, 'posts').map((post, index) => ({
+      originalPublishDate: post.originalPublishDate,
+      title: assertMaxLength(post.title, LIMITS.shortText, `posts[${index}].title`),
+      snippet: assertMaxLength(post.snippet, LIMITS.longText, `posts[${index}].snippet`),
+      url: normalizeUrl(post.url, `posts[${index}].url`, HTTP_PROTOCOLS),
+    }));
+    if (posts.length) {
       updateArgs.posts = {
-        create: [...input.posts]
+        create: posts
       };
     }
 

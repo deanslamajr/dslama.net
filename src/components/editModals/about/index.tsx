@@ -172,12 +172,16 @@ export const AboutPageEditModal: React.FC<AboutPageEditModalProps> = ({
                       )}
                     </FieldArray>
                   </FormField>
-                  <Field<string> name="pictureURL">
+                  <Field<string>
+                    name="pictureURL"
+                    validate={value => (value ? isValidUrl(value) : undefined)}
+                  >
                     {({ input, meta }) => {
                       return (
                       <FormField
                         label="banner pic url"
                         width="full"
+                        error={meta.touched || meta.submitFailed ? meta.error : undefined}
                       >
                         <TextInput
                           {...input}

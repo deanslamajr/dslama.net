@@ -55,7 +55,7 @@ const Home: NextPage = () => {
                         (queryResult.aboutPage.links as Link[])
                           .map(({ name, url }) => (
                             <LinkItem key={name || ''}>
-                              <LinkAnchor href={url || ''} target="_blank">
+                              <LinkAnchor href={url || ''} target="_blank" rel="noopener noreferrer">
                                 {name}
                               </LinkAnchor>
                             </LinkItem>

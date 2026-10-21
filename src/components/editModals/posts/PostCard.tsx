@@ -48,7 +48,7 @@ export const PostCard: React.FC<PostCardProps> = ({
           fieldName='url'
           placeholder='https://www.deansblog.com'
           parentFieldName={parentFieldName}
-          validate={isValidUrl}
+          validate={value => isValidUrl(value)}
         />
         <TextArea
           fieldName='snippet'

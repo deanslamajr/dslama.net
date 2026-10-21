@@ -48,13 +48,13 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           fieldName='appUrl'
           placeholder='https://someApp.dslama.net'
           parentFieldName={parentFieldName}
-          validate={isValidUrl}
+          validate={value => isValidUrl(value)}
         />
         <TextInput
           fieldName='sourceUrl'
           placeholder='https://www.github.com/deanslama/someAppName'
           parentFieldName={parentFieldName}
-          validate={isValidUrl}
+          validate={value => (value ? isValidUrl(value) : undefined)}
         />
         <TextArea
           fieldName='description'

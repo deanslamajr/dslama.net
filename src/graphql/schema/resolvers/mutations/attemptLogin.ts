@@ -31,7 +31,7 @@ export const resolver: Required<MutationResolvers<ContextInterface>>['attemptLog
       });
 
       wasSuccessful = true;
-      context.session.setAccountId(account.id);
+      context.session.start(account);
     }
   }
 

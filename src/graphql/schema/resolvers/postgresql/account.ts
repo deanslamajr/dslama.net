@@ -13,6 +13,8 @@ export const fetch: Fetch = ({username}) => {
     })
 };
 
+export const fetchById = (id: string) => prisma.account.findUnique({ where: { id } });
+
 type UpdateParams = {
   id: string;
 } & Omit<Prisma.AccountUncheckedUpdateInput, 'id'>;

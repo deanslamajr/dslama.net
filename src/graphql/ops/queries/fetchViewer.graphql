@@ -1,0 +1,6 @@
+query FetchViewer {
+  viewer {
+    id
+    username
+  }
+}

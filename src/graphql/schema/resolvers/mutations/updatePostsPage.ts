@@ -1,9 +1,9 @@
-import {AuthenticationError} from 'apollo-server-micro';
 import { Prisma } from '@prisma/client'
 
 import { MutationResolvers } from '../../../generated/graphql';
 import {update} from '../postgresql/postsPage';
 import {ContextInterface} from '../../context';
+import { requireActiveAccount } from '../../auth';
 import { HTTP_PROTOCOLS, LIMITS } from '../../../../contentPolicy';
 import {
   assertMaxItems,
@@ -18,35 +18,33 @@ export const resolver: Required<MutationResolvers<ContextInterface>>['updatePost
   _info
 ) => {
 
-  if ((context as ContextInterface).session.getAccountId()) {
-    const updateArgs = {} as Prisma.PostsPageCreateInput;
+  await requireActiveAccount(context);
 
-    // Summary
-    updateArgs.summary = assertMaxLength(input.summary, LIMITS.longText, 'summary');
+  const updateArgs = {} as Prisma.PostsPageCreateInput;
 
-    // Posts
-    const posts = assertMaxItems(input.posts, 'posts').map((post, index) => ({
-      originalPublishDate: post.originalPublishDate,
-      title: assertMaxLength(post.title, LIMITS.shortText, `posts[${index}].title`),
-      snippet: assertMaxLength(post.snippet, LIMITS.longText, `posts[${index}].snippet`),
-      url: normalizeUrl(post.url, `posts[${index}].url`, HTTP_PROTOCOLS),
-    }));
-    if (posts.length) {
-      updateArgs.posts = {
-        create: posts
-      };
-    }
+  // Summary
+  updateArgs.summary = assertMaxLength(input.summary, LIMITS.longText, 'summary');
 
-    const data = await update(updateArgs);
-    const sortedPosts = data.posts.sort(
-      (a, b) => b.originalPublishDate.getTime() - a.originalPublishDate.getTime()
-    );
-  
-    return {
-      posts: sortedPosts,
-      summary: data.summary
+  // Posts
+  const posts = assertMaxItems(input.posts, 'posts').map((post, index) => ({
+    originalPublishDate: post.originalPublishDate,
+    title: assertMaxLength(post.title, LIMITS.shortText, `posts[${index}].title`),
+    snippet: assertMaxLength(post.snippet, LIMITS.longText, `posts[${index}].snippet`),
+    url: normalizeUrl(post.url, `posts[${index}].url`, HTTP_PROTOCOLS),
+  }));
+  if (posts.length) {
+    updateArgs.posts = {
+      create: posts
     };
   }
 
-  throw new AuthenticationError('This action requires an authenticated account.');
+  const data = await update(updateArgs);
+  const sortedPosts = data.posts.sort(
+    (a, b) => b.originalPublishDate.getTime() - a.originalPublishDate.getTime()
+  );
+
+  return {
+    posts: sortedPosts,
+    summary: data.summary
+  };
 };

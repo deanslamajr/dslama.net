@@ -1,9 +1,9 @@
-import {AuthenticationError} from 'apollo-server-micro';
 import { Prisma } from '@prisma/client'
 
 import { MutationResolvers } from '../../../generated/graphql';
 import {update} from '../postgresql/projectsPage';
 import {ContextInterface} from '../../context';
+import { requireActiveAccount } from '../../auth';
 import { HTTP_PROTOCOLS, LIMITS } from '../../../../contentPolicy';
 import {
   assertMaxItems,
@@ -19,37 +19,35 @@ export const resolver: Required<MutationResolvers<ContextInterface>>['updateProj
   _info
 ) => {
 
-  if ((context as ContextInterface).session.getAccountId()) {
-    const updateArgs = {} as Prisma.ProjectsPageCreateInput;
+  await requireActiveAccount(context);
 
-    // Summary
-    updateArgs.summary = assertMaxLength(input.summary, LIMITS.longText, 'summary');
+  const updateArgs = {} as Prisma.ProjectsPageCreateInput;
 
-    // Posts
-    const projects = assertMaxItems(input.projects, 'projects').map((project, index) => ({
-      originalPublishDate: project.originalPublishDate,
-      name: assertMaxLength(project.name, LIMITS.shortText, `projects[${index}].name`),
-      description: assertMaxLength(project.description, LIMITS.longText, `projects[${index}].description`),
-      summary: assertMaxLength(project.summary, LIMITS.longText, `projects[${index}].summary`),
-      appUrl: normalizeUrl(project.appUrl, `projects[${index}].appUrl`, HTTP_PROTOCOLS),
-      sourceUrl: normalizeOptionalUrl(project.sourceUrl, `projects[${index}].sourceUrl`, HTTP_PROTOCOLS),
-    }));
-    if (projects.length) {
-      updateArgs.projects = {
-        create: projects
-      };
-    }
+  // Summary
+  updateArgs.summary = assertMaxLength(input.summary, LIMITS.longText, 'summary');
 
-    const data = await update(updateArgs);
-    const sortedProjects = data.projects.sort(
-      (a, b) => b.originalPublishDate.getTime() - a.originalPublishDate.getTime()
-    );
-  
-    return {
-      projects: sortedProjects,
-      summary: data.summary
+  // Posts
+  const projects = assertMaxItems(input.projects, 'projects').map((project, index) => ({
+    originalPublishDate: project.originalPublishDate,
+    name: assertMaxLength(project.name, LIMITS.shortText, `projects[${index}].name`),
+    description: assertMaxLength(project.description, LIMITS.longText, `projects[${index}].description`),
+    summary: assertMaxLength(project.summary, LIMITS.longText, `projects[${index}].summary`),
+    appUrl: normalizeUrl(project.appUrl, `projects[${index}].appUrl`, HTTP_PROTOCOLS),
+    sourceUrl: normalizeOptionalUrl(project.sourceUrl, `projects[${index}].sourceUrl`, HTTP_PROTOCOLS),
+  }));
+  if (projects.length) {
+    updateArgs.projects = {
+      create: projects
     };
   }
 
-  throw new AuthenticationError('This action requires an authenticated account.');
+  const data = await update(updateArgs);
+  const sortedProjects = data.projects.sort(
+    (a, b) => b.originalPublishDate.getTime() - a.originalPublishDate.getTime()
+  );
+
+  return {
+    projects: sortedProjects,
+    summary: data.summary
+  };
 };

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import {
   Anchor,
   Box,
+  Button,
   Header,
   Nav,
   Menu,
@@ -11,6 +12,7 @@ import {
 } from 'grommet';
 import {useState as useEditModeState} from '../../contexts/EditModeState';
 import {parseInputFromConsole} from './parseInputFromConsole';
+import {useFetchViewerQuery, useLogoutMutation} from '../../graphql/generated/ops';
 
 const getTitle = () => 'dean slama';
 
@@ -31,6 +33,12 @@ export const Navbar: React.FunctionComponent<NavbarProps> = ({}) => {
   const router = useRouter();
   const path = getPathFromRoute(router.route);
   const [activeItem, setActiveItem] = useState(path);
+  const { data: viewerData } = useFetchViewerQuery({
+    skip: !editModeState.isActive,
+    ssr: false,
+    fetchPolicy: 'network-only',
+  });
+  const [logout] = useLogoutMutation({ refetchQueries: ['FetchViewer'] });
 
   const onLinkClick: (item: string) => void = item => {
     const newPath = item.toLowerCase();
@@ -74,6 +82,9 @@ export const Navbar: React.FunctionComponent<NavbarProps> = ({}) => {
           >
             {getTitle()}
           </Text>
+          {editModeState.isActive && viewerData?.viewer && (
+            <Button plain label="logout" onClick={() => logout()} />
+          )}
         </Box>
         <ResponsiveContext.Consumer>
           {responsive =>

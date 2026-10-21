@@ -11,20 +11,22 @@ const {
 const isProduction = NODE_ENV === 'production';
 export const SESSION_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000;
 
+type SessionInterface = {
+  accountId?: string;
+  sessionVersion?: number;
+  issuedAt?: number;
+};
+
 export type IncomingMessageWithSession = IncomingMessage & {
-  session: SessionInterface;
+  session: SessionInterface | null;
 };
 
 export type ContextInterface = {
   session: {
-    setAccountId: (id: string) => void;
-    getAccountId: () => string | undefined;
+    start: (account: { id: string; sessionVersion: number }) => void;
+    get: () => SessionInterface | null;
     logout: () => void;
   };
-};
-
-type SessionInterface = {
-  accountId?: string;
 };
 
 type ResolveContextParams = {
@@ -32,23 +34,26 @@ type ResolveContextParams = {
   res: ServerResponse;
 };
 
-const initializedSession: SessionInterface = {
-  accountId: undefined,
-};
-
-export const resolveContext = (incomingContext: {
+export const resolveContext = ({
+  req,
+}: {
   req: IncomingMessageWithSession;
-}): ContextInterface => {
-  return {
-    session: {
-      setAccountId: (id: string) =>
-        (incomingContext.req.session.accountId = id),
-      getAccountId: () =>
-        incomingContext.req.session && incomingContext.req.session.accountId,
-      logout: () => (incomingContext.req.session = { ...initializedSession }),
+}): ContextInterface => ({
+  session: {
+    start: account => {
+      req.session = {
+        accountId: account.id,
+        sessionVersion: account.sessionVersion,
+        issuedAt: Date.now(),
+      };
     },
-  };
-};
+    get: () => req.session,
+    // Setting null makes cookie-session clear both cookies.
+    logout: () => {
+      req.session = null;
+    },
+  },
+});
 
 const cookieSessionMiddleware = cookieSession({
   name: 'session',

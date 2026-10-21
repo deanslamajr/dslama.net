@@ -82,7 +82,7 @@ const ReadingsPage: NextPage = () => {
                           <Card
                             key={reading?.id || `reading-${index}`}
                             onClick={() => {
-                              reading?.url && window.open(reading.url, "_blank");
+                              reading?.url && window.open(reading.url, "_blank", "noopener,noreferrer");
                             }}
                             height="full"
                             width={isMobile ? 'auto' : 'full'}

@@ -1,43 +1,33 @@
 import {AuthenticationError} from 'apollo-server-micro';
 
-import { LinkInput, MutationResolvers } from '../../../generated/graphql';
+import { MutationResolvers } from '../../../generated/graphql';
 import {update} from '../postgresql/aboutPage';
 import {ContextInterface} from '../../context';
+import { HTTP_PROTOCOLS, LIMITS, LINK_PROTOCOLS } from '../../../../contentPolicy';
+import {
+  assertMaxItems,
+  assertMaxLength,
+  normalizeOptionalUrl,
+  normalizeUrl,
+} from '../../validation';
 
 export const resolver: Required<MutationResolvers<ContextInterface>>['updateAboutPage'] = async (
   _parent, args, context, _info
 ) => {
 
   if ((context as ContextInterface).session.getAccountId()) {
-    let links = [] as Array<LinkInput>;
-
-    if (args.input.links !== null && args.input.links !== undefined) {
-      args.input.links.forEach(link => {
-        try {
-          // if not remotely close to a url, can throw
-          const uRL = encodeURI(link.url);
-          links.push({
-            name: link.name,
-            url: uRL.toString()
-          });
-        }
-        catch(error: any) {
-          // TODO improve logging
-          // TODO improve this behavior
-          // don't do anything
-        }
-      });
-    }
+    const input = args.input;
+    const rawLinks = assertMaxItems(input.links || [], 'links');
+    const links = rawLinks.map((link, index) => ({
+      name: assertMaxLength(link.name, LIMITS.shortText, `links[${index}].name`),
+      url: normalizeUrl(link.url, `links[${index}].url`, LINK_PROTOCOLS),
+    }));
 
     const data = await update({
-      bio: args.input.bio || '',
-      links: {
-        create: [
-          ...links
-        ]
-      },
-      pictureURL: args.input.pictureURL || '',
-      title: args.input.title || '',
+      bio: assertMaxLength(input.bio || '', LIMITS.bio, 'bio'),
+      title: assertMaxLength(input.title || '', LIMITS.shortText, 'title'),
+      pictureURL: normalizeOptionalUrl(input.pictureURL || '', 'pictureURL', HTTP_PROTOCOLS),
+      links: { create: links },
     });
   
     return {

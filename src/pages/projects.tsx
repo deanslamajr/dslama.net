@@ -94,7 +94,7 @@ const Projects: NextPage = () => {
                               <Anchor
                                 size="xlarge"
                                 onClick={() => {
-                                  project?.appUrl && window.open(project.appUrl, "_blank");
+                                  project?.appUrl && window.open(project.appUrl, "_blank", "noopener,noreferrer");
                                 }}
                               >
                               {project?.name || ''}
@@ -103,7 +103,7 @@ const Projects: NextPage = () => {
                                   project?.sourceUrl && (
                                     <Anchor
                                       onClick={() => {
-                                        project?.sourceUrl && window.open(project.sourceUrl, "_blank");
+                                        project?.sourceUrl && window.open(project.sourceUrl, "_blank", "noopener,noreferrer");
                                       }}
                                       margin={{left: 'small'}}
                                     >

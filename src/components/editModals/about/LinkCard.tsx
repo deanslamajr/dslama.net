@@ -12,6 +12,7 @@ import {
   isRequired,
   isValidUrl
 } from '../../../utils';
+import { LINK_PROTOCOLS } from '../../../contentPolicy';
 
 type LinkCardProps = {
   onRemoveCard: () => void;
@@ -44,7 +45,7 @@ export const LinkCard: React.FC<LinkCardProps> = ({
           fieldName='url'
           placeholder='https://www.socialmedia.com'
           parentFieldName={parentFieldName}
-          validate={isValidUrl}
+          validate={value => isValidUrl(value, LINK_PROTOCOLS)}
         />
         <Button
           secondary

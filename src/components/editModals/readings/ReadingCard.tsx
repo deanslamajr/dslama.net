@@ -54,7 +54,7 @@ export const ReadingCard: React.FC<ReadingCardProps> = ({
           fieldName='url'
           placeholder='https://www.blogsRus.com'
           parentFieldName={parentFieldName}
-          validate={isValidUrl}
+          validate={value => isValidUrl(value)}
         />
         <TextArea
           fieldName='quote'

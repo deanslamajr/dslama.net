@@ -6,6 +6,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 import { graphqlRequestGuard } from '../../graphql/requestGuard';
 import schema from '../../graphql/schema';
+import { maxFieldsRule } from '../../graphql/schema/validationRules';
 import {resolveContext, sessionMiddleware} from '../../graphql/schema/context';
 
 const {
@@ -34,6 +35,7 @@ const apolloServer = new ApolloServer({
   formatError,
   // The site never accepts files. This keeps multipart requests away from the upload parser.
   uploads: false,
+  validationRules: [maxFieldsRule],
 });
 
 export const config = {

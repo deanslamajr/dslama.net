@@ -34,7 +34,9 @@ const formatError = (error: GraphQLError): GraphQLFormattedError => {
 const apolloServer = new ApolloServer({
   context: resolveContext,
   schema,
-  formatError
+  formatError,
+  // The site never accepts files. This keeps multipart requests away from the upload parser.
+  uploads: false,
 });
 
 export const config = {

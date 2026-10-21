@@ -4,6 +4,7 @@ import { GraphQLError, GraphQLFormattedError } from 'graphql';
 import nextConnect from 'next-connect';
 import { NextApiRequest, NextApiResponse } from "next";
 
+import { graphqlRequestGuard } from '../../graphql/requestGuard';
 import schema from '../../graphql/schema';
 import {resolveContext, sessionMiddleware} from '../../graphql/schema/context';
 
@@ -46,5 +47,6 @@ export const config = {
 };
 
 export default nextConnect<NextApiRequest, NextApiResponse>()
+  .use(graphqlRequestGuard)
   .use(sessionMiddleware)
   .use(apolloServer.createHandler({ path: '/api/graphql' }));

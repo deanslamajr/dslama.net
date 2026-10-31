@@ -25,6 +25,7 @@ import {
 
 const Projects: NextPage = () => {
   const { data, loading, error } = useFetchProjectsQuery();
+  const [editModeState] = useEditModeState();
 
   return (
     <>
@@ -41,8 +42,6 @@ const Projects: NextPage = () => {
             projects,
             summary,
           } = projectsPageData;
-
-          const [editModeState] = useEditModeState();
 
           return (
             <ResponsiveContext.Consumer>

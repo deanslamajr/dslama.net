@@ -1,13 +1,6 @@
+# import AboutPageFragment from '../fragments/AboutPageFragment.graphql'
 query FetchAbout {
-    aboutPage {
-        links {
-            id
-            name
-            url
-        }
-        version
-        pictureURL
-        bio
-        title
-    }
+  aboutPage {
+    ...AboutPageFragment
+  }
 }

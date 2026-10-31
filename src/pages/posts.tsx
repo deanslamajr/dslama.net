@@ -25,6 +25,7 @@ import {
 
 const Posts: NextPage = () => {
   const { data, loading, error } = useFetchPostsQuery();
+  const [editModeState] = useEditModeState();
 
   return (
     <>
@@ -38,8 +39,6 @@ const Posts: NextPage = () => {
         render={({ queryResult }) => {
           const postsPageData = queryResult.postsPage;
           const { posts, summary } = postsPageData;
-
-          const [editModeState] = useEditModeState();
 
           return (
             <ResponsiveContext.Consumer>

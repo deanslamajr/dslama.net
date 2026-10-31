@@ -1,0 +1,11 @@
+fragment AboutPageFragment on AboutPage {
+  links {
+    id
+    name
+    url
+  }
+  version
+  pictureURL
+  bio
+  title
+}

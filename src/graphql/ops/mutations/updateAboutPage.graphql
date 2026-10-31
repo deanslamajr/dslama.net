@@ -1,12 +1,6 @@
+# import AboutPageFragment from '../fragments/AboutPageFragment.graphql'
 mutation UpdateAboutPage($input: UpdateAboutPageInput!) {
   updateAboutPage(input: $input) {
-    links {
-        name
-        url
-    }
-    version
-    pictureURL
-    bio
-    title
+    ...AboutPageFragment
   }
 }

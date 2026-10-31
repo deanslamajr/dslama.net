@@ -27,6 +27,7 @@ import {
 
 const ReadingsPage: NextPage = () => {
   const { data, loading, error } = useFetchReadingsQuery();
+  const [editModeState] = useEditModeState();
 
   return (
     <>
@@ -42,8 +43,6 @@ const ReadingsPage: NextPage = () => {
             readings,
             summary,
           } = queryResult.readingsPage;
-
-          const [editModeState] = useEditModeState();
 
           return (
             <ResponsiveContext.Consumer>

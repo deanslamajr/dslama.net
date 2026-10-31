@@ -55,16 +55,25 @@ export const resolveContext = ({
   },
 });
 
-const cookieSessionMiddleware = cookieSession({
-  name: 'session',
-  secret: SESSION_COOKIE_SECRET,
-  maxAge: SESSION_MAX_AGE_MS,
-  httpOnly: true,
-  sameSite: 'lax',
-  secure: isProduction,
-});
+type CookieSessionMiddleware = ReturnType<typeof cookieSession>;
+type CookieSessionArgs = Parameters<CookieSessionMiddleware>;
 
-type CookieSessionArgs = Parameters<typeof cookieSessionMiddleware>;
+// Built on first use, because `next build` loads this module through the
+// schema without SESSION_COOKIE_SECRET, and cookie-session throws without keys.
+let cookieSessionMiddleware: CookieSessionMiddleware | undefined;
+const getCookieSessionMiddleware = (): CookieSessionMiddleware => {
+  if (!cookieSessionMiddleware) {
+    cookieSessionMiddleware = cookieSession({
+      name: 'session',
+      secret: SESSION_COOKIE_SECRET,
+      maxAge: SESSION_MAX_AGE_MS,
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: isProduction,
+    });
+  }
+  return cookieSessionMiddleware;
+};
 
 // TLS ends at the Google load balancer, so the pod receives plain HTTP.
 // cookies@0.8 refuses to write a Secure cookie unless req.protocol is "https",
@@ -78,7 +87,7 @@ export const sessionMiddleware = (
   if (isProduction) {
     (req as IncomingMessage & { protocol?: string }).protocol = 'https';
   }
-  return cookieSessionMiddleware(
+  return getCookieSessionMiddleware()(
     (req as unknown) as CookieSessionArgs[0],
     (res as unknown) as CookieSessionArgs[1],
     next as CookieSessionArgs[2]

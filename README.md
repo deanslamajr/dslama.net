@@ -22,21 +22,10 @@ An about page web app
   * make changes to `./prisma/schema.prisma`
   * apply these changes to the DB - `npx prisma migrate dev --name <descriptive-name-for-changes>`
   * apply the changes to the client/types - `npx prisma generate`
-## manage data (view, modify, etc.)
-  * set `DATABASE_URL_LOCAL_USE_ONLY` in `.env` for the remote DB
-  * `npm run studio`
-  * open browser to `http://localhost:5555/`
-## to migrate a remote schema
-  * `git checkout` the commit with the changes
-  * set `DATABASE_URL_LOCAL_USE_ONLY` in `.env` for the remote DB
-  * `npx prisma migrate deploy`
-## combine all migrations into a single migration
-  * delete `/prisma/migrations`
-  * `npx prisma migrate dev --name init`
-  * *Warning: all DB data will be cleared*
-    * select option `y` when prompted
+## migrate a remote database
+Never put a remote database URL in `.env`. To migrate production, follow the operator procedure (port-forward and an inline `DATABASE_URL_LOCAL_USE_ONLY`).
 
 # Deployments
-* If there are changes to the DB schema, follow the "to migrate a remote schema" section above
-* `npm run build` - Verify build before creating image
+* If there are changes to the DB schema, migrate the remote database first (see above)
+* `npm run build` - Make sure that the build passes before you create the image
 * `npm publish:<version-bump-method>`

@@ -4,11 +4,7 @@ import { prisma } from '.';
 type Fetch = (params: { username: string }) => Promise<Account | null>;
 
 export const fetch: Fetch = ({ username }) => {
-  return prisma.account.findFirst({
-    where: {
-      username,
-    },
-  });
+  return prisma.account.findUnique({ where: { username } });
 };
 
 export const fetchById = (id: string) =>

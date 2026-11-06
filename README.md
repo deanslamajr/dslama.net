@@ -22,6 +22,13 @@ An about page web app
   * make changes to `./prisma/schema.prisma`
   * apply these changes to the DB - `npx prisma migrate dev --name <descriptive-name-for-changes>`
   * apply the changes to the client/types - `npx prisma generate`
+## accounts
+There is no signup flow. Create an account, or reset its password, with the script. It prompts for the username and hides the password.
+  * `DATABASE_URL=postgresql://dslama:dslama-local-only@localhost:5433/dslama node scripts/create-account.js`
+  * `DATABASE_URL=postgresql://dslama:dslama-local-only@localhost:5433/dslama node scripts/create-account.js --reset-password`
+
+A password reset ends every session of that account. To end the sessions without a reset, run this SQL:
+  * `UPDATE "Account" SET "sessionVersion" = "sessionVersion" + 1 WHERE username = '<username>';`
 ## migrate a remote database
 Never put a remote database URL in `.env`. To migrate production, follow the operator procedure (port-forward and an inline `DATABASE_URL_LOCAL_USE_ONLY`).
 

@@ -15,10 +15,10 @@ model Account {
   id          String @default(uuid()) @id
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  username    String
+  username    String @unique
   password    String
   isActive    Boolean
-  lastLoginAt DateTime
+  lastLoginAt DateTime?
   sessionVersion Int @default(0)
 }
 
@@ -38,6 +38,8 @@ model Link {
   url                       String
   aboutPage                 AboutPage @relation(fields: [pageVersionThatReference], references: [version])
   pageVersionThatReference  Int
+
+  @@index([pageVersionThatReference])
 }
 
 model PostsPage {
@@ -56,6 +58,8 @@ model Post {
   snippet                   String
   postsPage                 PostsPage @relation(fields: [pageVersionThatReference], references: [version])
   pageVersionThatReference  Int
+
+  @@index([pageVersionThatReference])
 }
 
 model ProjectsPage {
@@ -76,6 +80,8 @@ model Project {
   sourceUrl                 String
   projectsPage              ProjectsPage @relation(fields: [pageVersionThatReference], references: [version])
   pageVersionThatReference  Int
+
+  @@index([pageVersionThatReference])
 }
 
 model ReadingsPage {
@@ -97,4 +103,6 @@ model Reading {
   url                       String
   readingsPage              ReadingsPage @relation(fields: [pageVersionThatReference], references: [version])
   pageVersionThatReference  Int
+
+  @@index([pageVersionThatReference])
 }

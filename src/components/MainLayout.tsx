@@ -15,7 +15,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   return (
     <Grid fill rows={['auto', 'flex']}>
       <Navbar />
-      <Main align="center" overflow="overlay">
+      <Main align="center" overflow="auto">
         <Box
           direction="column"
           align="center"

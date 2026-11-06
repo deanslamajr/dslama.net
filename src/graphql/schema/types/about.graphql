@@ -5,11 +5,11 @@ type Link {
 }
 
 type AboutPage {
-    links: [Link!]
-    version: Int
-    pictureURL: String
-    bio: String
-    title: String
+    links: [Link!]!
+    version: Int!
+    pictureURL: String!
+    bio: String!
+    title: String!
 }
 
 input LinkInput {

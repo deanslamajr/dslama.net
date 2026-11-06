@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
 import {
   Anchor,
@@ -32,8 +32,8 @@ const getPathFromRoute: (route: string) => string = route => {
 export const Navbar: React.FC = () => {
   const [editModeState, updateEditMode] = useEditModeState();
   const router = useRouter();
-  const path = getPathFromRoute(router.route);
-  const [activeItem, setActiveItem] = useState(path);
+  // Derived on every render, so browser back and forward update the menu.
+  const activeItem = getPathFromRoute(router.pathname);
   const { data: viewerData } = useFetchViewerQuery({
     skip: !editModeState.isActive,
     ssr: false,
@@ -43,7 +43,6 @@ export const Navbar: React.FC = () => {
 
   const onLinkClick: (item: string) => void = item => {
     const newPath = item.toLowerCase();
-    setActiveItem(newPath);
 
     const url = newPath !== 'about' ? `/${newPath}` : '/';
 

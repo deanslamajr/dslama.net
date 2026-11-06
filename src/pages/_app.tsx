@@ -13,7 +13,7 @@ import defaultTheme from '../defaultTheme';
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   const apolloClient = useApollo(pageProps.initialApolloState);
-  const [isChangingRoute, setIsChangingRoute] = React.useState(true);
+  const [isChangingRoute, setIsChangingRoute] = React.useState(false);
 
   React.useEffect(() => {
     Router.events.on('routeChangeStart', () => setIsChangingRoute(true));

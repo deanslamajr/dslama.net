@@ -1,26 +1,18 @@
-import { Resolver, ProjectsPage } from '../../../generated/graphql';
-import { fetchMostRecentVersion as fetchMostRecentProjectsPageData } from '../postgresql/projectsPage';
+import { QueryResolvers } from '../../../generated/graphql';
+import { ContextInterface } from '../../context';
+import { fetchMostRecentVersion } from '../postgresql/projectsPage';
 
-export const resolver: Resolver<ProjectsPage> = async (
-  _parent,
-  _args,
-  _context,
-  _info
-) => {
-  const data =
-    (await fetchMostRecentProjectsPageData()) ||
-    ({} as NonNullable<
-      Awaited<ReturnType<typeof fetchMostRecentProjectsPageData>>
-    >);
-  const summary = data.summary || '';
-  const projects = data.projects || [];
-
-  const sortedProjects = projects.sort(
-    (a, b) => b.originalPublishDate.getTime() - a.originalPublishDate.getTime()
-  );
+export const resolver: Required<
+  QueryResolvers<ContextInterface>
+>['projectsPage'] = async () => {
+  const data = await fetchMostRecentVersion();
+  const projects = data?.projects ?? [];
 
   return {
-    summary,
-    projects: sortedProjects,
+    summary: data?.summary ?? '',
+    projects: projects.sort(
+      (a, b) =>
+        b.originalPublishDate.getTime() - a.originalPublishDate.getTime()
+    ),
   };
 };

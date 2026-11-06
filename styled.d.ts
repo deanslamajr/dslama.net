@@ -1,20 +1,7 @@
-// import original module declarations
 import 'styled-components';
+import { ThemeType } from 'grommet';
 
-// and extend them!
 declare module 'styled-components' {
-  export interface DefaultTheme {
-    fonts: string;
-    colors: {
-      text: string;
-      background: string;
-      modalBackground: string;
-      red: string;
-    };
-    zIndex: {
-      highest: number;
-      middle: number;
-      lowest: number;
-    };
-  }
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  export interface DefaultTheme extends ThemeType {}
 }

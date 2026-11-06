@@ -26,7 +26,7 @@ export const resolver: Required<
     'summary'
   );
 
-  // Posts
+  // Projects
   const projects = assertMaxItems(input.projects, 'projects').map(
     (project, index) => ({
       originalPublishDate: project.originalPublishDate,

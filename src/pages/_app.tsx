@@ -2,7 +2,7 @@ import { AppProps } from 'next/app';
 import Head from 'next/head';
 import Router from 'next/router';
 import React from 'react';
-import { Box, Grid, Grommet, Main } from 'grommet';
+import { Grommet } from 'grommet';
 import { ApolloProvider } from '@apollo/client';
 
 import { useApollo } from '../graphql/useApollo';

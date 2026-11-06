@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { breakpoints, shadow, card } from './layouts';
 
 export const Container = styled.div`
-  font-family: ${props => props.theme.fonts};
+  font-family: ${props => props.theme.global?.font?.family};
 `;
 
 export const LogoContainer = styled.div`
@@ -97,7 +97,7 @@ export const LinkAnchor = styled.a`
 export const BioCard = styled.div`
   ${shadow()}
   ${card()}
-  font-family: ${props => props.theme.fonts};
+  font-family: ${props => props.theme.global?.font?.family};
   text-align: justify;
   font-size: 1.15rem;
   ${breakpoints.tabletMax`

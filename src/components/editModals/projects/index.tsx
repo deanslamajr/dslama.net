@@ -47,11 +47,11 @@ const initializeNewProject = (): MutableProject => ({
   originalPublishDate: new Date(Date.now()).toISOString(),
 });
 
-type PostsPageEditModalProps = {
+type ProjectsPageEditModalProps = {
   initialValues: FetchProjectsQuery['projectsPage'];
 };
 
-export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
+export const ProjectsPageEditModal: React.FC<ProjectsPageEditModalProps> = ({
   initialValues,
 }) => {
   const [editModeState, setEditModeState] = useEditModeState();

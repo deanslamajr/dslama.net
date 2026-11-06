@@ -1,8 +1,5 @@
 // environment variables
 const dotenv = require('dotenv').config()
-// const dotenvExpand = require('dotenv-expand')
-
-// dotenvExpand.expand(dotenv.config())
 
 const fromProcessEnv = name => {
   return process.env[name];

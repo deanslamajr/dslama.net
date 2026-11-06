@@ -26,7 +26,7 @@ export const PostCard: React.FC<PostCardProps> = ({
       <Card background="light-1" round="x-small" pad="medium">
         <TextInput
           fieldName="title"
-          placeholder="This is a Contrived Reading Title"
+          placeholder="This is a Contrived Post Title"
           parentFieldName={parentFieldName}
           validate={isRequired}
         />

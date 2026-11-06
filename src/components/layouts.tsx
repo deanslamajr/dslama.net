@@ -1,6 +1,5 @@
-import styled, {
+import {
   css,
-  createGlobalStyle,
   CSSObject,
   DefaultTheme,
   Interpolation,
@@ -71,58 +70,3 @@ export const card: () => FlattenInterpolation<
     `}
   `;
 };
-
-export const GlobalStyles = createGlobalStyle`
-    body {
-      margin: 0;
-      overflow-y: overlay;
-      overflow-x: hidden;
-    }
-
-    pre {
-      white-space: pre-wrap;       /* css-3 */
-      white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-      white-space: -pre-wrap;      /* Opera 4-6 */
-      white-space: -o-pre-wrap;    /* Opera 7 */
-      word-wrap: break-word;       /* Internet Explorer 5.5+ */
-    }
-
-    a {
-      color: ${props => props.theme.colors.red};
-    }
-
-    /* unvisited link */
-    a:link {
-      /* color: ${props => props.theme.colors.red}; */
-    }
-
-    /* visited link */
-    a:visited {
-      opacity: .75;
-    }
-
-    /* mouse over link */
-    a:hover {
-      opacity: .75;
-    }
-
-    /* selected link */
-    a:active {
-      opacity: .5;
-    }
-`;
-
-export const OuterContainer = styled.div`
-  padding: 0 1.5%;
-  background-color: ${props => props.theme.colors.background};
-  position: absolute;
-  min-height: 100%;
-  left: 12%;
-  right: 12%;
-
-  ${breakpoints.tabletMax`
-    padding: 0;
-    left: 0;
-    right: 0;
-  `}
-`;

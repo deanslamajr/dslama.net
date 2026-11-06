@@ -68,7 +68,16 @@ export const Navbar: React.FC = () => {
             size="xlarge"
             weight="bold"
             margin={{ right: 'small' }}
-            onClick={toggleModalVisibility}>
+            role="button"
+            tabIndex={0}
+            style={{ cursor: 'pointer' }}
+            onClick={toggleModalVisibility}
+            onKeyDown={(event: React.KeyboardEvent) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                toggleModalVisibility();
+              }
+            }}>
             {getTitle()}
           </Text>
           {editModeState.isActive && viewerData?.viewer && (

@@ -1,4 +1,4 @@
-import { Field as FinalFormField } from 'react-final-form';
+import { Field as FinalFormField, FieldMetaState } from 'react-final-form';
 import { FieldValidator } from 'final-form';
 import {
   DateInput as GrommetDateInput,
@@ -6,6 +6,9 @@ import {
   TextArea as GrommetTextArea,
   TextInput as GrommetTextInput,
 } from 'grommet';
+
+const visibleError = (meta: FieldMetaState<unknown>) =>
+  meta.touched || meta.submitFailed ? meta.error : undefined;
 
 type TextInputProps = {
   fieldName: string;
@@ -23,13 +26,12 @@ export const TextInput: React.FC<TextInputProps> = ({
   return (
     <FinalFormField
       name={`${parentFieldName}.${fieldName}`}
-      component="input"
       validate={validate}>
       {({ input, meta }) => {
         return (
           <GrommetFormField
             label={fieldName}
-            error={meta.touched ? meta.error : undefined}
+            error={visibleError(meta)}
             margin={{ bottom: 'xsmall' }}>
             <GrommetTextInput
               {...input}
@@ -58,13 +60,12 @@ export const TextArea: React.FC<TextAreaProps> = ({
   return (
     <FinalFormField
       name={`${parentFieldName}.${fieldName}`}
-      component="input"
       validate={validate}>
       {({ input, meta }) => {
         return (
           <GrommetFormField
             label={fieldName}
-            error={meta.touched ? meta.error : undefined}
+            error={visibleError(meta)}
             width="full">
             <GrommetTextArea
               {...input}
@@ -94,8 +95,11 @@ export const DateInput: React.FC<DateInputProps> = ({
     <FinalFormField
       name={`${parentFieldName}.${fieldName}`}
       validate={validate}>
-      {({ input }) => (
-        <GrommetFormField label={fieldName} width="full">
+      {({ input, meta }) => (
+        <GrommetFormField
+          label={fieldName}
+          error={visibleError(meta)}
+          width="full">
           <GrommetDateInput
             format="mm/dd/yyyy"
             value={input.value}

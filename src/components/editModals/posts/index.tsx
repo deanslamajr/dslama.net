@@ -58,6 +58,9 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
   const [authenticationError, setError] = React.useState<
     ApolloError | undefined
   >(undefined);
+  const [saveError, setSaveError] = React.useState<string | undefined>(
+    undefined
+  );
 
   const closeModal = React.useCallback(() => {
     setEditModeState({
@@ -72,16 +75,22 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
     },
     onError: error => {
       const isUnauthenticated = error.graphQLErrors.some(
-        error => error.extensions?.code === 'UNAUTHENTICATED'
+        e => e.extensions?.code === 'UNAUTHENTICATED'
       );
-
       if (isUnauthenticated) {
         setError(error);
+        return;
       }
+      const first = error.graphQLErrors[0];
+      const code =
+        first?.extensions?.code ||
+        (error.networkError ? 'NETWORK_ERROR' : 'UNKNOWN_ERROR');
+      setSaveError(`Save failed (${code}): ${first?.message || error.message}`);
     },
   });
 
   const handleSubmit = async (values: Record<string, any>, form: FormApi) => {
+    setSaveError(undefined);
     type Values = {
       newPosts: Array<{
         originalPublishDate: string;
@@ -161,6 +170,7 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
           />
         ) : (
           <Modal
+            errorMessage={saveError}
             disableSave={pristine}
             isLoading={loading}
             onSaveClick={() => form.submit()}

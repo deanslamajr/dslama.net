@@ -4,6 +4,8 @@ import { initializeApollo } from './useApollo';
 
 const factory = (queryDocument: DocumentNode): GetServerSideProps => {
   return async context => {
+    // Server-only code must stay out of the client bundle, so it loads with require.
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const resolveContext = require('./schema/context')
       .resolveContextDuringNextSSR;
     const resolvedContext = await resolveContext({

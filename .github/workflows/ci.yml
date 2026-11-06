@@ -32,6 +32,7 @@ jobs:
       - run: $NODE12 npm run codegen
       - run: $NODE12 npx prisma generate
       - run: $NODE12 npm run typecheck
+      - run: $NODE12 npm run lint
       - run: $NODE12 npm run build
       - name: npm audit (report only)
         run: $NODE12 npm audit --audit-level=high || true

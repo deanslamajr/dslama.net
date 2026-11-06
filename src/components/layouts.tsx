@@ -11,28 +11,32 @@ import styled, {
   FlattenInterpolation,
 } from 'styled-components';
 
-const tabletMax = <T extends {}>(
+// styled-components constrains props with `P extends object`, so these helpers must too.
+// eslint-disable-next-line @typescript-eslint/ban-types
+const tabletMax = <T extends object>(
   cssRules:
     | CSSObject
     | TemplateStringsArray
-    | InterpolationFunction<ThemedStyledProps<T, {}>>,
+    | InterpolationFunction<ThemedStyledProps<T, DefaultTheme>>,
   ...interpolations:
     | SimpleInterpolation[]
-    | Array<Interpolation<ThemedStyledProps<T, {}>>>
+    | Array<Interpolation<ThemedStyledProps<T, DefaultTheme>>>
 ) => css`
   @media (max-width: 899px) {
     ${css(cssRules, ...interpolations)}
   }
 `;
 
-const phoneMax = <T extends {}>(
+// styled-components constrains props with `P extends object`, so these helpers must too.
+// eslint-disable-next-line @typescript-eslint/ban-types
+const phoneMax = <T extends object>(
   cssRules:
     | CSSObject
     | TemplateStringsArray
-    | InterpolationFunction<ThemedStyledProps<T, {}>>,
+    | InterpolationFunction<ThemedStyledProps<T, DefaultTheme>>,
   ...interpolations:
     | SimpleInterpolation[]
-    | Array<Interpolation<ThemedStyledProps<T, {}>>>
+    | Array<Interpolation<ThemedStyledProps<T, DefaultTheme>>>
 ) => css`
   @media (max-width: 599px) {
     ${css(cssRules, ...interpolations)}

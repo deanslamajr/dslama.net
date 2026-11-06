@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Container } from './Spinner.styles';
 
-export const Spinner: React.FC<{}> = () => {
+export const Spinner: React.FC = () => {
   return (
     <Container>
       <svg

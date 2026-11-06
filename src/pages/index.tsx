@@ -11,20 +11,20 @@ import {
   LogoContainer,
 } from '../components/About.styles';
 
-import {appTitle} from '../constants';
+import { appTitle } from '../constants';
 
 import { LoadingErrorOrRender } from '../components/LoadingErrorOrRender';
 import { Header } from '../components/header';
-import {AboutPageEditModal} from '../components/editModals/about';
+import { AboutPageEditModal } from '../components/editModals/about';
 
-import {useState as useEditModeState} from '../contexts/EditModeState';
+import { useState as useEditModeState } from '../contexts/EditModeState';
 
 import getServerSidePropsFactory from '../graphql/getServerSidePropsFactory';
 import {
   useFetchAboutQuery,
   FetchAboutQuery,
   Link,
-  FetchAboutDocument
+  FetchAboutDocument,
 } from '../graphql/generated/ops';
 
 const Home: NextPage = () => {
@@ -46,37 +46,39 @@ const Home: NextPage = () => {
               <Container>
                 <Header summary={queryResult.aboutPage.title || ''} />
                 <LogoContainer>
-                  <BackgroundImage imageUrl={queryResult.aboutPage.pictureURL || ''} />
+                  <BackgroundImage
+                    imageUrl={queryResult.aboutPage.pictureURL || ''}
+                  />
                 </LogoContainer>
                 <LinksContainer>
-                  {
-                    (queryResult.aboutPage.links?.length
-                      ? (
-                        (queryResult.aboutPage.links as Link[])
-                          .map(({ name, url }) => (
-                            <LinkItem key={name || ''}>
-                              <LinkAnchor href={url || ''} target="_blank" rel="noopener noreferrer">
-                                {name}
-                              </LinkAnchor>
-                            </LinkItem>
-                          ))
-                      )
-                      : (
-                        <LinkItem key={''}>
-                          <LinkAnchor href={''} target="_blank">
+                  {queryResult.aboutPage.links?.length ? (
+                    (queryResult.aboutPage.links as Link[]).map(
+                      ({ name, url }) => (
+                        <LinkItem key={name || ''}>
+                          <LinkAnchor
+                            href={url || ''}
+                            target="_blank"
+                            rel="noopener noreferrer">
+                            {name}
                           </LinkAnchor>
                         </LinkItem>
                       )
                     )
-                  }
+                  ) : (
+                    <LinkItem key={''}>
+                      <LinkAnchor href={''} target="_blank"></LinkAnchor>
+                    </LinkItem>
+                  )}
                 </LinksContainer>
-                <BioCard dangerouslySetInnerHTML={{ __html: queryResult.aboutPage.bio || '' }} />
+                <BioCard
+                  dangerouslySetInnerHTML={{
+                    __html: queryResult.aboutPage.bio || '',
+                  }}
+                />
               </Container>
 
               {editModeState.showModal && (
-                <AboutPageEditModal
-                  initialValues={queryResult}
-                />
+                <AboutPageEditModal initialValues={queryResult} />
               )}
             </div>
           );

@@ -1,13 +1,13 @@
-import {AppProps} from 'next/app';
+import { AppProps } from 'next/app';
 import Head from 'next/head';
 import Router from 'next/router';
 import React from 'react';
 import { Box, Grid, Grommet, Main } from 'grommet';
-import { ApolloProvider } from '@apollo/client'
+import { ApolloProvider } from '@apollo/client';
 
 import { useApollo } from '../graphql/useApollo';
-import {Provider as EditModeProvider} from '../contexts/EditModeState';
-import {MainLayout} from '../components/MainLayout';
+import { Provider as EditModeProvider } from '../contexts/EditModeState';
+import { MainLayout } from '../components/MainLayout';
 
 import defaultTheme from '../defaultTheme';
 
@@ -33,8 +33,8 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
         <ApolloProvider client={apolloClient}>
           <EditModeProvider>
             <MainLayout isChangingRoute={isChangingRoute}>
-                <Component {...pageProps} />
-            </MainLayout>              
+              <Component {...pageProps} />
+            </MainLayout>
           </EditModeProvider>
         </ApolloProvider>
       </Grommet>

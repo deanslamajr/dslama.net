@@ -8,19 +8,19 @@ import {
   CardFooter,
   Grid,
   ResponsiveContext,
-  Text
+  Text,
 } from 'grommet';
 
 import { formatDate } from '../utils';
-import {appTitle} from '../constants';
-import {PostsPageEditModal} from '../components/editModals/posts';
+import { appTitle } from '../constants';
+import { PostsPageEditModal } from '../components/editModals/posts';
 import { LoadingErrorOrRender } from '../components/LoadingErrorOrRender';
-import {useState as useEditModeState} from '../contexts/EditModeState';
+import { useState as useEditModeState } from '../contexts/EditModeState';
 import getServerSidePropsFactory from '../graphql/getServerSidePropsFactory';
 import {
   useFetchPostsQuery,
   FetchPostsQuery,
-  FetchPostsDocument
+  FetchPostsDocument,
 } from '../graphql/generated/ops';
 
 const Posts: NextPage = () => {
@@ -48,21 +48,14 @@ const Posts: NextPage = () => {
                 return (
                   <>
                     <Grid
-                      columns={[
-                        isMobile ? 'auto' : 'auto'
-                      ]}
-                      margin={{horizontal: "large"}}
-                    >
+                      columns={[isMobile ? 'auto' : 'auto']}
+                      margin={{ horizontal: 'large' }}>
                       <Box
                         direction="column"
                         align="center"
                         height="small"
-                        pad="xlarge"
-                      >
-                        <Text
-                          textAlign="center"
-                          size="large"
-                        >
+                        pad="xlarge">
+                        <Text textAlign="center" size="large">
                           {summary || ''}
                         </Text>
                       </Box>
@@ -71,51 +64,49 @@ const Posts: NextPage = () => {
                         gap="large"
                         rows="auto"
                         columns={['flex']}
-                        justify="center"
-                      >
-                        {posts && posts.map((post, index) => (
-                          <Card
-                            key={post.title || `post-${index}`}
-                            onClick={() => {
-                              post.url && window.open(post.url, "_blank", "noopener,noreferrer");
-                            }}
-                            height="full"
-                            width={isMobile ? 'auto' : 'full'}
-                            background="light-1"
-                            hoverIndicator={true}
-                          >
-                            <CardHeader
-                              alignSelf="center"
-                              pad="large"
-                            >
-                              <Text
-                                size="xlarge"
-                                textAlign="center"
-                              >
-                              {post.title || ''}
-                              </Text>
-                            </CardHeader>
-                            <CardBody pad="medium">
-                              <Text
-                                textAlign="justify"
-                                size="medium">
-                                {post.snippet || ''}
-                              </Text>
-                            </CardBody>
-                            <CardFooter pad={{horizontal: "small"}} background="light-2">
-                              <div>{formatDate(post.originalPublishDate)}</div>
-                            </CardFooter>
-                          </Card>                
-                        ))}
+                        justify="center">
+                        {posts &&
+                          posts.map((post, index) => (
+                            <Card
+                              key={post.title || `post-${index}`}
+                              onClick={() => {
+                                post.url &&
+                                  window.open(
+                                    post.url,
+                                    '_blank',
+                                    'noopener,noreferrer'
+                                  );
+                              }}
+                              height="full"
+                              width={isMobile ? 'auto' : 'full'}
+                              background="light-1"
+                              hoverIndicator={true}>
+                              <CardHeader alignSelf="center" pad="large">
+                                <Text size="xlarge" textAlign="center">
+                                  {post.title || ''}
+                                </Text>
+                              </CardHeader>
+                              <CardBody pad="medium">
+                                <Text textAlign="justify" size="medium">
+                                  {post.snippet || ''}
+                                </Text>
+                              </CardBody>
+                              <CardFooter
+                                pad={{ horizontal: 'small' }}
+                                background="light-2">
+                                <div>
+                                  {formatDate(post.originalPublishDate)}
+                                </div>
+                              </CardFooter>
+                            </Card>
+                          ))}
                       </Grid>
                     </Grid>
                     {editModeState.showModal && (
-                      <PostsPageEditModal
-                        initialValues={postsPageData}
-                      />
+                      <PostsPageEditModal initialValues={postsPageData} />
                     )}
                   </>
-                )
+                );
               }}
             </ResponsiveContext.Consumer>
           );

@@ -8,7 +8,9 @@ const unauthenticated = () =>
 
 // cookie-session keeps no server-side state, so the expiry, the account state,
 // and the revocation counter are all checked here on every write.
-export const requireActiveAccount = async (context: ContextInterface): Promise<Account> => {
+export const requireActiveAccount = async (
+  context: ContextInterface
+): Promise<Account> => {
   const session = context.session.get();
   if (
     !session ||
@@ -20,7 +22,11 @@ export const requireActiveAccount = async (context: ContextInterface): Promise<A
     throw unauthenticated();
   }
   const account = await fetchById(session.accountId);
-  if (!account || !account.isActive || account.sessionVersion !== session.sessionVersion) {
+  if (
+    !account ||
+    !account.isActive ||
+    account.sessionVersion !== session.sessionVersion
+  ) {
     throw unauthenticated();
   }
   return account;

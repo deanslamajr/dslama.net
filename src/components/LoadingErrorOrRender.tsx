@@ -1,5 +1,5 @@
 import { ApolloError } from '@apollo/client';
-import {Spinner } from "grommet";
+import { Spinner } from 'grommet';
 
 interface LoadingErrorOrRenderProps<T> {
   error?: ApolloError;
@@ -21,14 +21,12 @@ export const LoadingErrorOrRender = <T,>({
   }
 
   if (error) {
-    return errorRender
-      ? errorRender(error)
-      : <>'Something broke!'</>;
+    return errorRender ? errorRender(error) : <>'Something broke!'</>;
   }
 
   if (queryResult === null || queryResult === undefined) {
     return null;
   }
 
-  return render({queryResult});
+  return render({ queryResult });
 };

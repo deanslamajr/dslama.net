@@ -1,8 +1,12 @@
 import { MutationResolvers } from '../../../generated/graphql';
-import {update} from '../postgresql/aboutPage';
-import {ContextInterface} from '../../context';
+import { update } from '../postgresql/aboutPage';
+import { ContextInterface } from '../../context';
 import { requireActiveAccount } from '../../auth';
-import { HTTP_PROTOCOLS, LIMITS, LINK_PROTOCOLS } from '../../../../contentPolicy';
+import {
+  HTTP_PROTOCOLS,
+  LIMITS,
+  LINK_PROTOCOLS,
+} from '../../../../contentPolicy';
 import {
   assertMaxItems,
   assertMaxLength,
@@ -10,10 +14,9 @@ import {
   normalizeUrl,
 } from '../../validation';
 
-export const resolver: Required<MutationResolvers<ContextInterface>>['updateAboutPage'] = async (
-  _parent, args, context, _info
-) => {
-
+export const resolver: Required<
+  MutationResolvers<ContextInterface>
+>['updateAboutPage'] = async (_parent, args, context, _info) => {
   await requireActiveAccount(context);
 
   const input = args.input;
@@ -26,7 +29,11 @@ export const resolver: Required<MutationResolvers<ContextInterface>>['updateAbou
   const data = await update({
     bio: assertMaxLength(input.bio || '', LIMITS.bio, 'bio'),
     title: assertMaxLength(input.title || '', LIMITS.shortText, 'title'),
-    pictureURL: normalizeOptionalUrl(input.pictureURL || '', 'pictureURL', HTTP_PROTOCOLS),
+    pictureURL: normalizeOptionalUrl(
+      input.pictureURL || '',
+      'pictureURL',
+      HTTP_PROTOCOLS
+    ),
     links: { create: links },
   });
 

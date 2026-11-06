@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Header,
-  Layer,
-  Nav,
-  Spinner,
-  Text
-} from 'grommet';
+import { Box, Button, Header, Layer, Nav, Spinner, Text } from 'grommet';
 import { Close, Save } from 'grommet-icons';
 
 type ModalProps = {
@@ -23,24 +15,16 @@ export const Modal: React.FC<ModalProps> = ({
   isLoading,
   onClose,
   onSaveClick,
-  primaryButtonLabel = 'Save'
+  primaryButtonLabel = 'Save',
 }) => {
   return (
-    <Layer
-      onEsc={onClose}
-      onClickOutside={onClose}
-    >
-      <Header
-        background="accent-1"
-        elevation="medium"
-        pad="small"
-      >
+    <Layer onEsc={onClose} onClickOutside={onClose}>
+      <Header background="accent-1" elevation="medium" pad="small">
         <Nav direction="row" width="100%" justify="between">
           <Button
             disabled={disableSave}
             hoverIndicator="light-1"
-            onClick={() => onSaveClick()}
-          >
+            onClick={() => onSaveClick()}>
             {/*  When Button include children, it is treated as plain */}
             <Box pad="small" direction="row" align="center" gap="small">
               <Save />
@@ -56,26 +40,19 @@ export const Modal: React.FC<ModalProps> = ({
           </Button>
         </Nav>
       </Header>
-      <Box
-        pad="medium"
-        width="large"
-        overflow="auto"
-      >
-        {
-          isLoading
-            ? (
-              <Box
-                direction="row"
-                align="center"
-                pad="medium"
-                justify="center"
-                width="100%"
-              >
-                <Spinner size="medium"/>
-              </Box>
-            )
-            : children
-        }
+      <Box pad="medium" width="large" overflow="auto">
+        {isLoading ? (
+          <Box
+            direction="row"
+            align="center"
+            pad="medium"
+            justify="center"
+            width="100%">
+            <Spinner size="medium" />
+          </Box>
+        ) : (
+          children
+        )}
       </Box>
     </Layer>
   );

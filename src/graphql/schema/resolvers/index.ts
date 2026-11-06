@@ -10,17 +10,17 @@ import { resolver as viewerResolver } from './queries/viewer';
 
 import { resolver as attemptLoginResolver } from './mutations/attemptLogin';
 import { resolver as logoutResolver } from './mutations/logout';
-import {resolver as updateAboutPageResolver } from './mutations/updateAboutPage';
+import { resolver as updateAboutPageResolver } from './mutations/updateAboutPage';
 import { resolver as updatePostsPageResolver } from './mutations/updatePostsPage';
 import { resolver as updateProjectsPageResolver } from './mutations/updateProjectsPage';
-import { resolver as updateReadingsPageResolver} from './mutations/updateReadingsPage';
+import { resolver as updateReadingsPageResolver } from './mutations/updateReadingsPage';
 
 const Query: Required<QueryResolvers> = {
   aboutPage: aboutPageResolver,
   postsPage: postsPageResolver,
   projectsPage: projectsPageResolver,
   readingsPage: readingsPageResolver,
-  viewer: viewerResolver
+  viewer: viewerResolver,
 };
 
 const Mutation: Required<MutationResolvers> = {
@@ -29,7 +29,7 @@ const Mutation: Required<MutationResolvers> = {
   updateAboutPage: updateAboutPageResolver,
   updatePostsPage: updatePostsPageResolver,
   updateProjectsPage: updateProjectsPageResolver,
-  updateReadingsPage: updateReadingsPageResolver
-}
+  updateReadingsPage: updateReadingsPageResolver,
+};
 
 export default { ...scalars, Mutation, Query };

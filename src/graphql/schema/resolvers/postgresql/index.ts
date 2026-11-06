@@ -9,7 +9,9 @@ const {
 // such as "@", "/", "#", "%", "?", and ":". DB_HOST holds "host:port" and stays as is.
 const encode = (value?: string) => encodeURIComponent(value || '');
 
-const url = `postgresql://${encode(DB_USER)}:${encode(DB_PASS)}@${DB_HOST}/${encode(DB_NAME)}`;
+const url = `postgresql://${encode(DB_USER)}:${encode(
+  DB_PASS
+)}@${DB_HOST}/${encode(DB_NAME)}`;
 
 // PrismaClient is attached to `global` in development so that hot reloads
 // do not open a new connection pool each time.

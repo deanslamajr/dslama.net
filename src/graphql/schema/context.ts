@@ -40,7 +40,10 @@ type ResolveContextParams = {
 export const getClientIp = (req: IncomingMessage): string => {
   const header = req.headers['x-forwarded-for'];
   const value = Array.isArray(header) ? header.join(',') : header || '';
-  const parts = value.split(',').map(part => part.trim()).filter(Boolean);
+  const parts = value
+    .split(',')
+    .map(part => part.trim())
+    .filter(Boolean);
   if (parts.length >= 2) {
     return parts[parts.length - 2];
   }

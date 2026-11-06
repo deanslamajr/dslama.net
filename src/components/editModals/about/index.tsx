@@ -1,7 +1,7 @@
 import React from 'react';
 import { ApolloError } from '@apollo/client';
 import { Box, Button, FormField, Text, TextArea, TextInput } from 'grommet';
-import { Add, FormTrash } from 'grommet-icons';
+import { Add } from 'grommet-icons';
 import { Form as FinalForm, Field } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 import { FieldArray } from 'react-final-form-arrays';

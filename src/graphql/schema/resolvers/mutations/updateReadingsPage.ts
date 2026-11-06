@@ -25,7 +25,7 @@ export const resolver: Required<
     'summary'
   );
 
-  // Posts
+  // Readings
   const readings = assertMaxItems(input.readings, 'readings').map(
     (reading, index) => ({
       foundDate: reading.foundDate,
@@ -60,12 +60,12 @@ export const resolver: Required<
   }
 
   const data = await update(updateArgs);
-  const sortedProjects = data.readings.sort(
+  const sortedReadings = data.readings.sort(
     (a, b) => b.foundDate.getTime() - a.foundDate.getTime()
   );
 
   return {
-    readings: sortedProjects,
+    readings: sortedReadings,
     summary: data.summary,
   };
 };

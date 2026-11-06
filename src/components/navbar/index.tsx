@@ -8,11 +8,14 @@ import {
   Nav,
   Menu,
   ResponsiveContext,
-  Text
+  Text,
 } from 'grommet';
-import {useState as useEditModeState} from '../../contexts/EditModeState';
-import {parseInputFromConsole} from './parseInputFromConsole';
-import {useFetchViewerQuery, useLogoutMutation} from '../../graphql/generated/ops';
+import { useState as useEditModeState } from '../../contexts/EditModeState';
+import { parseInputFromConsole } from './parseInputFromConsole';
+import {
+  useFetchViewerQuery,
+  useLogoutMutation,
+} from '../../graphql/generated/ops';
 
 const getTitle = () => 'dean slama';
 
@@ -51,35 +54,23 @@ export const Navbar: React.FunctionComponent<NavbarProps> = ({}) => {
 
   const toggleModalVisibility = () => {
     const resolvedInputFromConsole = parseInputFromConsole();
-    
+
     updateEditMode({
       ...editModeState,
       showModal: !editModeState.showModal,
-      resolvedInputFromConsole
+      resolvedInputFromConsole,
     });
-  }
+  };
 
   return (
-    <Box
-      fill
-      direction="row"
-      justify="center"
-    >
-      <Header
-        background="brand"
-        elevation="medium"
-        pad="small"
-        width="xxlarge"
-      >
-        <Box
-          direction="row"
-        >
+    <Box fill direction="row" justify="center">
+      <Header background="brand" elevation="medium" pad="small" width="xxlarge">
+        <Box direction="row">
           <Text
             size="xlarge"
             weight="bold"
-            margin={{right: 'small'}}
-            onClick={toggleModalVisibility}
-          >
+            margin={{ right: 'small' }}
+            onClick={toggleModalVisibility}>
             {getTitle()}
           </Text>
           {editModeState.isActive && viewerData?.viewer && (
@@ -90,27 +81,22 @@ export const Navbar: React.FunctionComponent<NavbarProps> = ({}) => {
           {responsive =>
             responsive === 'small' ? (
               <Menu
-                items={MENU_ITEMS.map(item => (
-                  { label: item, onClick: () => onLinkClick(item) }
-                ))}
+                items={MENU_ITEMS.map(item => ({
+                  label: item,
+                  onClick: () => onLinkClick(item),
+                }))}
               />
             ) : (
               <Nav direction="row">
-                {
-                  MENU_ITEMS.map(item => (
-                    <Anchor
-                      key={item}
-                      as="span"
-                      label={item}
-                      onClick={() => onLinkClick(item)}
-                      weight={(
-                        item === activeItem
-                          ? 'bold'
-                          : 'normal'
-                      )}
-                    />
-                  ))
-                }
+                {MENU_ITEMS.map(item => (
+                  <Anchor
+                    key={item}
+                    as="span"
+                    label={item}
+                    onClick={() => onLinkClick(item)}
+                    weight={item === activeItem ? 'bold' : 'normal'}
+                  />
+                ))}
               </Nav>
             )
           }

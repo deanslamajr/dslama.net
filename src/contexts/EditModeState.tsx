@@ -8,10 +8,10 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { useRouter } from 'next/router'
-import {MutableReading} from '../components/editModals/readings'
-import {MutablePost} from '../components/editModals/posts';
-import {MutableProject} from '../components/editModals/projects';
+import { useRouter } from 'next/router';
+import { MutableReading } from '../components/editModals/readings';
+import { MutablePost } from '../components/editModals/posts';
+import { MutableProject } from '../components/editModals/projects';
 
 export type ResolvedInputFromConsole = {
   posts?: MutablePost[];
@@ -20,9 +20,9 @@ export type ResolvedInputFromConsole = {
 } | null;
 
 type State = {
-    isActive: boolean;
-    showModal: boolean;
-    resolvedInputFromConsole: ResolvedInputFromConsole;
+  isActive: boolean;
+  showModal: boolean;
+  resolvedInputFromConsole: ResolvedInputFromConsole;
 };
 
 type Setter = Dispatch<SetStateAction<State>>;
@@ -34,13 +34,13 @@ const getInitializedState = (queryString?: string | string[]): State => {
   // dslama.net/?edit
   // TODO replace with proper login
   const isActive = Boolean(queryString !== undefined);
-  
+
   return {
     isActive,
     showModal: false,
-    resolvedInputFromConsole: null
+    resolvedInputFromConsole: null,
   };
-}
+};
 
 const useEditModeState = (): [State, Setter] => {
   const state = useContext(StateContext);
@@ -54,8 +54,8 @@ const useEditModeState = (): [State, Setter] => {
 type Props = { children: ReactNode };
 const EditModeProvider = ({ children }: Props) => {
   const router = useRouter();
-  const [state, setState] = useState<State>(
-    () => getInitializedState(router.query.edit)
+  const [state, setState] = useState<State>(() =>
+    getInitializedState(router.query.edit)
   );
 
   useEffect(() => {
@@ -64,14 +64,11 @@ const EditModeProvider = ({ children }: Props) => {
 
   return (
     <StateContext.Provider value={state}>
-        <SetterContext.Provider value={setState}>
-            {children}
-        </SetterContext.Provider>
+      <SetterContext.Provider value={setState}>
+        {children}
+      </SetterContext.Provider>
     </StateContext.Provider>
   );
 };
 
-export {
-    EditModeProvider as Provider,
-    useEditModeState as useState
-};
+export { EditModeProvider as Provider, useEditModeState as useState };

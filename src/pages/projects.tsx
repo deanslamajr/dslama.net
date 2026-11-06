@@ -8,19 +8,19 @@ import {
   Anchor,
   Grid,
   ResponsiveContext,
-  Text
+  Text,
 } from 'grommet';
 
 import { LoadingErrorOrRender } from '../components/LoadingErrorOrRender';
-import {useState as useEditModeState} from '../contexts/EditModeState';
-import {PostsPageEditModal} from '../components/editModals/projects'
+import { useState as useEditModeState } from '../contexts/EditModeState';
+import { PostsPageEditModal } from '../components/editModals/projects';
 
-import {appTitle} from '../constants';
+import { appTitle } from '../constants';
 import getServerSidePropsFactory from '../graphql/getServerSidePropsFactory';
 import {
   useFetchProjectsQuery,
   FetchProjectsQuery,
-  FetchProjectsDocument
+  FetchProjectsDocument,
 } from '../graphql/generated/ops';
 
 const Projects: NextPage = () => {
@@ -38,10 +38,7 @@ const Projects: NextPage = () => {
         queryResult={data}
         render={({ queryResult }) => {
           const projectsPageData = queryResult.projectsPage;
-          const {
-            projects,
-            summary,
-          } = projectsPageData;
+          const { projects, summary } = projectsPageData;
 
           return (
             <ResponsiveContext.Consumer>
@@ -51,21 +48,14 @@ const Projects: NextPage = () => {
                 return (
                   <>
                     <Grid
-                      columns={[
-                        isMobile ? 'auto' : 'auto'
-                      ]}
-                      margin={{horizontal: "large"}}
-                    >
+                      columns={[isMobile ? 'auto' : 'auto']}
+                      margin={{ horizontal: 'large' }}>
                       <Box
                         direction="column"
                         align="center"
                         height="small"
-                        pad="xlarge"
-                      >
-                        <Text
-                          textAlign="center"
-                          size="large"
-                        >
+                        pad="xlarge">
+                        <Text textAlign="center" size="large">
                           {summary || ''}
                         </Text>
                       </Box>
@@ -74,68 +64,67 @@ const Projects: NextPage = () => {
                         gap="large"
                         rows="auto"
                         columns={['flex']}
-                        justify="center"
-                      >
-                        {projects && projects.map((project, index) => (
-                          <Card
-                            key={project?.id || `project-${index}`}
-                            height="full"
-                            width={isMobile ? 'auto' : 'full'}
-                            background="light-1"
-                          >
-                            <CardHeader
-                              alignSelf="center"
-                              pad={{top: 'large', bottom: 'small'}}
-                              direction="row"
-                              width="full"
-                              justify="center"
-                            >
-                              <Anchor
-                                size="xlarge"
-                                onClick={() => {
-                                  project?.appUrl && window.open(project.appUrl, "_blank", "noopener,noreferrer");
-                                }}
-                              >
-                              {project?.name || ''}
-                              </Anchor>
-                              {
-                                  project?.sourceUrl && (
-                                    <Anchor
-                                      onClick={() => {
-                                        project?.sourceUrl && window.open(project.sourceUrl, "_blank", "noopener,noreferrer");
-                                      }}
-                                      margin={{left: 'small'}}
-                                    >
-                                      <div>source</div>
-                                    </Anchor>
-                                  )
-                                }
-                            </CardHeader>
-                            <CardBody pad="medium">
-                              <Text
-                                size="large"
-                                textAlign="center"
-                                margin={{bottom: 'large'}}
-                              >
-                              {project?.description || ''}
-                              </Text>
-                              <Text
-                                textAlign="justify"
-                                size="medium">
-                                {project?.summary || ''}
-                              </Text>
-                            </CardBody>
-                          </Card>                
-                        ))}
+                        justify="center">
+                        {projects &&
+                          projects.map((project, index) => (
+                            <Card
+                              key={project?.id || `project-${index}`}
+                              height="full"
+                              width={isMobile ? 'auto' : 'full'}
+                              background="light-1">
+                              <CardHeader
+                                alignSelf="center"
+                                pad={{ top: 'large', bottom: 'small' }}
+                                direction="row"
+                                width="full"
+                                justify="center">
+                                <Anchor
+                                  size="xlarge"
+                                  onClick={() => {
+                                    project?.appUrl &&
+                                      window.open(
+                                        project.appUrl,
+                                        '_blank',
+                                        'noopener,noreferrer'
+                                      );
+                                  }}>
+                                  {project?.name || ''}
+                                </Anchor>
+                                {project?.sourceUrl && (
+                                  <Anchor
+                                    onClick={() => {
+                                      project?.sourceUrl &&
+                                        window.open(
+                                          project.sourceUrl,
+                                          '_blank',
+                                          'noopener,noreferrer'
+                                        );
+                                    }}
+                                    margin={{ left: 'small' }}>
+                                    <div>source</div>
+                                  </Anchor>
+                                )}
+                              </CardHeader>
+                              <CardBody pad="medium">
+                                <Text
+                                  size="large"
+                                  textAlign="center"
+                                  margin={{ bottom: 'large' }}>
+                                  {project?.description || ''}
+                                </Text>
+                                <Text textAlign="justify" size="medium">
+                                  {project?.summary || ''}
+                                </Text>
+                              </CardBody>
+                            </Card>
+                          ))}
                       </Grid>
                     </Grid>
                     {editModeState.showModal && (
-                      <PostsPageEditModal
-                        initialValues={projectsPageData}
-                      />
+                      <PostsPageEditModal initialValues={projectsPageData} />
                     )}
                   </>
-                )
+                );
               }}
             </ResponsiveContext.Consumer>
           );
@@ -145,6 +134,8 @@ const Projects: NextPage = () => {
   );
 };
 
-export const getServerSideProps = getServerSidePropsFactory(FetchProjectsDocument);
+export const getServerSideProps = getServerSidePropsFactory(
+  FetchProjectsDocument
+);
 
 export default Projects;

@@ -33,7 +33,9 @@ const prune = (now: number) => {
   });
   const extra = buckets.size - MAX_ENTRIES;
   if (extra > 0) {
-    Array.from(buckets.keys()).slice(0, extra).forEach(key => buckets.delete(key));
+    Array.from(buckets.keys())
+      .slice(0, extra)
+      .forEach(key => buckets.delete(key));
   }
 };
 

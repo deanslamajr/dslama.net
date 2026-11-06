@@ -2,19 +2,27 @@ import { ApolloServer } from 'apollo-server-micro';
 import getConfig from 'next/config';
 import { GraphQLError, GraphQLFormattedError } from 'graphql';
 import nextConnect from 'next-connect';
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from 'next';
 
 import { graphqlRequestGuard } from '../../graphql/requestGuard';
 import schema from '../../graphql/schema';
 import { maxFieldsRule } from '../../graphql/schema/validationRules';
-import {resolveContext, sessionMiddleware} from '../../graphql/schema/context';
+import {
+  resolveContext,
+  sessionMiddleware,
+} from '../../graphql/schema/context';
 
 const {
   serverRuntimeConfig: { NODE_ENV },
 } = getConfig();
 
 // Messages for these codes are written by this app and are safe to show.
-const PUBLIC_ERROR_CODES = ['BAD_USER_INPUT', 'UNAUTHENTICATED', 'RATE_LIMITED', 'GRAPHQL_VALIDATION_FAILED'];
+const PUBLIC_ERROR_CODES = [
+  'BAD_USER_INPUT',
+  'UNAUTHENTICATED',
+  'RATE_LIMITED',
+  'GRAPHQL_VALIDATION_FAILED',
+];
 
 const formatError = (error: GraphQLError): GraphQLFormattedError => {
   if (NODE_ENV !== 'production') {

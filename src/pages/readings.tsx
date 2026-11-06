@@ -8,21 +8,21 @@ import {
   CardFooter,
   Grid,
   ResponsiveContext,
-  Text
+  Text,
 } from 'grommet';
 
 import { formatDate } from '../utils';
-import {appTitle} from '../constants';
-import {useState as useEditModeState} from '../contexts/EditModeState';
+import { appTitle } from '../constants';
+import { useState as useEditModeState } from '../contexts/EditModeState';
 
 import { LoadingErrorOrRender } from '../components/LoadingErrorOrRender';
-import {ReadingsPageEditModal} from '../components/editModals/readings';
+import { ReadingsPageEditModal } from '../components/editModals/readings';
 
 import getServerSidePropsFactory from '../graphql/getServerSidePropsFactory';
 import {
   useFetchReadingsQuery,
   FetchReadingsQuery,
-  FetchReadingsDocument
+  FetchReadingsDocument,
 } from '../graphql/generated/ops';
 
 const ReadingsPage: NextPage = () => {
@@ -39,10 +39,7 @@ const ReadingsPage: NextPage = () => {
         isLoading={loading}
         queryResult={data}
         render={({ queryResult }) => {
-          const {
-            readings,
-            summary,
-          } = queryResult.readingsPage;
+          const { readings, summary } = queryResult.readingsPage;
 
           return (
             <ResponsiveContext.Consumer>
@@ -52,21 +49,14 @@ const ReadingsPage: NextPage = () => {
                 return (
                   <>
                     <Grid
-                      columns={[
-                        isMobile ? 'auto' : 'auto'
-                      ]}
-                      margin={{horizontal: "large"}}
-                    >
+                      columns={[isMobile ? 'auto' : 'auto']}
+                      margin={{ horizontal: 'large' }}>
                       <Box
                         direction="column"
                         align="center"
                         height="small"
-                        pad="xlarge"
-                      >
-                        <Text
-                          textAlign="center"
-                          size="large"
-                        >
+                        pad="xlarge">
+                        <Text textAlign="center" size="large">
                           {summary || ''}
                         </Text>
                       </Box>
@@ -75,43 +65,41 @@ const ReadingsPage: NextPage = () => {
                         gap="large"
                         rows="auto"
                         columns={['flex']}
-                        justify="center"
-                      >
-                        {readings && readings.map((reading, index) => (
-                          <Card
-                            key={reading?.id || `reading-${index}`}
-                            onClick={() => {
-                              reading?.url && window.open(reading.url, "_blank", "noopener,noreferrer");
-                            }}
-                            height="full"
-                            width={isMobile ? 'auto' : 'full'}
-                            background="light-1"
-                            hoverIndicator={true}
-                          >
-                            <CardHeader
-                              alignSelf="center"
-                              pad="large"
-                            >
-                              <Text
-                                size="xlarge"
-                                textAlign="center"
-                              >
-                              {reading?.title || ''}
-                              </Text>
-                            </CardHeader>
-                            <CardBody pad="medium">
-                              <Text
-                                textAlign="justify"
-                                size="medium">
-                                {reading?.quote || ''}
-                              </Text>
-                            </CardBody>
-                            <CardFooter pad={{horizontal: "small"}} background="light-2">
-                              <div>{`${reading?.author} @ ${reading?.publication}`}</div>
-                              <div>{formatDate(reading?.publishDate)}</div>
-                            </CardFooter>
-                          </Card>                
-                        ))}
+                        justify="center">
+                        {readings &&
+                          readings.map((reading, index) => (
+                            <Card
+                              key={reading?.id || `reading-${index}`}
+                              onClick={() => {
+                                reading?.url &&
+                                  window.open(
+                                    reading.url,
+                                    '_blank',
+                                    'noopener,noreferrer'
+                                  );
+                              }}
+                              height="full"
+                              width={isMobile ? 'auto' : 'full'}
+                              background="light-1"
+                              hoverIndicator={true}>
+                              <CardHeader alignSelf="center" pad="large">
+                                <Text size="xlarge" textAlign="center">
+                                  {reading?.title || ''}
+                                </Text>
+                              </CardHeader>
+                              <CardBody pad="medium">
+                                <Text textAlign="justify" size="medium">
+                                  {reading?.quote || ''}
+                                </Text>
+                              </CardBody>
+                              <CardFooter
+                                pad={{ horizontal: 'small' }}
+                                background="light-2">
+                                <div>{`${reading?.author} @ ${reading?.publication}`}</div>
+                                <div>{formatDate(reading?.publishDate)}</div>
+                              </CardFooter>
+                            </Card>
+                          ))}
                       </Grid>
                     </Grid>
                     {editModeState.showModal && (
@@ -120,7 +108,7 @@ const ReadingsPage: NextPage = () => {
                       />
                     )}
                   </>
-                )
+                );
               }}
             </ResponsiveContext.Consumer>
           );
@@ -130,6 +118,8 @@ const ReadingsPage: NextPage = () => {
   );
 };
 
-export const getServerSideProps = getServerSidePropsFactory(FetchReadingsDocument);
+export const getServerSideProps = getServerSidePropsFactory(
+  FetchReadingsDocument
+);
 
 export default ReadingsPage;

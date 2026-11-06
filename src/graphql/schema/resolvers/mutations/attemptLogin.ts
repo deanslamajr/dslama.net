@@ -8,7 +8,7 @@ import { loginLimiter } from '../../rateLimit';
 
 import {
   fetch as fetchAccount,
-  update as updateAccount
+  update as updateAccount,
 } from '../postgresql/account';
 
 // Same cost as the stored hash, so a missing account takes as long as a wrong password.
@@ -16,16 +16,22 @@ const DUMMY_HASH = bcrypt.hashSync(randomBytes(16).toString('hex'), 10);
 const FAILURE_DELAY_MS = 500;
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-export const resolver: Required<MutationResolvers<ContextInterface>>['attemptLogin'] = async (
-  _parent, { input }, context
-) => {
+export const resolver: Required<
+  MutationResolvers<ContextInterface>
+>['attemptLogin'] = async (_parent, { input }, context) => {
   const keys = { ip: context.clientIp, username: input.username.toLowerCase() };
   if (loginLimiter.isLimited(keys)) {
     console.warn('login rate limit reached');
-    throw new ApolloError('Too many login attempts. Try again later.', 'RATE_LIMITED');
+    throw new ApolloError(
+      'Too many login attempts. Try again later.',
+      'RATE_LIMITED'
+    );
   }
   const account = await fetchAccount({ username: input.username });
-  const isCorrectPassword = await bcrypt.compare(input.password, account ? account.password : DUMMY_HASH);
+  const isCorrectPassword = await bcrypt.compare(
+    input.password,
+    account ? account.password : DUMMY_HASH
+  );
   if (account && isCorrectPassword && account.isActive) {
     loginLimiter.reset(keys);
     await updateAccount({ id: account.id, lastLoginAt: new Date() });

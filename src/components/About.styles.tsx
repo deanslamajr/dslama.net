@@ -25,7 +25,15 @@ export interface BackgroundImageProps {
 
 // Percent-encode characters that could end the url("...") token.
 const toCssUrl = (value: string) =>
-  value.replace(/["'()\\\s]/g, c => `%${c.charCodeAt(0).toString(16).toUpperCase().padStart(2, '0')}`);
+  value.replace(
+    /["'()\\\s]/g,
+    c =>
+      `%${c
+        .charCodeAt(0)
+        .toString(16)
+        .toUpperCase()
+        .padStart(2, '0')}`
+  );
 
 export const BackgroundImage = styled.div<BackgroundImageProps>`
   background-image: url("${props => toCssUrl(props.imageUrl)}"),

@@ -1,14 +1,17 @@
 import React from 'react';
-import {Box, FormField, Text, TextInput} from "grommet";
+import { Box, FormField, Text, TextInput } from 'grommet';
 import { Form as FinalForm, Field } from 'react-final-form';
 
-import {useAttemptLoginMutation, AttemptLoginInput} from '../graphql/generated/ops';
+import {
+  useAttemptLoginMutation,
+  AttemptLoginInput,
+} from '../graphql/generated/ops';
 
-import {Modal} from './Modal';
+import { Modal } from './Modal';
 
 const initialValues: AttemptLoginInput = {
   username: '',
-  password: ''
+  password: '',
 };
 
 type LoginModalProps = {
@@ -20,13 +23,15 @@ type LoginModalProps = {
 export const LoginModal: React.FC<LoginModalProps> = ({
   message,
   onCloseClick,
-  onSuccessfulLogin
+  onSuccessfulLogin,
 }) => {
   const [hasIncorrectCreds, setHasIncorrectCreds] = React.useState(false);
-  const [errorMessage, setErrorMessage] = React.useState<string | undefined>(undefined);
-  const [attemptLogin, {loading}] = useAttemptLoginMutation({
+  const [errorMessage, setErrorMessage] = React.useState<string | undefined>(
+    undefined
+  );
+  const [attemptLogin, { loading }] = useAttemptLoginMutation({
     refetchQueries: ['FetchViewer'],
-    onCompleted: (data) => {
+    onCompleted: data => {
       setErrorMessage(undefined);
       if (data.attemptLogin.wasSuccessful) {
         onSuccessfulLogin();
@@ -34,14 +39,16 @@ export const LoginModal: React.FC<LoginModalProps> = ({
         setHasIncorrectCreds(true);
       }
     },
-    onError: (error) => {
-      const isRateLimited = error.graphQLErrors.some(e => e.extensions?.code === 'RATE_LIMITED');
+    onError: error => {
+      const isRateLimited = error.graphQLErrors.some(
+        e => e.extensions?.code === 'RATE_LIMITED'
+      );
       setErrorMessage(
         isRateLimited
           ? 'Too many login attempts. Wait 15 minutes and try again.'
           : 'Login failed. Try again.'
       );
-    }
+    },
   });
 
   const handleSubmit = (values: Record<string, any>) => {
@@ -49,19 +56,15 @@ export const LoginModal: React.FC<LoginModalProps> = ({
       variables: {
         input: {
           username: values.username,
-          password: values.password
-        }
-      }
+          password: values.password,
+        },
+      },
     });
   };
 
-  const getMessage = () => (
-    errorMessage || (
-      hasIncorrectCreds
-        ? 'Login Failed! Try Again.'
-        : message || ''
-    )
-  );
+  const getMessage = () =>
+    errorMessage ||
+    (hasIncorrectCreds ? 'Login Failed! Try Again.' : message || '');
 
   return (
     <FinalForm
@@ -73,17 +76,10 @@ export const LoginModal: React.FC<LoginModalProps> = ({
           isLoading={loading}
           onSaveClick={handleSubmit}
           onClose={onCloseClick}
-          primaryButtonLabel="Login"
-        >
+          primaryButtonLabel="Login">
           <form onSubmit={handleSubmit}>
-            <Box
-              justify="center"
-              width="100%"
-            >
-              <Text
-                alignSelf="center"
-                color="status-error"
-              >
+            <Box justify="center" width="100%">
+              <Text alignSelf="center" color="status-error">
                 {getMessage()}
               </Text>
             </Box>
@@ -119,4 +115,4 @@ export const LoginModal: React.FC<LoginModalProps> = ({
       )}
     />
   );
-}
+};

@@ -5,9 +5,7 @@ const fromProcessEnv = name => {
   return process.env[name];
 };
 
-const clientEnvironment = {
-  FAVICON_ROOT_URL: fromProcessEnv('FAVICON_ROOT_URL'),
-};
+const clientEnvironment = {};
 
 const serverSecrets = {
   NODE_ENV: fromProcessEnv('NODE_ENV'),

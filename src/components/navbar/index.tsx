@@ -21,8 +21,6 @@ const getTitle = () => 'dean slama';
 
 const MENU_ITEMS: string[] = ['about', 'posts', 'projects', 'readings'];
 
-type NavbarProps = {};
-
 const getPathFromRoute: (route: string) => string = route => {
   const tokens = route.split('/');
   if (tokens[1] === '') {
@@ -31,7 +29,7 @@ const getPathFromRoute: (route: string) => string = route => {
   return tokens[1];
 };
 
-export const Navbar: React.FunctionComponent<NavbarProps> = ({}) => {
+export const Navbar: React.FC = () => {
   const [editModeState, updateEditMode] = useEditModeState();
   const router = useRouter();
   const path = getPathFromRoute(router.route);

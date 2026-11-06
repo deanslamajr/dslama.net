@@ -21,7 +21,15 @@ export const LoadingErrorOrRender = <T,>({
   }
 
   if (error) {
-    return errorRender ? errorRender(error) : <>'Something broke!'</>;
+    if (errorRender) {
+      return errorRender(error);
+    }
+    return (
+      <>
+        Something broke.
+        {process.env.NODE_ENV !== 'production' && ` ${error.message}`}
+      </>
+    );
   }
 
   if (queryResult === null || queryResult === undefined) {

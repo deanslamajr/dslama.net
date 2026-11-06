@@ -1,21 +1,18 @@
-import { Resolver, PostsPage } from '../../../generated/graphql';
-import { fetchMostRecentVersion as fetchMostRecentPostsPageData } from '../postgresql/postsPage';
+import { QueryResolvers } from '../../../generated/graphql';
+import { ContextInterface } from '../../context';
+import { fetchMostRecentVersion } from '../postgresql/postsPage';
 
-export const resolver: Resolver<PostsPage> = async (
-  _parent,
-  _args,
-  _context,
-  _info
-) => {
-  const data = await fetchMostRecentPostsPageData();
-  const { summary = '', posts = [] } = data || {};
-
-  const sortedPosts = posts.sort(
-    (a, b) => b.originalPublishDate.getTime() - a.originalPublishDate.getTime()
-  );
+export const resolver: Required<
+  QueryResolvers<ContextInterface>
+>['postsPage'] = async () => {
+  const data = await fetchMostRecentVersion();
+  const posts = data?.posts ?? [];
 
   return {
-    summary,
-    posts: sortedPosts,
+    summary: data?.summary ?? '',
+    posts: posts.sort(
+      (a, b) =>
+        b.originalPublishDate.getTime() - a.originalPublishDate.getTime()
+    ),
   };
 };

@@ -1,26 +1,17 @@
-import { Resolver, ReadingsPage } from '../../../generated/graphql';
-import { fetchMostRecentVersion as fetchMostRecentReadingsPageData } from '../postgresql/readingsPage';
+import { QueryResolvers } from '../../../generated/graphql';
+import { ContextInterface } from '../../context';
+import { fetchMostRecentVersion } from '../postgresql/readingsPage';
 
-export const resolver: Resolver<ReadingsPage> = async (
-  _parent,
-  _args,
-  _context,
-  _info
-) => {
-  const data =
-    (await fetchMostRecentReadingsPageData()) ||
-    ({} as NonNullable<
-      Awaited<ReturnType<typeof fetchMostRecentReadingsPageData>>
-    >);
-  const summary = data.summary || '';
-  const readings = data.readings || [];
-
-  const sortedReadings = readings.sort(
-    (a, b) => b.foundDate.getTime() - a.foundDate.getTime()
-  );
+export const resolver: Required<
+  QueryResolvers<ContextInterface>
+>['readingsPage'] = async () => {
+  const data = await fetchMostRecentVersion();
+  const readings = data?.readings ?? [];
 
   return {
-    summary,
-    readings: sortedReadings,
+    summary: data?.summary ?? '',
+    readings: readings.sort(
+      (a, b) => b.foundDate.getTime() - a.foundDate.getTime()
+    ),
   };
 };

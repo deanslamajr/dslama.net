@@ -30,7 +30,7 @@ const focusOnErrors = createDecorator();
 
 export type MutablePost = Omit<
   NonNullable<FetchPostsQuery['postsPage']['posts']>[number],
-  '__typename' | 'originalPublishDate'
+  '__typename' | 'id' | 'originalPublishDate'
 > & {
   originalPublishDate: string;
 };

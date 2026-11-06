@@ -20,8 +20,7 @@ module.exports = phase => {
         {
           source: '/(.*)',
           headers: [
-            // Start with one day. Raise it to one year once the site runs well with it.
-            { key: 'Strict-Transport-Security', value: 'max-age=86400' },
+            { key: 'Strict-Transport-Security', value: 'max-age=31536000' },
             { key: 'X-Frame-Options', value: 'DENY' },
             { key: 'X-Content-Type-Options', value: 'nosniff' },
             { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },

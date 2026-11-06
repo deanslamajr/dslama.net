@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import { NextPage } from 'next';
+import Link from 'next/link';
 
 import { Header } from '../components/header';
 import { Container } from '../components/About.styles';
@@ -11,6 +12,9 @@ const ErrorComponent: NextPage = () => (
     </Head>
     <Container>
       <Header summary="Page not found" />
+      <Link href="/">
+        <a>Go to the home page</a>
+      </Link>
     </Container>
   </>
 );

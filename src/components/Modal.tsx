@@ -3,6 +3,7 @@ import { Close, Save } from 'grommet-icons';
 
 type ModalProps = {
   disableSave?: boolean;
+  errorMessage?: string;
   isLoading?: boolean;
   onClose: () => void;
   onSaveClick: () => void;
@@ -12,6 +13,7 @@ type ModalProps = {
 export const Modal: React.FC<ModalProps> = ({
   children,
   disableSave,
+  errorMessage,
   isLoading,
   onClose,
   onSaveClick,
@@ -40,6 +42,11 @@ export const Modal: React.FC<ModalProps> = ({
           </Button>
         </Nav>
       </Header>
+      {errorMessage && (
+        <Box pad="small" background="status-critical" role="alert">
+          <Text>{errorMessage}</Text>
+        </Box>
+      )}
       <Box pad="medium" width="large" overflow="auto">
         {isLoading ? (
           <Box

@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
-import Head from 'next/head';
 import {
+  Anchor,
   Box,
   Card,
   CardBody,
@@ -15,6 +15,7 @@ import { formatDate } from '../utils';
 import { appTitle } from '../constants';
 import { PostsPageEditModal } from '../components/editModals/posts';
 import { LoadingErrorOrRender } from '../components/LoadingErrorOrRender';
+import { SeoHead } from '../components/SeoHead';
 import { useState as useEditModeState } from '../contexts/EditModeState';
 import getServerSidePropsFactory from '../graphql/getServerSidePropsFactory';
 import {
@@ -29,9 +30,11 @@ const Posts: NextPage = () => {
 
   return (
     <>
-      <Head>
-        <title>{appTitle} - posts</title>
-      </Head>
+      <SeoHead
+        title={`${appTitle} - posts`}
+        description={data?.postsPage.summary || ''}
+        path="/posts"
+      />
       <LoadingErrorOrRender<FetchPostsQuery>
         error={error}
         isLoading={loading}
@@ -69,22 +72,18 @@ const Posts: NextPage = () => {
                           posts.map((post, index) => (
                             <Card
                               key={post.title || `post-${index}`}
-                              onClick={() => {
-                                post.url &&
-                                  window.open(
-                                    post.url,
-                                    '_blank',
-                                    'noopener,noreferrer'
-                                  );
-                              }}
                               height="full"
                               width={isMobile ? 'auto' : 'full'}
-                              background="light-1"
-                              hoverIndicator={true}>
+                              background="light-1">
                               <CardHeader alignSelf="center" pad="large">
-                                <Text size="xlarge" textAlign="center">
-                                  {post.title || ''}
-                                </Text>
+                                <Anchor
+                                  href={post.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  label={post.title}
+                                  size="xlarge"
+                                  style={{ textAlign: 'center' }}
+                                />
                               </CardHeader>
                               <CardBody pad="medium">
                                 <Text textAlign="justify" size="medium">

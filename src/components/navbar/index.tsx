@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import {
   Anchor,
@@ -21,6 +22,9 @@ const getTitle = () => 'dean slama';
 
 const MENU_ITEMS: string[] = ['about', 'posts', 'projects', 'readings'];
 
+const getPathFromItem: (item: string) => string = item =>
+  item === 'about' ? '/' : `/${item}`;
+
 const getPathFromRoute: (route: string) => string = route => {
   const tokens = route.split('/');
   if (tokens[1] === '') {
@@ -40,14 +44,6 @@ export const Navbar: React.FC = () => {
     fetchPolicy: 'network-only',
   });
   const [logout] = useLogoutMutation({ refetchQueries: ['FetchViewer'] });
-
-  const onLinkClick: (item: string) => void = item => {
-    const newPath = item.toLowerCase();
-
-    const url = newPath !== 'about' ? `/${newPath}` : '/';
-
-    router.push(url);
-  };
 
   const toggleModalVisibility = () => {
     const resolvedInputFromConsole = parseInputFromConsole();
@@ -89,19 +85,22 @@ export const Navbar: React.FC = () => {
               <Menu
                 items={MENU_ITEMS.map(item => ({
                   label: item,
-                  onClick: () => onLinkClick(item),
+                  href: getPathFromItem(item),
+                  onClick: (event: React.MouseEvent) => {
+                    event.preventDefault();
+                    router.push(getPathFromItem(item));
+                  },
                 }))}
               />
             ) : (
               <Nav direction="row">
                 {MENU_ITEMS.map(item => (
-                  <Anchor
-                    key={item}
-                    as="span"
-                    label={item}
-                    onClick={() => onLinkClick(item)}
-                    weight={item === activeItem ? 'bold' : 'normal'}
-                  />
+                  <Link key={item} href={getPathFromItem(item)} passHref>
+                    <Anchor
+                      label={item}
+                      weight={item === activeItem ? 'bold' : 'normal'}
+                    />
+                  </Link>
                 ))}
               </Nav>
             )

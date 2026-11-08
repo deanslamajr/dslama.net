@@ -188,7 +188,7 @@ export const AboutPageEditModal: React.FC<AboutPageEditModalProps> = ({
                 <Field<string> name="bio">
                   {({ input, meta }) => {
                     return (
-                      <FormField label="bio" width="full">
+                      <FormField label="bio (Markdown)" width="full">
                         <TextArea
                           {...input}
                           onChange={input.onChange}

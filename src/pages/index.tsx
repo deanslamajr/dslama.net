@@ -1,5 +1,6 @@
 import { NextPage } from 'next';
 import Head from 'next/head';
+import Markdown from 'markdown-to-jsx';
 
 import {
   BackgroundImage,
@@ -12,6 +13,7 @@ import {
 } from '../components/About.styles';
 
 import { appTitle } from '../constants';
+import { HTTP_PROTOCOLS, LINK_PROTOCOLS, isAllowedUrl } from '../contentPolicy';
 
 import { LoadingErrorOrRender } from '../components/LoadingErrorOrRender';
 import { Header } from '../components/header';
@@ -26,6 +28,41 @@ import {
   Link,
   FetchAboutDocument,
 } from '../graphql/generated/ops';
+
+// Relative paths and URLs with an allowed protocol pass. Anything else is dropped.
+const isSafe = (value: string | undefined, protocols: string[]): boolean =>
+  Boolean(value) &&
+  (((value as string).startsWith('/') && !(value as string).startsWith('//')) ||
+    isAllowedUrl(value as string, protocols));
+
+const SafeLink: React.FC<{ href?: string; title?: string }> = ({
+  href,
+  title,
+  children,
+}) => (
+  <a
+    href={isSafe(href, LINK_PROTOCOLS) ? href : undefined}
+    title={title}
+    target="_blank"
+    rel="noopener noreferrer">
+    {children}
+  </a>
+);
+
+const SafeImage: React.FC<{ src?: string; alt?: string; title?: string }> = ({
+  src,
+  alt,
+  title,
+}) =>
+  isSafe(src, HTTP_PROTOCOLS) ? (
+    <img src={src} alt={alt || ''} title={title} />
+  ) : null;
+
+const markdownOptions = {
+  disableParsingRawHTML: true,
+  forceBlock: true,
+  overrides: { a: { component: SafeLink }, img: { component: SafeImage } },
+};
 
 const Home: NextPage = () => {
   const { data, loading, error } = useFetchAboutQuery();
@@ -70,11 +107,11 @@ const Home: NextPage = () => {
                     </LinkItem>
                   )}
                 </LinksContainer>
-                <BioCard
-                  dangerouslySetInnerHTML={{
-                    __html: queryResult.aboutPage.bio || '',
-                  }}
-                />
+                <BioCard>
+                  <Markdown options={markdownOptions}>
+                    {queryResult.aboutPage.bio || ''}
+                  </Markdown>
+                </BioCard>
               </Container>
 
               {editModeState.showModal && (

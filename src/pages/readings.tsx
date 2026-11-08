@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
-import Head from 'next/head';
 import {
+  Anchor,
   Box,
   Card,
   CardBody,
@@ -16,6 +16,7 @@ import { appTitle } from '../constants';
 import { useState as useEditModeState } from '../contexts/EditModeState';
 
 import { LoadingErrorOrRender } from '../components/LoadingErrorOrRender';
+import { SeoHead } from '../components/SeoHead';
 import { ReadingsPageEditModal } from '../components/editModals/readings';
 
 import getServerSidePropsFactory from '../graphql/getServerSidePropsFactory';
@@ -31,9 +32,11 @@ const ReadingsPage: NextPage = () => {
 
   return (
     <>
-      <Head>
-        <title>{appTitle} - readings</title>
-      </Head>
+      <SeoHead
+        title={`${appTitle} - readings`}
+        description={data?.readingsPage.summary || ''}
+        path="/readings"
+      />
       <LoadingErrorOrRender<FetchReadingsQuery>
         error={error}
         isLoading={loading}
@@ -70,22 +73,18 @@ const ReadingsPage: NextPage = () => {
                           readings.map((reading, index) => (
                             <Card
                               key={reading?.id || `reading-${index}`}
-                              onClick={() => {
-                                reading?.url &&
-                                  window.open(
-                                    reading.url,
-                                    '_blank',
-                                    'noopener,noreferrer'
-                                  );
-                              }}
                               height="full"
                               width={isMobile ? 'auto' : 'full'}
-                              background="light-1"
-                              hoverIndicator={true}>
+                              background="light-1">
                               <CardHeader alignSelf="center" pad="large">
-                                <Text size="xlarge" textAlign="center">
-                                  {reading?.title || ''}
-                                </Text>
+                                <Anchor
+                                  href={reading?.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  label={reading?.title}
+                                  size="xlarge"
+                                  style={{ textAlign: 'center' }}
+                                />
                               </CardHeader>
                               <CardBody pad="medium">
                                 <Text textAlign="justify" size="medium">

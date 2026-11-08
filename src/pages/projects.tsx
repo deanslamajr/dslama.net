@@ -1,5 +1,4 @@
 import { NextPage } from 'next';
-import Head from 'next/head';
 import {
   Box,
   Card,
@@ -12,6 +11,7 @@ import {
 } from 'grommet';
 
 import { LoadingErrorOrRender } from '../components/LoadingErrorOrRender';
+import { SeoHead } from '../components/SeoHead';
 import { useState as useEditModeState } from '../contexts/EditModeState';
 import { ProjectsPageEditModal } from '../components/editModals/projects';
 
@@ -29,9 +29,11 @@ const Projects: NextPage = () => {
 
   return (
     <>
-      <Head>
-        <title>{appTitle} - projects</title>
-      </Head>
+      <SeoHead
+        title={`${appTitle} - projects`}
+        description={data?.projectsPage.summary || ''}
+        path="/projects"
+      />
       <LoadingErrorOrRender<FetchProjectsQuery>
         error={error}
         isLoading={loading}
@@ -80,26 +82,16 @@ const Projects: NextPage = () => {
                                 justify="center">
                                 <Anchor
                                   size="xlarge"
-                                  onClick={() => {
-                                    project?.appUrl &&
-                                      window.open(
-                                        project.appUrl,
-                                        '_blank',
-                                        'noopener,noreferrer'
-                                      );
-                                  }}>
+                                  href={project?.appUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer">
                                   {project?.name || ''}
                                 </Anchor>
                                 {project?.sourceUrl && (
                                   <Anchor
-                                    onClick={() => {
-                                      project?.sourceUrl &&
-                                        window.open(
-                                          project.sourceUrl,
-                                          '_blank',
-                                          'noopener,noreferrer'
-                                        );
-                                    }}
+                                    href={project.sourceUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                     margin={{ left: 'small' }}>
                                     <div>source</div>
                                   </Anchor>

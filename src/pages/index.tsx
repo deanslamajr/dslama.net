@@ -1,5 +1,4 @@
 import { NextPage } from 'next';
-import Head from 'next/head';
 import Markdown from 'markdown-to-jsx';
 
 import {
@@ -13,9 +12,11 @@ import {
 } from '../components/About.styles';
 
 import { appTitle } from '../constants';
+import { toPlainText } from '../text';
 import { HTTP_PROTOCOLS, LINK_PROTOCOLS, isAllowedUrl } from '../contentPolicy';
 
 import { LoadingErrorOrRender } from '../components/LoadingErrorOrRender';
+import { SeoHead } from '../components/SeoHead';
 import { Header } from '../components/header';
 import { AboutPageEditModal } from '../components/editModals/about';
 
@@ -70,9 +71,11 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <Head>
-        <title>{appTitle}</title>
-      </Head>
+      <SeoHead
+        title={appTitle}
+        description={toPlainText(data?.aboutPage.bio || '')}
+        path="/"
+      />
       <LoadingErrorOrRender<FetchAboutQuery>
         error={error}
         isLoading={loading}

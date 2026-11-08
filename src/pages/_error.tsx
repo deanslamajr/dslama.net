@@ -1,8 +1,8 @@
 import { NextPage } from 'next';
-import Head from 'next/head';
 import Link from 'next/link';
 
 import { Header } from '../components/header';
+import { SeoHead } from '../components/SeoHead';
 import { Container } from '../components/About.styles';
 
 type ErrorProps = {
@@ -11,9 +11,12 @@ type ErrorProps = {
 
 const Error: NextPage<ErrorProps> = ({ statusCode }) => (
   <>
-    <Head>
-      <title>dslama.net - page error</title>
-    </Head>
+    <SeoHead
+      title="dslama.net - page error"
+      description="Page error"
+      path="/"
+      noIndex
+    />
     <Container>
       <Header
         summary={`Error ${statusCode}: there was an error while processing this page request.`}

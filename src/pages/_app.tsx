@@ -42,6 +42,18 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link
+          rel="alternate"
+          type="application/atom+xml"
+          title="dslama.net posts"
+          href="/api/feeds/posts"
+        />
+        <link
+          rel="alternate"
+          type="application/atom+xml"
+          title="dslama.net readings"
+          href="/api/feeds/readings"
+        />
       </Head>
       <Grommet full theme={defaultTheme}>
         <ReducedMotion />

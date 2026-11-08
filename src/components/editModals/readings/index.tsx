@@ -237,6 +237,7 @@ export const ReadingsPageEditModal: React.FC<ReadingsPageEditModalProps> = ({
                     {({ fields }) =>
                       fields.map((name, index) => (
                         <ReadingCard
+                          key={name}
                           onRemoveCard={() => fields.remove(index)}
                           parentFieldName={name}
                           removeButtonLabel="Cancel"
@@ -257,6 +258,7 @@ export const ReadingsPageEditModal: React.FC<ReadingsPageEditModalProps> = ({
                     {({ fields }) =>
                       fields?.map((name, index) => (
                         <ReadingCard
+                          key={name}
                           onRemoveCard={() => fields.remove(index)}
                           parentFieldName={name}
                           removeButtonLabel="Delete Reading"

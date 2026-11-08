@@ -44,7 +44,7 @@ const defaultTheme: ThemeType = {
       },
       'text-xweak': {
         dark: '#999999',
-        light: '#99969C',
+        light: '#6B6870',
       },
       border: {
         dark: '#444444',
@@ -52,7 +52,7 @@ const defaultTheme: ThemeType = {
       },
       control: '#006992',
       'active-background': 'background',
-      'active-text': '#26A96C',
+      'active-text': '#1F7A4E',
       'selected-background': 'background-front',
       'selected-text': 'text-strong',
       'status-critical': '#FF4A1C',

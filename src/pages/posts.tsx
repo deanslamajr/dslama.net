@@ -16,6 +16,7 @@ import { appTitle } from '../constants';
 import { PostsPageEditModal } from '../components/editModals/posts';
 import { LoadingErrorOrRender } from '../components/LoadingErrorOrRender';
 import { SeoHead } from '../components/SeoHead';
+import { VisuallyHiddenH1 } from '../components/VisuallyHidden';
 import { useState as useEditModeState } from '../contexts/EditModeState';
 import getServerSidePropsFactory from '../graphql/getServerSidePropsFactory';
 import {
@@ -50,6 +51,7 @@ const Posts: NextPage = () => {
 
                 return (
                   <>
+                    <VisuallyHiddenH1>posts</VisuallyHiddenH1>
                     <Grid
                       columns={[isMobile ? 'auto' : 'auto']}
                       margin={{ horizontal: 'large' }}>
@@ -69,9 +71,9 @@ const Posts: NextPage = () => {
                         columns={['flex']}
                         justify="center">
                         {posts &&
-                          posts.map((post, index) => (
+                          posts.map(post => (
                             <Card
-                              key={post.title || `post-${index}`}
+                              key={post.id}
                               height="full"
                               width={isMobile ? 'auto' : 'full'}
                               background="light-1">

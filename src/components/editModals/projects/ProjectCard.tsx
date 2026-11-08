@@ -18,7 +18,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 }) => {
   return (
     <Box
-      key={parentFieldName}
       margin={{
         top: 'small',
         bottom: 'small',

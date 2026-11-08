@@ -18,7 +18,6 @@ export const ReadingCard: React.FC<ReadingCardProps> = ({
 }) => {
   return (
     <Box
-      key={parentFieldName}
       margin={{
         top: 'small',
         bottom: 'small',

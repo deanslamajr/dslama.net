@@ -212,6 +212,7 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
                     {({ fields }) =>
                       fields.map((name, index) => (
                         <PostCard
+                          key={name}
                           onRemoveCard={() => fields.remove(index)}
                           parentFieldName={name}
                           removeButtonLabel="Cancel"
@@ -232,6 +233,7 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
                     {({ fields }) =>
                       fields?.map((name, index) => (
                         <PostCard
+                          key={name}
                           onRemoveCard={() => fields.remove(index)}
                           parentFieldName={name}
                           removeButtonLabel="Delete Post"

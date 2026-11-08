@@ -19,7 +19,6 @@ export const LinkCard: React.FC<LinkCardProps> = ({
 }) => {
   return (
     <Box
-      key={parentFieldName}
       margin={{
         top: 'small',
         bottom: 'small',

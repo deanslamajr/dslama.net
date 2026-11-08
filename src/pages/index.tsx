@@ -90,11 +90,11 @@ const Home: NextPage = () => {
                     imageUrl={queryResult.aboutPage.pictureURL || ''}
                   />
                 </LogoContainer>
-                <LinksContainer>
-                  {queryResult.aboutPage.links?.length ? (
-                    (queryResult.aboutPage.links as Link[]).map(
-                      ({ name, url }) => (
-                        <LinkItem key={name || ''}>
+                {queryResult.aboutPage.links.length > 0 && (
+                  <LinksContainer>
+                    {(queryResult.aboutPage.links as Link[]).map(
+                      ({ id, name, url }) => (
+                        <LinkItem key={id}>
                           <LinkAnchor
                             href={url || ''}
                             target="_blank"
@@ -103,13 +103,9 @@ const Home: NextPage = () => {
                           </LinkAnchor>
                         </LinkItem>
                       )
-                    )
-                  ) : (
-                    <LinkItem key={''}>
-                      <LinkAnchor href={''} target="_blank"></LinkAnchor>
-                    </LinkItem>
-                  )}
-                </LinksContainer>
+                    )}
+                  </LinksContainer>
+                )}
                 <BioCard>
                   <Markdown options={markdownOptions}>
                     {queryResult.aboutPage.bio || ''}

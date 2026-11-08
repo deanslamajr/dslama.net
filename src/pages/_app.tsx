@@ -4,12 +4,25 @@ import Router from 'next/router';
 import React from 'react';
 import { Grommet } from 'grommet';
 import { ApolloProvider } from '@apollo/client';
+import { createGlobalStyle } from 'styled-components';
 
 import { useApollo } from '../graphql/useApollo';
 import { Provider as EditModeProvider } from '../contexts/EditModeState';
 import { MainLayout } from '../components/MainLayout';
 
 import defaultTheme from '../defaultTheme';
+
+const ReducedMotion = createGlobalStyle`
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+`;
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   const apolloClient = useApollo(pageProps.initialApolloState);
@@ -31,6 +44,7 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </Head>
       <Grommet full theme={defaultTheme}>
+        <ReducedMotion />
         <ApolloProvider client={apolloClient}>
           <EditModeProvider>
             <MainLayout isChangingRoute={isChangingRoute}>

@@ -18,7 +18,6 @@ export const PostCard: React.FC<PostCardProps> = ({
 }) => {
   return (
     <Box
-      key={parentFieldName}
       margin={{
         top: 'small',
         bottom: 'small',

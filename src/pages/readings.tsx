@@ -17,6 +17,7 @@ import { useState as useEditModeState } from '../contexts/EditModeState';
 
 import { LoadingErrorOrRender } from '../components/LoadingErrorOrRender';
 import { SeoHead } from '../components/SeoHead';
+import { VisuallyHiddenH1 } from '../components/VisuallyHidden';
 import { ReadingsPageEditModal } from '../components/editModals/readings';
 
 import getServerSidePropsFactory from '../graphql/getServerSidePropsFactory';
@@ -51,6 +52,7 @@ const ReadingsPage: NextPage = () => {
 
                 return (
                   <>
+                    <VisuallyHiddenH1>readings</VisuallyHiddenH1>
                     <Grid
                       columns={[isMobile ? 'auto' : 'auto']}
                       margin={{ horizontal: 'large' }}>

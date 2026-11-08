@@ -155,6 +155,7 @@ export const AboutPageEditModal: React.FC<AboutPageEditModalProps> = ({
                     {({ fields }) =>
                       fields.map((name, index) => (
                         <LinkCard
+                          key={name}
                           onRemoveCard={() => fields.remove(index)}
                           parentFieldName={name}
                           removeButtonLabel="Delete Link"

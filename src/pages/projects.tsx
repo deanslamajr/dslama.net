@@ -12,6 +12,7 @@ import {
 
 import { LoadingErrorOrRender } from '../components/LoadingErrorOrRender';
 import { SeoHead } from '../components/SeoHead';
+import { VisuallyHiddenH1 } from '../components/VisuallyHidden';
 import { useState as useEditModeState } from '../contexts/EditModeState';
 import { ProjectsPageEditModal } from '../components/editModals/projects';
 
@@ -49,6 +50,7 @@ const Projects: NextPage = () => {
 
                 return (
                   <>
+                    <VisuallyHiddenH1>projects</VisuallyHiddenH1>
                     <Grid
                       columns={[isMobile ? 'auto' : 'auto']}
                       margin={{ horizontal: 'large' }}>

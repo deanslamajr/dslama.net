@@ -237,6 +237,7 @@ export const ProjectsPageEditModal: React.FC<ProjectsPageEditModalProps> = ({
                     {({ fields }) =>
                       fields.map((name, index) => (
                         <ProjectCard
+                          key={name}
                           onRemoveCard={() => fields.remove(index)}
                           parentFieldName={name}
                           removeButtonLabel="Cancel"
@@ -257,6 +258,7 @@ export const ProjectsPageEditModal: React.FC<ProjectsPageEditModalProps> = ({
                     {({ fields }) =>
                       fields?.map((name, index) => (
                         <ProjectCard
+                          key={name}
                           onRemoveCard={() => fields.remove(index)}
                           parentFieldName={name}
                           removeButtonLabel="Delete Project"

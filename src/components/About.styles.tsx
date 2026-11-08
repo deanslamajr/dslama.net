@@ -59,7 +59,10 @@ export const BackgroundImage = styled.div<BackgroundImageProps>`
   `}
 `;
 
-export const LinksContainer = styled.div`
+export const LinksContainer = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
   font-size: 1.25rem;
   text-align: center;
   display: flex;

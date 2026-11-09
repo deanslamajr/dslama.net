@@ -15,7 +15,10 @@ import { FieldArray } from 'react-final-form-arrays';
 import createDecorator from 'final-form-focus';
 
 import { useState as useEditModeState } from '../../../contexts/EditModeState';
-import { transformDateInputValueToGqlDate } from '../../../utils';
+import {
+  transformGqlDateForDateInput,
+  transformDateInputValueToGqlDate,
+} from '../../../utils';
 import { Modal } from '../../Modal';
 import { LoginModal } from '../../LoginModal';
 import { PostCard } from './PostCard';
@@ -140,6 +143,14 @@ export const PostsPageEditModal: React.FC<PostsPageEditModalProps> = ({
   const augmentedInitialValues = React.useMemo(
     () => ({
       ...initialValues,
+      posts: (initialValues.posts || []).map(post => ({
+        url: post.url,
+        originalPublishDate: transformGqlDateForDateInput(
+          post.originalPublishDate
+        ),
+        title: post.title,
+        snippet: post.snippet,
+      })),
       newPosts: editModeState.resolvedInputFromConsole?.posts || [],
     }),
     [initialValues]

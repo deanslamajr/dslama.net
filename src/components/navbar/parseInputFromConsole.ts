@@ -20,6 +20,7 @@ type PostFromConsole = Omit<MutablePost, 'originalPublishDate'> & {
 
 const isAPost = (possiblyAPost: any): possiblyAPost is PostFromConsole =>
   typeof possiblyAPost === 'object' &&
+  possiblyAPost !== null &&
   typeof possiblyAPost.url === 'string' &&
   typeof possiblyAPost.title === 'string' &&
   typeof possiblyAPost.snippet === 'string' &&
@@ -57,6 +58,7 @@ const isAReading = (
   possiblyAReading: any
 ): possiblyAReading is ReadingFromConsole =>
   typeof possiblyAReading === 'object' &&
+  possiblyAReading !== null &&
   typeof possiblyAReading.author === 'string' &&
   typeof possiblyAReading.foundDate === 'number' &&
   typeof possiblyAReading.publishDate === 'number' &&
@@ -101,6 +103,7 @@ const isAProject = (
   possiblyAProject: any
 ): possiblyAProject is ProjectFromConsole =>
   typeof possiblyAProject === 'object' &&
+  possiblyAProject !== null &&
   typeof possiblyAProject.originalPublishDate === 'number' &&
   typeof possiblyAProject.description === 'string' &&
   typeof possiblyAProject.appUrl === 'string' &&

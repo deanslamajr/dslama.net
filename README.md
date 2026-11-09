@@ -25,10 +25,14 @@ You need Node 12.16.0 (see `.nvmrc`), nvm, and Docker.
 | Lint | `npm run lint` |
 | Lint and fix | `npm run lint:fix` |
 | Typecheck (run `npm run codegen` first) | `npm run typecheck` |
+| Unit and component tests | `npm test` |
+| Integration tests against the local Postgres | `npm run test:integration` |
 | Production build | `npm run build` |
 | Serve the production build on port 8080 | `npm start` |
 | Prisma Studio on port 5555 | `npm run studio` |
 | Drop the local database and replay all migrations | `npm run migrate` |
+
+`npm run test:integration` creates the database `dslama_test` on `localhost:5433`, applies the migrations, and empties its tables before each test. It does not touch the `dslama` database. It refuses any other host, any other port, and any database name that does not end in `_test`. The `TEST_DB_*` variables in `test/database.js` change the target.
 
 `npm run migrate` deletes all data. If `DATABASE_URL_LOCAL_USE_ONLY` does not point at the local database on port 5433, it refuses to run.
 

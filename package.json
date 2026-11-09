@@ -13,7 +13,7 @@
     "build": "npm run codegen && prisma generate && next build",
     "studio": "npx prisma studio --schema ./prisma/migration.schema.prisma",
     "migrate": "node scripts/assert-local-db.js && prisma migrate reset --schema ./prisma/migration.schema.prisma",
-    "start": "next start -p 8080",
+    "start": "node server.js",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src",
     "lint:fix": "eslint --fix --ext .js,.jsx,.ts,.tsx src",
     "typecheck": "tsc --noEmit --pretty",

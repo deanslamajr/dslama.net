@@ -12,12 +12,28 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    services:
+      # Same image and credentials as docker-compose.yml. The integration tests use dslama_test.
+      postgres:
+        image: postgres:17-alpine
+        ports:
+          - 5433:5432
+        env:
+          POSTGRES_USER: dslama
+          POSTGRES_PASSWORD: dslama-local-only
+          POSTGRES_DB: dslama_test
+        options: >-
+          --health-cmd "pg_isready -U dslama -d dslama_test"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
     env:
       # npm steps run in the same base image as stage one of the production Dockerfile.
       # Prisma 3.0.2 needs OpenSSL 1.1, which current Ubuntu runners do not ship.
       # The job itself runs on the host, because the runner's Node for actions
       # needs a newer glibc than node:12.16.0 has.
-      NODE12: docker run --rm -v ${{ github.workspace }}:/app -w /app node:12.16.0
+      # --network host lets the integration tests reach the service container on localhost:5433.
+      NODE12: docker run --rm --network host -v ${{ github.workspace }}:/app -w /app node:12.16.0
     steps:
       - uses: actions/checkout@v4
       - name: Prisma schema files hold identical models
@@ -33,6 +49,8 @@ jobs:
       - run: $NODE12 npx prisma generate
       - run: $NODE12 npm run typecheck
       - run: $NODE12 npm run lint
+      - run: $NODE12 npm test
+      - run: $NODE12 npm run test:integration
       - run: $NODE12 npm run build
       - name: npm audit (report only)
         run: $NODE12 npm audit --audit-level=high || true

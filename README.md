@@ -28,6 +28,7 @@ You need Node 12.16.0 (see `.nvmrc`), nvm, and Docker.
 | Unit and component tests | `npm test` |
 | Integration tests against the local Postgres | `npm run test:integration` |
 | Production build | `npm run build` |
+| Check the built pages against the Content Security Policy | `npm run check:csp` |
 | Serve the production build on port 8080 | `npm start` |
 | Prisma Studio on port 5555 | `npm run studio` |
 | Drop the local database and replay all migrations | `npm run migrate` |

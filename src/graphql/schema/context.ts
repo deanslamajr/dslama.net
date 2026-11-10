@@ -1,7 +1,5 @@
 import { IncomingMessage, ServerResponse } from 'http';
-import { NextApiRequest, NextApiResponse } from 'next';
 import cookieSession from 'cookie-session';
-import nextConnect from 'next-connect';
 import getConfig from 'next/config';
 
 const {
@@ -28,11 +26,6 @@ export type ContextInterface = {
     get: () => SessionInterface | null;
     logout: () => void;
   };
-};
-
-type ResolveContextParams = {
-  req: IncomingMessage;
-  res: ServerResponse;
 };
 
 // The Google load balancer appends "<client-ip>,<load-balancer-ip>" to X-Forwarded-For.
@@ -109,16 +102,4 @@ export const sessionMiddleware = (
     (res as unknown) as CookieSessionArgs[1],
     next as CookieSessionArgs[2]
   );
-};
-
-export const resolveContextDuringNextSSR = async ({
-  req,
-  res,
-}: ResolveContextParams): Promise<ContextInterface> => {
-  const handler = nextConnect<NextApiRequest, NextApiResponse>();
-  handler.use(sessionMiddleware);
-  await handler.run(req as NextApiRequest, res as NextApiResponse);
-  return resolveContext({
-    req: req as IncomingMessageWithSession,
-  });
 };

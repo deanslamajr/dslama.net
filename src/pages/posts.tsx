@@ -18,7 +18,7 @@ import { LoadingErrorOrRender } from '../components/LoadingErrorOrRender';
 import { SeoHead } from '../components/SeoHead';
 import { VisuallyHiddenH1 } from '../components/VisuallyHidden';
 import { useState as useEditModeState } from '../contexts/EditModeState';
-import getServerSidePropsFactory from '../graphql/getServerSidePropsFactory';
+import getStaticPropsFactory from '../graphql/getStaticPropsFactory';
 import {
   useFetchPostsQuery,
   FetchPostsQuery,
@@ -117,6 +117,6 @@ const Posts: NextPage = () => {
   );
 };
 
-export const getServerSideProps = getServerSidePropsFactory(FetchPostsDocument);
+export const getStaticProps = getStaticPropsFactory(FetchPostsDocument);
 
 export default Posts;

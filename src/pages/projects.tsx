@@ -17,7 +17,7 @@ import { useState as useEditModeState } from '../contexts/EditModeState';
 import { ProjectsPageEditModal } from '../components/editModals/projects';
 
 import { appTitle } from '../constants';
-import getServerSidePropsFactory from '../graphql/getServerSidePropsFactory';
+import getStaticPropsFactory from '../graphql/getStaticPropsFactory';
 import {
   useFetchProjectsQuery,
   FetchProjectsQuery,
@@ -128,8 +128,6 @@ const Projects: NextPage = () => {
   );
 };
 
-export const getServerSideProps = getServerSidePropsFactory(
-  FetchProjectsDocument
-);
+export const getStaticProps = getStaticPropsFactory(FetchProjectsDocument);
 
 export default Projects;

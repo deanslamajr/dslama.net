@@ -22,7 +22,7 @@ import { AboutPageEditModal } from '../components/editModals/about';
 
 import { useState as useEditModeState } from '../contexts/EditModeState';
 
-import getServerSidePropsFactory from '../graphql/getServerSidePropsFactory';
+import getStaticPropsFactory from '../graphql/getStaticPropsFactory';
 import {
   useFetchAboutQuery,
   FetchAboutQuery,
@@ -124,6 +124,6 @@ const Home: NextPage = () => {
   );
 };
 
-export const getServerSideProps = getServerSidePropsFactory(FetchAboutDocument);
+export const getStaticProps = getStaticPropsFactory(FetchAboutDocument);
 
 export default Home;

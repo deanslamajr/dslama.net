@@ -20,7 +20,7 @@ import { SeoHead } from '../components/SeoHead';
 import { VisuallyHiddenH1 } from '../components/VisuallyHidden';
 import { ReadingsPageEditModal } from '../components/editModals/readings';
 
-import getServerSidePropsFactory from '../graphql/getServerSidePropsFactory';
+import getStaticPropsFactory from '../graphql/getStaticPropsFactory';
 import {
   useFetchReadingsQuery,
   FetchReadingsQuery,
@@ -119,8 +119,6 @@ const ReadingsPage: NextPage = () => {
   );
 };
 
-export const getServerSideProps = getServerSidePropsFactory(
-  FetchReadingsDocument
-);
+export const getStaticProps = getStaticPropsFactory(FetchReadingsDocument);
 
 export default ReadingsPage;

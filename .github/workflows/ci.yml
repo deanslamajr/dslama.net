@@ -52,5 +52,6 @@ jobs:
       - run: $NODE12 npm test
       - run: $NODE12 npm run test:integration
       - run: $NODE12 npm run build
+      - run: $NODE12 npm run check:csp
       - name: npm audit (report only)
         run: $NODE12 npm audit --audit-level=high || true

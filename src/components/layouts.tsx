@@ -9,6 +9,7 @@ import {
   ThemedStyledProps,
   FlattenInterpolation,
 } from 'styled-components';
+import { normalizeColor } from 'grommet/utils';
 
 // styled-components constrains props with `P extends object`, so these helpers must too.
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -57,7 +58,7 @@ export const card: () => FlattenInterpolation<
   ThemeProps<DefaultTheme>
 > = () => {
   return css`
-    background-color: white;
+    background-color: ${props => normalizeColor('card', props.theme)};
     padding: 1.25rem;
     border-radius: 2px;
     font-size: 1.3rem;

@@ -2,12 +2,12 @@ import { AppProps } from 'next/app';
 import Head from 'next/head';
 import Router from 'next/router';
 import React from 'react';
-import { Grommet } from 'grommet';
 import { ApolloProvider } from '@apollo/client';
 import { createGlobalStyle } from 'styled-components';
 
 import { useApollo } from '../graphql/useApollo';
 import { Provider as EditModeProvider } from '../contexts/EditModeState';
+import { ThemeModeProvider } from '../contexts/ThemeMode';
 import { MainLayout } from '../components/MainLayout';
 
 import defaultTheme from '../defaultTheme';
@@ -55,7 +55,7 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
           href="/api/feeds/readings"
         />
       </Head>
-      <Grommet full theme={defaultTheme}>
+      <ThemeModeProvider theme={defaultTheme}>
         <ReducedMotion />
         <ApolloProvider client={apolloClient}>
           <EditModeProvider>
@@ -64,7 +64,7 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
             </MainLayout>
           </EditModeProvider>
         </ApolloProvider>
-      </Grommet>
+      </ThemeModeProvider>
     </>
   );
 };

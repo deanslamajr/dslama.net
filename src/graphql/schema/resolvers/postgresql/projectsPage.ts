@@ -1,22 +1,11 @@
 import { Prisma } from '@prisma/client';
 import { prisma } from '.';
+import { versionedPage } from './versionedPage';
 
-export const fetchMostRecentVersion = () => {
-  return prisma.projectsPage.findFirst({
-    include: {
-      projects: true,
-    },
-    orderBy: {
-      version: 'desc',
-    },
-  });
-};
+const page = versionedPage<
+  Prisma.ProjectsPageGetPayload<{ include: { projects: true } }>,
+  Prisma.ProjectsPageCreateInput
+>(prisma.projectsPage, { projects: true });
 
-export const update = (input: Prisma.ProjectsPageCreateInput) => {
-  return prisma.projectsPage.create({
-    data: input,
-    include: {
-      projects: true,
-    },
-  });
-};
+export const fetchMostRecentVersion = page.fetchNewest;
+export const update = page.createVersion;

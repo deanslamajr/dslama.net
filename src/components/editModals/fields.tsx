@@ -7,7 +7,7 @@ import {
   TextInput as GrommetTextInput,
 } from 'grommet';
 
-const visibleError = (meta: FieldMetaState<unknown>) =>
+export const visibleError = (meta: FieldMetaState<unknown>) =>
   meta.touched || meta.submitFailed ? meta.error : undefined;
 
 type TextInputProps = {

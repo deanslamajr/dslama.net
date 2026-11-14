@@ -52,6 +52,17 @@ The site follows the system light or dark setting. The sun or moon button in the
 
 To import many items at once, set `window.__inputFromConsole = { posts: [...], projects: [...], readings: [...] }` in the browser console before you open the editor. Dates are epoch milliseconds. The editor fills the list with the items that have the right shape.
 
+## Prune old versions
+
+Every save adds a page version, and old versions stay. The prune script deletes all but the newest versions of each page type, with their child rows, in one transaction. It keeps 20 by default. Without `--apply`, it only prints what it would delete.
+
+```sh
+DATABASE_URL=postgresql://dslama:dslama-local-only@localhost:5433/dslama node scripts/prune-versions.js
+DATABASE_URL=postgresql://dslama:dslama-local-only@localhost:5433/dslama node scripts/prune-versions.js --keep 20 --apply
+```
+
+The history panel in the editor lists the newest 20 versions, so the default keeps every version that the panel can restore.
+
 ## Accounts
 
 There is no signup flow. Create an account, or reset its password, with the script. It prompts for the username and hides the password, which must have at least 12 characters.

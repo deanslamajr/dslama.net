@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { siteUrl } from '../constants';
+import { logger } from '../logger';
 
 export type AtomEntry = {
   title: string;
@@ -95,7 +96,10 @@ export const createFeedHandler = ({
   try {
     feed = await load();
   } catch (error) {
-    console.error(error);
+    logger.error(
+      { stack: (error as Error).stack },
+      `feed failed: ${(error as Error).message}`
+    );
     res.status(503).end();
     return;
   }

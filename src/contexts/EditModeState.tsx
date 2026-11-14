@@ -5,10 +5,8 @@ import React, {
   ReactNode,
   SetStateAction,
   useContext,
-  useEffect,
   useState,
 } from 'react';
-import { useRouter } from 'next/router';
 import { MutableReading } from '../components/editModals/readings';
 import { MutablePost } from '../components/editModals/posts';
 import { MutableProject } from '../components/editModals/projects';
@@ -20,7 +18,6 @@ export type ResolvedInputFromConsole = {
 } | null;
 
 type State = {
-  isActive: boolean;
   showModal: boolean;
   resolvedInputFromConsole: ResolvedInputFromConsole;
 };
@@ -30,16 +27,9 @@ type Setter = Dispatch<SetStateAction<State>>;
 const StateContext = createContext<State | undefined>(undefined);
 const SetterContext = createContext<Setter | undefined>(undefined);
 
-const getInitializedState = (queryString?: string | string[]): State => {
-  // dslama.net/?edit
-  // TODO replace with proper login
-  const isActive = Boolean(queryString !== undefined);
-
-  return {
-    isActive,
-    showModal: false,
-    resolvedInputFromConsole: null,
-  };
+const initialState: State = {
+  showModal: false,
+  resolvedInputFromConsole: null,
 };
 
 const useEditModeState = (): [State, Setter] => {
@@ -53,14 +43,7 @@ const useEditModeState = (): [State, Setter] => {
 
 type Props = { children: ReactNode };
 const EditModeProvider = ({ children }: Props) => {
-  const router = useRouter();
-  const [state, setState] = useState<State>(() =>
-    getInitializedState(router.query.edit)
-  );
-
-  useEffect(() => {
-    setState(getInitializedState(router.query.edit));
-  }, [router.query.edit]);
+  const [state, setState] = useState<State>(initialState);
 
   return (
     <StateContext.Provider value={state}>

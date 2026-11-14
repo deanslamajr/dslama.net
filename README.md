@@ -39,11 +39,11 @@ You need Node 12.16.0 (see `.nvmrc`), nvm, and Docker.
 
 ## Edit mode
 
-1. Open a page, for example `/` or `/posts`. Add `?edit` to the URL, for example `/posts?edit`, to show the logout button after you log in.
+1. Open a page, for example `/` or `/posts`.
 2. Click the site title in the navbar, or focus it with Tab and press Enter. The page editor opens.
 3. Change the content and click Save. If you are not logged in, the login form appears. Log in, then save again.
    The pages are static and refresh every 60 seconds. Other visitors see a save after at most about 60 seconds.
-4. In `?edit` mode, click logout to end the session.
+4. To log in before you edit, open `/login`. While you are logged in, the navbar shows a logout button.
 
 To import many items at once, set `window.__inputFromConsole = { posts: [...], projects: [...], readings: [...] }` in the browser console before you open the editor. Dates are epoch milliseconds. The editor fills the list with the items that have the right shape.
 

@@ -40,8 +40,8 @@ jobs:
         run: diff <(tail -n +9 prisma/schema.prisma) <(tail -n +9 prisma/migration.schema.prisma)
       - name: No credential logging
         run: |
-          if git grep -nE 'console\.[a-z]+\(.*(DB_PASS|DB_USER|SESSION_COOKIE_SECRET|DATABASE_URL|postgresql://)' -- . ':(exclude)docs' ':(exclude).github'; then
-            echo "A console call prints a credential."
+          if git grep -nE '(console|logger)\.[a-z]+\(.*(DB_PASS|DB_USER|SESSION_COOKIE_SECRET|DATABASE_URL|postgresql://)' -- . ':(exclude)docs' ':(exclude).github'; then
+            echo "A console or logger call prints a credential."
             exit 1
           fi
       - run: $NODE12 npm ci

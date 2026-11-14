@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { normalizeColor } from 'grommet/utils';
 
 import { breakpoints, shadow, card } from './layouts';
 
@@ -39,7 +40,7 @@ export const BackgroundImage = styled.div<BackgroundImageProps>`
   background-image: url("${props => toCssUrl(props.imageUrl)}"),
     url("${props => toCssUrl(props.imageUrl)}");
   background-repeat: no-repeat,no-repeat;
-  background-color: #e7eeed;
+  background-color: ${props => normalizeColor('background-front', props.theme)};
   background-blend-mode: color-burn, color-burn;
   height: 100%;
   width: 100%;
@@ -88,12 +89,10 @@ export const LinkItem = styled.li`
 `;
 
 export const LinkAnchor = styled.a`
-  color: black;
-  :link {
-    color: black;
-  }
+  color: ${props => normalizeColor('text-strong', props.theme)};
+  :link,
   :visited {
-    color: black;
+    color: ${props => normalizeColor('text-strong', props.theme)};
   }
 `;
 

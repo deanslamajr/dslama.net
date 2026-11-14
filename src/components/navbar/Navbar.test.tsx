@@ -2,13 +2,14 @@
  * @jest-environment jsdom
  */
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
-import { Grommet } from 'grommet';
 import { NextRouter } from 'next/router';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 
 import { Provider as EditModeProvider } from '../../contexts/EditModeState';
+import { ThemeModeProvider } from '../../contexts/ThemeMode';
+import defaultTheme from '../../defaultTheme';
 import { FetchViewerDocument } from '../../graphql/generated/ops';
 import { Navbar } from '.';
 
@@ -25,11 +26,11 @@ const renderNavbar = (viewer: { id: string; username: string } | null) =>
             result: { data: { viewer } },
           },
         ]}>
-        <Grommet>
+        <ThemeModeProvider theme={defaultTheme}>
           <EditModeProvider>
             <Navbar />
           </EditModeProvider>
-        </Grommet>
+        </ThemeModeProvider>
       </MockedProvider>
     </RouterContext.Provider>
   );
@@ -44,7 +45,7 @@ it('shows no logout to a visitor', async () => {
   renderNavbar(null);
 
   // Let the viewer query answer before checking.
-  await new Promise(resolve => setTimeout(resolve, 0));
+  await act(() => new Promise(resolve => setTimeout(resolve, 0)));
   expect(screen.queryByText('logout')).toBeNull();
   expect(screen.getByText('dean slama')).toBeTruthy();
 });

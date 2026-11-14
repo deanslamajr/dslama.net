@@ -63,6 +63,11 @@ const defaultTheme: ThemeType = {
       'graph-0': 'brand',
       'graph-1': 'status-warning',
       focus: '#1D84B5',
+      // Not from the theme designer: the about page bio card.
+      card: {
+        dark: '#111111',
+        light: '#FFFFFF',
+      },
     },
     font: {
       family: 'Helvetica',

@@ -37,6 +37,10 @@ You need Node 12.16.0 (see `.nvmrc`), nvm, and Docker.
 
 `npm run migrate` deletes all data. If `DATABASE_URL_LOCAL_USE_ONLY` does not point at the local database on port 5433, it refuses to run.
 
+## Night mode
+
+The site follows the system light or dark setting. The sun or moon button in the navbar switches the mode and stores the choice in the browser. The server always renders light, so a visitor in dark mode sees the light page for a moment before it switches.
+
 ## Edit mode
 
 1. Open a page, for example `/` or `/posts`.

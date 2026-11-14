@@ -11,7 +11,9 @@ import {
   ResponsiveContext,
   Text,
 } from 'grommet';
+import { Moon, Sun } from 'grommet-icons';
 import { useState as useEditModeState } from '../../contexts/EditModeState';
+import { useThemeMode } from '../../contexts/ThemeMode';
 import { parseInputFromConsole } from './parseInputFromConsole';
 import {
   useFetchViewerQuery,
@@ -35,6 +37,7 @@ const getPathFromRoute: (route: string) => string = route => {
 
 export const Navbar: React.FC = () => {
   const [editModeState, updateEditMode] = useEditModeState();
+  const { mode, toggle: toggleThemeMode } = useThemeMode();
   const router = useRouter();
   // Derived on every render, so browser back and forward update the menu.
   const activeItem = getPathFromRoute(router.pathname);
@@ -84,33 +87,41 @@ export const Navbar: React.FC = () => {
             />
           )}
         </Box>
-        <ResponsiveContext.Consumer>
-          {responsive =>
-            responsive === 'small' ? (
-              <Menu
-                items={MENU_ITEMS.map(item => ({
-                  label: item,
-                  href: getPathFromItem(item),
-                  onClick: (event: React.MouseEvent) => {
-                    event.preventDefault();
-                    router.push(getPathFromItem(item));
-                  },
-                }))}
-              />
-            ) : (
-              <Nav direction="row">
-                {MENU_ITEMS.map(item => (
-                  <Link key={item} href={getPathFromItem(item)} passHref>
-                    <Anchor
-                      label={item}
-                      weight={item === activeItem ? 'bold' : 'normal'}
-                    />
-                  </Link>
-                ))}
-              </Nav>
-            )
-          }
-        </ResponsiveContext.Consumer>
+        <Box direction="row" align="center" gap="small">
+          <Button
+            plain
+            a11yTitle={`switch to ${mode === 'dark' ? 'light' : 'dark'} mode`}
+            icon={mode === 'dark' ? <Sun /> : <Moon />}
+            onClick={toggleThemeMode}
+          />
+          <ResponsiveContext.Consumer>
+            {responsive =>
+              responsive === 'small' ? (
+                <Menu
+                  items={MENU_ITEMS.map(item => ({
+                    label: item,
+                    href: getPathFromItem(item),
+                    onClick: (event: React.MouseEvent) => {
+                      event.preventDefault();
+                      router.push(getPathFromItem(item));
+                    },
+                  }))}
+                />
+              ) : (
+                <Nav direction="row">
+                  {MENU_ITEMS.map(item => (
+                    <Link key={item} href={getPathFromItem(item)} passHref>
+                      <Anchor
+                        label={item}
+                        weight={item === activeItem ? 'bold' : 'normal'}
+                      />
+                    </Link>
+                  ))}
+                </Nav>
+              )
+            }
+          </ResponsiveContext.Consumer>
+        </Box>
       </Header>
     </Box>
   );

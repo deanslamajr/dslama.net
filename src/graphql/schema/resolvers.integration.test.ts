@@ -278,3 +278,110 @@ describe('posts page', () => {
     expect(await prisma.postsPage.count()).toBe(0);
   });
 });
+
+describe('page versions', () => {
+  const LIST = `
+    query List($page: PageType!) { pageVersions(page: $page) { version createdAt } }
+  `;
+  const RESTORE = `
+    mutation Restore($page: PageType!, $version: Int!) {
+      restorePageVersion(page: $page, version: $version) { version }
+    }
+  `;
+  const UPDATE_ABOUT = `
+    mutation Update($input: UpdateAboutPageInput!) {
+      updateAboutPage(input: $input) { version }
+    }
+  `;
+
+  const saveSummaries = async (context: ContextInterface, count: number) => {
+    for (let index = 1; index <= count; index += 1) {
+      await run(context, UPDATE_POSTS, {
+        input: {
+          summary: `v${index}`,
+          posts: [post(`p${index}`, Date.UTC(2020, 0, index, 12))],
+        },
+      });
+    }
+  };
+
+  it('lists the newest 20 versions without a login', async () => {
+    await createAccount('owner');
+    const { context } = await login('owner');
+    await saveSummaries(context, 22);
+
+    const result = await run(createContext(), LIST, { page: 'POSTS' });
+
+    expect(result.errors).toBeUndefined();
+    const versions = result.data?.pageVersions.map(
+      (entry: { version: number }) => entry.version
+    );
+    expect(versions).toHaveLength(20);
+    expect(versions[0]).toBe(22);
+    expect(versions[19]).toBe(3);
+    expect(typeof result.data?.pageVersions[0].createdAt).toBe('number');
+  });
+
+  it('restores an old version as a new version with its children', async () => {
+    await createAccount('owner');
+    const { context } = await login('owner');
+    await saveSummaries(context, 3);
+
+    const result = await run(context, RESTORE, { page: 'POSTS', version: 1 });
+
+    expect(result.errors).toBeUndefined();
+    expect(result.data?.restorePageVersion.version).toBe(4);
+    const page = await run(createContext(), FETCH_POSTS);
+    expect(page.data?.postsPage).toEqual({
+      summary: 'v1',
+      posts: [{ title: 'p1', originalPublishDate: Date.UTC(2020, 0, 1, 12) }],
+    });
+    expect(await prisma.postsPage.count()).toBe(4);
+  });
+
+  it('refuses a restore without a session and writes nothing', async () => {
+    await createAccount('owner');
+    const { context } = await login('owner');
+    await saveSummaries(context, 2);
+
+    const result = await run(createContext(), RESTORE, {
+      page: 'POSTS',
+      version: 1,
+    });
+
+    expect(result.errors?.[0].extensions?.code).toBe('UNAUTHENTICATED');
+    expect(await prisma.postsPage.count()).toBe(2);
+  });
+
+  it('refuses an unknown version with BAD_USER_INPUT', async () => {
+    await createAccount('owner');
+    const { context } = await login('owner');
+
+    const result = await run(context, RESTORE, { page: 'ABOUT', version: 9 });
+
+    expect(result.errors?.[0].extensions?.code).toBe('BAD_USER_INPUT');
+    expect(result.errors?.[0].message).toBe('Version 9 does not exist.');
+  });
+
+  it('validates old content again, so an unsafe old URL is not restored', async () => {
+    await createAccount('owner');
+    const { context } = await login('owner');
+    // An old version written before URL validation existed.
+    await prisma.aboutPage.create({
+      data: {
+        title: 'old',
+        bio: '',
+        pictureURL: '',
+        links: { create: [{ name: 'x', url: SCRIPT_URL }] },
+      },
+    });
+    await run(context, UPDATE_ABOUT, {
+      input: { title: 'new', bio: '', pictureURL: '', links: [] },
+    });
+
+    const result = await run(context, RESTORE, { page: 'ABOUT', version: 1 });
+
+    expect(result.errors?.[0].extensions?.code).toBe('BAD_USER_INPUT');
+    expect(await prisma.aboutPage.count()).toBe(2);
+  });
+});

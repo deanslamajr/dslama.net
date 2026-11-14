@@ -5,6 +5,7 @@ import postsTypes from './posts.graphql';
 import projectsTypes from './projects.graphql';
 import readingsTypes from './readings.graphql';
 import customScalarTypes from './scalars.graphql';
+import versionsTypes from './versions.graphql';
 
 export const typeDefs = [
   rootTypes,
@@ -14,4 +15,5 @@ export const typeDefs = [
   postsTypes,
   projectsTypes,
   readingsTypes,
+  versionsTypes,
 ];

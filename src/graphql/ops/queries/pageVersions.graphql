@@ -1,0 +1,6 @@
+query PageVersions($page: PageType!) {
+  pageVersions(page: $page) {
+    version
+    createdAt
+  }
+}

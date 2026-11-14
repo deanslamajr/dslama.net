@@ -10,6 +10,8 @@ import {
   transformGqlDateForDateInput,
 } from '../../utils';
 import {
+  FetchPostsDocument,
+  PageType,
   UpdateAboutPageDocument,
   UpdatePostsPageDocument,
 } from '../../graphql/generated/ops';
@@ -26,6 +28,8 @@ const roundTrip = (date: number) =>
   transformDateInputValueToGqlDate(transformGqlDateForDateInput(date));
 
 const config: PageConfig = {
+  pageType: PageType.Posts,
+  query: FetchPostsDocument,
   mutation: UpdatePostsPageDocument,
   fieldsBeforeList: [{ name: 'summary', kind: 'text' }],
   list: {

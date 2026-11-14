@@ -27,6 +27,8 @@ import {
 import { Modal } from '../Modal';
 import { LoginModal } from '../LoginModal';
 import { DateInput, TextArea, TextInput, visibleError } from './fields';
+import { HistoryPanel } from './HistoryPanel';
+import { PageType } from '../../graphql/generated/ops';
 
 type Validator = FieldValidator<string | undefined>;
 
@@ -48,6 +50,9 @@ export type ListConfig = {
 };
 
 export type PageConfig = {
+  pageType: PageType;
+  // The page's fetch query, refetched after a restore.
+  query: DocumentNode;
   mutation: DocumentNode;
   fieldsBeforeList: FieldConfig[];
   list: ListConfig;
@@ -191,7 +196,7 @@ const listContentProps = {
   pad: { left: 'medium' },
 };
 
-const describeSaveError = (error: ApolloError) => {
+const describeSaveError = (error: ApolloError): string => {
   const first = error.graphQLErrors[0];
   const code =
     first?.extensions?.code ||
@@ -320,6 +325,13 @@ export const VersionedPageEditModal: React.FC<Props> = ({ config, page }) => {
                 {config.fieldsAfterList.map(field => (
                   <PageField key={field.name} field={field} />
                 ))}
+                <HistoryPanel
+                  pageType={config.pageType}
+                  pageQuery={config.query}
+                  describeError={describeSaveError}
+                  onNeedsLogin={() => setNeedsLogin(true)}
+                  onRestored={closeModal}
+                />
               </Box>
             </form>
           </Modal>

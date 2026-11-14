@@ -1,0 +1,19 @@
+enum PageType {
+    ABOUT
+    POSTS
+    PROJECTS
+    READINGS
+}
+
+type PageVersion {
+    version: Int!
+    createdAt: Date!
+}
+
+extend type Query {
+    pageVersions(page: PageType!): [PageVersion!]!
+}
+
+extend type Mutation {
+    restorePageVersion(page: PageType!, version: Int!): PageVersion!
+}

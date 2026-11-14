@@ -1,0 +1,6 @@
+mutation RestorePageVersion($page: PageType!, $version: Int!) {
+  restorePageVersion(page: $page, version: $version) {
+    version
+    createdAt
+  }
+}

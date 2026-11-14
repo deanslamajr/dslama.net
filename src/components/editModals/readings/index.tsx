@@ -2,7 +2,9 @@ import React from 'react';
 
 import { isRequired, isValidUrl } from '../../../utils';
 import {
+  FetchReadingsDocument,
   FetchReadingsQuery,
+  PageType,
   UpdateReadingsPageDocument,
 } from '../../../graphql/generated/ops';
 import { PageConfig, VersionedPageEditModal } from '../VersionedPageEditModal';
@@ -16,6 +18,8 @@ export type MutableReading = Omit<
 };
 
 const config: PageConfig = {
+  pageType: PageType.Readings,
+  query: FetchReadingsDocument,
   mutation: UpdateReadingsPageDocument,
   fieldsBeforeList: [
     {

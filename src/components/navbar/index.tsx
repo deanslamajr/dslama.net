@@ -38,8 +38,8 @@ export const Navbar: React.FC = () => {
   const router = useRouter();
   // Derived on every render, so browser back and forward update the menu.
   const activeItem = getPathFromRoute(router.pathname);
+  // Pages are static, so the viewer is known only in the browser.
   const { data: viewerData } = useFetchViewerQuery({
-    skip: !editModeState.isActive,
     ssr: false,
     fetchPolicy: 'network-only',
   });
@@ -75,8 +75,13 @@ export const Navbar: React.FC = () => {
             }}>
             {getTitle()}
           </Text>
-          {editModeState.isActive && viewerData?.viewer && (
-            <Button plain label="logout" onClick={() => logout()} />
+          {viewerData?.viewer && (
+            <Button
+              plain
+              label="logout"
+              a11yTitle={`log out ${viewerData.viewer.username}`}
+              onClick={() => logout()}
+            />
           )}
         </Box>
         <ResponsiveContext.Consumer>

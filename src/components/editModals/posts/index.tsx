@@ -2,7 +2,9 @@ import React from 'react';
 
 import { isRequired, isValidUrl } from '../../../utils';
 import {
+  FetchPostsDocument,
   FetchPostsQuery,
+  PageType,
   UpdatePostsPageDocument,
 } from '../../../graphql/generated/ops';
 import { PageConfig, VersionedPageEditModal } from '../VersionedPageEditModal';
@@ -15,6 +17,8 @@ export type MutablePost = Omit<
 };
 
 const config: PageConfig = {
+  pageType: PageType.Posts,
+  query: FetchPostsDocument,
   mutation: UpdatePostsPageDocument,
   fieldsBeforeList: [
     {

@@ -9,3 +9,5 @@ const page = versionedPage<
 
 export const fetchMostRecentVersion = page.fetchNewest;
 export const update = page.createVersion;
+export const fetchVersion = page.fetchVersion;
+export const listVersions = page.listVersions;

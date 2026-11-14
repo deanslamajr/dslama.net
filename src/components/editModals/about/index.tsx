@@ -3,12 +3,16 @@ import React from 'react';
 import { isRequired, isValidUrl } from '../../../utils';
 import { LINK_PROTOCOLS } from '../../../contentPolicy';
 import {
+  FetchAboutDocument,
   FetchAboutQuery,
+  PageType,
   UpdateAboutPageDocument,
 } from '../../../graphql/generated/ops';
 import { PageConfig, VersionedPageEditModal } from '../VersionedPageEditModal';
 
 const config: PageConfig = {
+  pageType: PageType.About,
+  query: FetchAboutDocument,
   mutation: UpdateAboutPageDocument,
   fieldsBeforeList: [
     {

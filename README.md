@@ -48,6 +48,7 @@ The site follows the system light or dark setting. The sun or moon button in the
 3. Change the content and click Save. If you are not logged in, the login form appears. Log in, then save again.
    The pages are static and refresh every 60 seconds. Other visitors see a save after at most about 60 seconds.
 4. To log in before you edit, open `/login`. While you are logged in, the navbar shows a logout button.
+5. To go back to an earlier version, click Show history at the bottom of the editor, then Restore on a version, then Restore again to confirm. The restore saves that version as a new version, so nothing is lost. It needs a login.
 
 To import many items at once, set `window.__inputFromConsole = { posts: [...], projects: [...], readings: [...] }` in the browser console before you open the editor. Dates are epoch milliseconds. The editor fills the list with the items that have the right shape.
 

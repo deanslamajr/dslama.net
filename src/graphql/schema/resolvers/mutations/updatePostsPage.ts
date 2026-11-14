@@ -1,6 +1,9 @@
 import { Prisma } from '@prisma/client';
 
-import { MutationResolvers } from '../../../generated/graphql';
+import {
+  MutationResolvers,
+  UpdatePostsPageInput,
+} from '../../../generated/graphql';
 import { update } from '../postgresql/postsPage';
 import { ContextInterface } from '../../context';
 import { requireActiveAccount } from '../../auth';
@@ -11,11 +14,10 @@ import {
   normalizeUrl,
 } from '../../validation';
 
-export const resolver: Required<
-  MutationResolvers<ContextInterface>
->['updatePostsPage'] = async (_parent, { input }, context, _info) => {
-  await requireActiveAccount(context);
-
+// Validates a save. A restore of an old version runs through it too.
+export const toCreateInput = (
+  input: UpdatePostsPageInput
+): Prisma.PostsPageCreateInput => {
   const updateArgs = {} as Prisma.PostsPageCreateInput;
 
   // Summary
@@ -46,7 +48,15 @@ export const resolver: Required<
     };
   }
 
-  const data = await update(updateArgs);
+  return updateArgs;
+};
+
+export const resolver: Required<
+  MutationResolvers<ContextInterface>
+>['updatePostsPage'] = async (_parent, { input }, context, _info) => {
+  await requireActiveAccount(context);
+
+  const data = await update(toCreateInput(input));
   const sortedPosts = data.posts.sort(
     (a, b) => b.originalPublishDate.getTime() - a.originalPublishDate.getTime()
   );

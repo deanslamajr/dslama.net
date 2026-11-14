@@ -1,6 +1,9 @@
 import { Prisma } from '@prisma/client';
 
-import { MutationResolvers } from '../../../generated/graphql';
+import {
+  MutationResolvers,
+  UpdateReadingsPageInput,
+} from '../../../generated/graphql';
 import { update } from '../postgresql/readingsPage';
 import { ContextInterface } from '../../context';
 import { requireActiveAccount } from '../../auth';
@@ -11,11 +14,10 @@ import {
   normalizeUrl,
 } from '../../validation';
 
-export const resolver: Required<
-  MutationResolvers<ContextInterface>
->['updateReadingsPage'] = async (_parent, { input }, context, _info) => {
-  await requireActiveAccount(context);
-
+// Validates a save. A restore of an old version runs through it too.
+export const toCreateInput = (
+  input: UpdateReadingsPageInput
+): Prisma.ReadingsPageCreateInput => {
   const updateArgs = {} as Prisma.ReadingsPageCreateInput;
 
   // Summary
@@ -59,7 +61,15 @@ export const resolver: Required<
     };
   }
 
-  const data = await update(updateArgs);
+  return updateArgs;
+};
+
+export const resolver: Required<
+  MutationResolvers<ContextInterface>
+>['updateReadingsPage'] = async (_parent, { input }, context, _info) => {
+  await requireActiveAccount(context);
+
+  const data = await update(toCreateInput(input));
   const sortedReadings = data.readings.sort(
     (a, b) => b.foundDate.getTime() - a.foundDate.getTime()
   );

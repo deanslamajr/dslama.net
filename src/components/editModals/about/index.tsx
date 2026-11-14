@@ -1,21 +1,50 @@
 import React from 'react';
-import { ApolloError } from '@apollo/client';
-import { Box, Button, FormField, Text, TextArea, TextInput } from 'grommet';
-import { Add } from 'grommet-icons';
-import { Form as FinalForm, Field } from 'react-final-form';
-import arrayMutators from 'final-form-arrays';
-import { FieldArray } from 'react-final-form-arrays';
 
+import { isRequired, isValidUrl } from '../../../utils';
+import { LINK_PROTOCOLS } from '../../../contentPolicy';
 import {
-  useUpdateAboutPageMutation,
   FetchAboutQuery,
+  UpdateAboutPageDocument,
 } from '../../../graphql/generated/ops';
+import { PageConfig, VersionedPageEditModal } from '../VersionedPageEditModal';
 
-import { useState as useEditModeState } from '../../../contexts/EditModeState';
-import { isValidUrl } from '../../../utils';
-import { Modal } from '../../Modal';
-import { LoginModal } from '../../LoginModal';
-import { LinkCard } from './LinkCard';
+const config: PageConfig = {
+  mutation: UpdateAboutPageDocument,
+  fieldsBeforeList: [
+    {
+      name: 'title',
+      kind: 'text',
+      placeholder: 'set a title string',
+    },
+  ],
+  list: {
+    name: 'links',
+    itemLabel: 'Link',
+    fields: [
+      {
+        name: 'name',
+        kind: 'text',
+        placeholder: 'Generic Socialmedia Platform',
+        validate: isRequired,
+      },
+      {
+        name: 'url',
+        kind: 'text',
+        placeholder: 'https://www.socialmedia.com',
+        validate: value => isValidUrl(value, LINK_PROTOCOLS),
+      },
+    ],
+  },
+  fieldsAfterList: [
+    {
+      name: 'pictureURL',
+      kind: 'text',
+      label: 'banner pic url',
+      validate: value => (value ? isValidUrl(value) : undefined),
+    },
+    { name: 'bio', kind: 'textarea', label: 'bio (Markdown)' },
+  ],
+};
 
 type AboutPageEditModalProps = {
   initialValues: FetchAboutQuery;
@@ -23,188 +52,4 @@ type AboutPageEditModalProps = {
 
 export const AboutPageEditModal: React.FC<AboutPageEditModalProps> = ({
   initialValues,
-}) => {
-  const [editModeState, setEditModeState] = useEditModeState();
-  const [authenticationError, setError] = React.useState<
-    ApolloError | undefined
-  >(undefined);
-  const [saveError, setSaveError] = React.useState<string | undefined>(
-    undefined
-  );
-
-  const closeModal = React.useCallback(() => {
-    setEditModeState({
-      ...editModeState,
-      showModal: false,
-    });
-  }, [editModeState, setEditModeState]);
-
-  const [updateAboutPage, { loading }] = useUpdateAboutPageMutation({
-    onCompleted: () => {
-      closeModal();
-    },
-    onError: error => {
-      const isUnauthenticated = error.graphQLErrors.some(
-        e => e.extensions?.code === 'UNAUTHENTICATED'
-      );
-      if (isUnauthenticated) {
-        setError(error);
-        return;
-      }
-      const first = error.graphQLErrors[0];
-      const code =
-        first?.extensions?.code ||
-        (error.networkError ? 'NETWORK_ERROR' : 'UNKNOWN_ERROR');
-      setSaveError(`Save failed (${code}): ${first?.message || error.message}`);
-    },
-  });
-
-  const handleSubmit = async (values: Record<string, any>) => {
-    setSaveError(undefined);
-    updateAboutPage({
-      variables: {
-        input: {
-          ...values,
-        },
-      },
-    });
-  };
-
-  const transformedInitialValues = React.useMemo(() => {
-    const {
-      aboutPage: { bio, links, pictureURL, title },
-    } = initialValues;
-
-    const transformedLinks = links?.map(({ name, url }) => ({ name, url }));
-
-    return {
-      links: transformedLinks || [],
-      pictureURL: pictureURL || '',
-      bio: bio || '',
-      title: title || '',
-    };
-  }, [initialValues]);
-
-  return (
-    <FinalForm
-      onSubmit={values => handleSubmit(values)}
-      initialValues={transformedInitialValues}
-      mutators={{
-        ...arrayMutators,
-      }}
-      render={({
-        form,
-        form: {
-          mutators: { push, pop },
-        },
-        handleSubmit,
-        pristine,
-      }) =>
-        authenticationError ? (
-          <LoginModal
-            message="Unauthenticated! Please login and try again."
-            onSuccessfulLogin={() => setError(undefined)}
-            onCloseClick={() => setError(undefined)}
-          />
-        ) : (
-          <Modal
-            disableSave={pristine}
-            errorMessage={saveError}
-            isLoading={loading}
-            onSaveClick={() => form.submit()}
-            onClose={() => closeModal()}>
-            <form onSubmit={handleSubmit}>
-              <Box align="start" alignContent="center" pad="large" width="full">
-                <Field<string> name="title">
-                  {({ input, meta }) => {
-                    return (
-                      <FormField label="title" width="full">
-                        <TextInput
-                          {...input}
-                          placeholder="set a title string"
-                          onChange={input.onChange}
-                          value={input.value}
-                        />
-                      </FormField>
-                    );
-                  }}
-                </Field>
-                <FormField
-                  label="links"
-                  contentProps={{
-                    border: undefined,
-                    fill: 'horizontal',
-                    pad: { left: 'medium' },
-                  }}
-                  width="100%">
-                  <Button
-                    secondary
-                    hoverIndicator={true}
-                    fill="horizontal"
-                    onClick={() => push('links', undefined)}>
-                    <Box
-                      pad="xsmall"
-                      direction="row"
-                      align="center"
-                      gap="small">
-                      <Add color="brand" />
-                      <Text>Add Link</Text>
-                    </Box>
-                  </Button>
-                  <FieldArray name="links" subscription={{}}>
-                    {({ fields }) =>
-                      fields.map((name, index) => (
-                        <LinkCard
-                          key={name}
-                          onRemoveCard={() => fields.remove(index)}
-                          parentFieldName={name}
-                          removeButtonLabel="Delete Link"
-                        />
-                      ))
-                    }
-                  </FieldArray>
-                </FormField>
-                <Field<string>
-                  name="pictureURL"
-                  validate={value => (value ? isValidUrl(value) : undefined)}>
-                  {({ input, meta }) => {
-                    return (
-                      <FormField
-                        label="banner pic url"
-                        width="full"
-                        error={
-                          meta.touched || meta.submitFailed
-                            ? meta.error
-                            : undefined
-                        }>
-                        <TextInput
-                          {...input}
-                          onChange={input.onChange}
-                          value={input.value}
-                        />
-                      </FormField>
-                    );
-                  }}
-                </Field>
-                <Field<string> name="bio">
-                  {({ input, meta }) => {
-                    return (
-                      <FormField label="bio (Markdown)" width="full">
-                        <TextArea
-                          {...input}
-                          onChange={input.onChange}
-                          value={input.value}
-                          rows={10}
-                        />
-                      </FormField>
-                    );
-                  }}
-                </Field>
-              </Box>
-            </form>
-          </Modal>
-        )
-      }
-    />
-  );
-};
+}) => <VersionedPageEditModal config={config} page={initialValues.aboutPage} />;

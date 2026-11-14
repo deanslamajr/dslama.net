@@ -1,3 +1,6 @@
+// Tests spy on the logger. Real log lines would only add noise.
+process.env.LOG_LEVEL = 'silent';
+
 // Next fills next/config at startup. Tests fill it here instead of reading .env.
 const { parts } = require('./database');
 

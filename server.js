@@ -15,6 +15,12 @@ const WARMUP_INTERVAL_MS = 1500; // longer than the 1 second revalidate of a bui
 const app = next({ dev: false });
 const handle = app.getRequestHandler();
 
+// The same JSON shape as src/logger.ts, so Cloud Logging reads the severity.
+const log = (severity, message) =>
+  console.log(
+    JSON.stringify({ severity, time: new Date().toISOString(), message })
+  );
+
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 const getPage = path =>
@@ -42,7 +48,7 @@ const warmPage = async path => {
     }
     await sleep(WARMUP_INTERVAL_MS);
   }
-  console.warn(`${path} still has no data after warmup`);
+  log('WARNING', `${path} still has no data after warmup`);
 };
 
 let isWarm = false;
@@ -61,7 +67,7 @@ app.prepare().then(() => {
   server.keepAliveTimeout = 620 * 1000;
   server.headersTimeout = 621 * 1000;
   server.listen(port, () => {
-    console.log(`> Ready on http://localhost:${port}`);
+    log('INFO', `Ready on http://localhost:${port}`);
     Promise.all(STATIC_PAGES.map(warmPage)).then(() => {
       isWarm = true;
     });
@@ -71,7 +77,7 @@ app.prepare().then(() => {
   const shutdown = signal => {
     if (shuttingDown) return;
     shuttingDown = true;
-    console.log(`${signal} received, draining`);
+    log('INFO', `${signal} received, draining`);
     setTimeout(() => {
       server.close(() => process.exit(0));
       setTimeout(() => process.exit(0), FORCE_EXIT_MS).unref();

@@ -5,6 +5,7 @@ import { ApolloError } from 'apollo-server-micro';
 import { MutationResolvers } from '../../../generated/graphql';
 import { ContextInterface } from '../../context';
 import { loginLimiter } from '../../rateLimit';
+import { logger } from '../../../../logger';
 
 import {
   fetch as fetchAccount,
@@ -21,7 +22,8 @@ export const resolver: Required<
 >['attemptLogin'] = async (_parent, { input }, context) => {
   const keys = { ip: context.clientIp, username: input.username.toLowerCase() };
   if (loginLimiter.isLimited(keys)) {
-    console.warn('login rate limit reached');
+    // The client IP is logged on login failures by owner decision.
+    logger.warn({ clientIp: context.clientIp }, 'login rate limit reached');
     throw new ApolloError(
       'Too many login attempts. Try again later.',
       'RATE_LIMITED'
@@ -39,6 +41,7 @@ export const resolver: Required<
     return { wasSuccessful: true };
   }
   loginLimiter.recordFailure(keys);
+  logger.info({ clientIp: context.clientIp }, 'login failed');
   await sleep(FAILURE_DELAY_MS);
   return { wasSuccessful: false };
 };

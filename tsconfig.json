@@ -24,6 +24,7 @@
   ],
   "include": [
     "next-env.d.ts",
+    "pino.d.ts",
     "prisma.d.ts",
     "styled.d.ts",
     "src/graphql/generated/graphql.d.ts",

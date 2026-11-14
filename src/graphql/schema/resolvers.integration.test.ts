@@ -10,6 +10,7 @@ import {
   resolveContext,
 } from './context';
 import { prisma } from './resolvers/postgresql';
+import { logger } from '../../logger';
 
 // Joined at runtime, because ESLint's no-script-url flags the literal.
 const SCRIPT_URL = ['javascript', 'alert(1)'].join(':');
@@ -105,6 +106,18 @@ describe('attemptLogin', () => {
     expect(stored?.lastLoginAt).toBeInstanceOf(Date);
   });
 
+  it('logs the client IP of a failed login', async () => {
+    const info = jest.spyOn(logger, 'info').mockImplementation(() => undefined);
+    await createAccount('owner');
+    const { context } = await login('owner', 'wrong-password');
+
+    expect(info).toHaveBeenCalledWith(
+      { clientIp: context.clientIp },
+      'login failed'
+    );
+    info.mockRestore();
+  });
+
   it('refuses a wrong password, an unknown user, and an inactive account', async () => {
     await createAccount('owner');
     await createAccount('retired', false);
@@ -121,9 +134,8 @@ describe('attemptLogin', () => {
   });
 
   it('answers RATE_LIMITED after 5 failures from one IP', async () => {
-    const warn = jest
-      .spyOn(console, 'warn')
-      .mockImplementation(() => undefined);
+    const warn = jest.spyOn(logger, 'warn').mockImplementation(() => undefined);
+    const info = jest.spyOn(logger, 'info').mockImplementation(() => undefined);
     await createAccount('owner');
     const context = createContext();
     for (let i = 0; i < 5; i += 1) {
@@ -136,8 +148,12 @@ describe('attemptLogin', () => {
     });
     expect(result.errors?.[0].extensions?.code).toBe('RATE_LIMITED');
     expect(context.session.get()).toBeNull();
-    expect(warn).toHaveBeenCalledWith('login rate limit reached');
+    expect(warn).toHaveBeenCalledWith(
+      { clientIp: context.clientIp },
+      'login rate limit reached'
+    );
     warn.mockRestore();
+    info.mockRestore();
   });
 });
 

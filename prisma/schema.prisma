@@ -1,14 +1,17 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+// The CLI (migrate, studio) reads DATABASE_URL_LOCAL_USE_ONLY from .env.
+// The app builds its URL at runtime from the DB_* variables and passes it
+// to PrismaClient, so production never sets this variable.
 datasource db {
   provider = "postgresql"
-  url      = ""
+  url      = env("DATABASE_URL_LOCAL_USE_ONLY")
 }
 
 generator client {
   provider = "prisma-client-js"
-  binaryTargets   = ["native", "debian-openssl-3.0.x"]
+  binaryTargets   = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 model Account {

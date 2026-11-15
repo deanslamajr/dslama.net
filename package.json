@@ -11,8 +11,8 @@
     "clean:dev": "npm run clean && npm run dev",
     "dev:debug": "concurrently -k -p \"{time}-{pid}\" npm:codegen:watch \"NODE_OPTIONS='--inspect --openssl-legacy-provider' next dev\"",
     "build": "npm run codegen && prisma generate && NODE_OPTIONS=--openssl-legacy-provider next build",
-    "studio": "npx prisma studio --schema ./prisma/migration.schema.prisma",
-    "migrate": "node scripts/assert-local-db.js && prisma migrate reset --schema ./prisma/migration.schema.prisma",
+    "studio": "npx prisma studio",
+    "migrate": "node scripts/assert-local-db.js && prisma migrate reset",
     "start": "node server.js",
     "check:csp": "node scripts/check-csp.js",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src",
@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.4.10",
-    "@prisma/client": "3.15.2",
+    "@prisma/client": "5.22.0",
     "apollo-server-micro": "^2.10.1",
     "bcryptjs": "^2.4.3",
     "cookie-session": "^1.4.0",
@@ -82,8 +82,8 @@
     "eslint-plugin-react-hooks": "^1.7.0",
     "jest": "27.5.1",
     "prettier": "^1.19.1",
-    "prisma": "3.15.2",
+    "prisma": "5.22.0",
     "ts-jest": "27.1.5",
-    "typescript": "^4.5.2"
+    "typescript": "4.9.5"
   }
 }

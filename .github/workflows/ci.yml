@@ -33,8 +33,6 @@ jobs:
       NODE: docker run --rm --network host -v ${{ github.workspace }}:/app -w /app node:22.23.4-bookworm
     steps:
       - uses: actions/checkout@v4
-      - name: Prisma schema files hold identical models
-        run: diff <(tail -n +9 prisma/schema.prisma) <(tail -n +9 prisma/migration.schema.prisma)
       - name: No credential logging
         run: |
           if git grep -nE '(console|logger)\.[a-z]+\(.*(DB_PASS|DB_USER|SESSION_COOKIE_SECRET|DATABASE_URL|postgresql://)' -- . ':(exclude)docs' ':(exclude).github'; then

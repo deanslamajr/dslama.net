@@ -1,6 +1,6 @@
 # dslama.net
 
-The personal site of Dean Slama Jr. It has four pages: about, posts, projects, and readings. It is a Next.js 9 app with React 16, TypeScript, and Grommet. A GraphQL API in the same app reads and writes a Postgres database through Prisma 3. Each page has a browser editor that anyone can open. Only a logged-in account can save.
+The personal site of Dean Slama Jr. It has four pages: about, posts, projects, and readings. It is a Next.js 9 app with React 16, TypeScript, and Grommet. A GraphQL API in the same app reads and writes a Postgres database through Prisma 5. Each page has a browser editor that anyone can open. Only a logged-in account can save.
 
 ## Local setup
 
@@ -11,7 +11,7 @@ You need Node 22.23.4 (see `.nvmrc`), nvm, and Docker.
 3. Create the env file: `cp .env.example .env`
 4. In `.env`, set `SESSION_COOKIE_SECRET` to the output of `openssl rand -base64 32`. The app refuses to start with the example value.
 5. Install the dependencies: `npm ci`
-6. Create the tables: `npx prisma migrate deploy --schema ./prisma/migration.schema.prisma`
+6. Create the tables: `npx prisma migrate deploy`
 7. Generate the GraphQL types: `npm run codegen`
 8. Create a login account (see "Accounts" below).
 
@@ -80,10 +80,10 @@ UPDATE "Account" SET "sessionVersion" = "sessionVersion" + 1 WHERE username = '<
 
 ## Schema changes
 
-Two schema files hold the same models. `prisma/schema.prisma` has an empty database URL, because the app builds the URL at runtime. `prisma/migration.schema.prisma` reads `DATABASE_URL_LOCAL_USE_ONLY`.
+`prisma/schema.prisma` holds the models. The Prisma CLI reads the database URL from `DATABASE_URL_LOCAL_USE_ONLY` in `.env`. The app builds its URL at runtime from the `DB_*` variables.
 
-1. Change both files the same way.
-2. Create and apply the migration: `npx prisma migrate dev --name <descriptive-name> --schema ./prisma/migration.schema.prisma`
+1. Change `prisma/schema.prisma`.
+2. Create and apply the migration: `npx prisma migrate dev --name <descriptive-name>`
 3. Update the Prisma client: `npx prisma generate`
 
 Never put a remote database URL in `.env`. To migrate production, follow the operator procedure (port-forward and an inline `DATABASE_URL_LOCAL_USE_ONLY`).

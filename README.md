@@ -4,7 +4,7 @@ The personal site of Dean Slama Jr. It has four pages: about, posts, projects, a
 
 ## Local setup
 
-You need Node 12.16.0 (see `.nvmrc`), nvm, and Docker.
+You need Node 22.23.4 (see `.nvmrc`), nvm, and Docker.
 
 1. Select the Node version: `nvm use`
 2. Start Postgres 17 on `localhost:5433`: `docker compose up -d --wait postgres`

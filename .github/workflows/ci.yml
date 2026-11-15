@@ -29,11 +29,8 @@ jobs:
           --health-retries 10
     env:
       # npm steps run in the same base image as stage one of the production Dockerfile.
-      # Prisma 3.0.2 needs OpenSSL 1.1, which current Ubuntu runners do not ship.
-      # The job itself runs on the host, because the runner's Node for actions
-      # needs a newer glibc than node:12.16.0 has.
       # --network host lets the integration tests reach the service container on localhost:5433.
-      NODE12: docker run --rm --network host -v ${{ github.workspace }}:/app -w /app node:12.16.0
+      NODE: docker run --rm --network host -v ${{ github.workspace }}:/app -w /app node:22.23.4-bookworm
     steps:
       - uses: actions/checkout@v4
       - name: Prisma schema files hold identical models
@@ -44,14 +41,14 @@ jobs:
             echo "A console or logger call prints a credential."
             exit 1
           fi
-      - run: $NODE12 npm ci
-      - run: $NODE12 npm run codegen
-      - run: $NODE12 npx prisma generate
-      - run: $NODE12 npm run typecheck
-      - run: $NODE12 npm run lint
-      - run: $NODE12 npm test
-      - run: $NODE12 npm run test:integration
-      - run: $NODE12 npm run build
-      - run: $NODE12 npm run check:csp
+      - run: $NODE npm ci
+      - run: $NODE npm run codegen
+      - run: $NODE npx prisma generate
+      - run: $NODE npm run typecheck
+      - run: $NODE npm run lint
+      - run: $NODE npm test
+      - run: $NODE npm run test:integration
+      - run: $NODE npm run build
+      - run: $NODE npm run check:csp
       - name: npm audit (report only)
-        run: $NODE12 npm audit --audit-level=high || true
+        run: $NODE npm audit --audit-level=high || true

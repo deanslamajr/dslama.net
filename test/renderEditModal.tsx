@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { Grommet } from 'grommet';
 import { NextRouter } from 'next/router';
-import { RouterContext } from 'next/dist/shared/lib/router-context';
+import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
 
 import { Provider as EditModeProvider } from '../src/contexts/EditModeState';
 

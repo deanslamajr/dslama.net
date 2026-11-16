@@ -19,11 +19,12 @@ const renderNavbar = (viewer: { id: string; username: string } | null) =>
   render(
     <RouterContext.Provider value={router}>
       <MockedProvider
-        addTypename={false}
         mocks={[
           {
             request: { query: FetchViewerDocument },
-            result: { data: { viewer } },
+            result: {
+              data: { viewer: viewer && { __typename: 'Viewer', ...viewer } },
+            },
           },
         ]}>
         <ThemeModeProvider theme={defaultTheme}>

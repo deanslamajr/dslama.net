@@ -31,9 +31,9 @@ const server = new ApolloServer<ContextInterface>({
   plugins: [loggingPlugin],
 });
 
-const contextValue = ({
+const contextValue = {
   session: { get: () => ({ accountId: 'account-1' }) },
-} as unknown) as ContextInterface;
+} as unknown as ContextInterface;
 
 const execute = (query: string) =>
   server.executeOperation({ query }, { contextValue });

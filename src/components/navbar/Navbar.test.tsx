@@ -13,7 +13,7 @@ import defaultTheme from '../../defaultTheme';
 import { FetchViewerDocument } from '../../graphql/generated/ops';
 import { Navbar } from '.';
 
-const router = ({ pathname: '/', query: {} } as unknown) as NextRouter;
+const router = { pathname: '/', query: {} } as unknown as NextRouter;
 
 const renderNavbar = (viewer: { id: string; username: string } | null) =>
   render(

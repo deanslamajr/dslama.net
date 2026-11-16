@@ -19,4 +19,4 @@ export function isValidUrl(
 }
 
 export const isRequired = (value?: string) =>
-  Boolean(value) ? undefined : 'This field is required.';
+  value ? undefined : 'This field is required.';

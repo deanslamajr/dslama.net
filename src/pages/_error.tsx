@@ -32,8 +32,8 @@ Error.getInitialProps = ({ res, err }) => ({
   statusCode: res
     ? res.statusCode
     : err && err.statusCode
-    ? err.statusCode
-    : 404,
+      ? err.statusCode
+      : 404,
 });
 
 export default Error;

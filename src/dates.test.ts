@@ -24,9 +24,7 @@ describe('date input conversion', () => {
       transformGqlDateForDateInput(Date.UTC(2017, 0, 29, 12))
     );
     expect([local.getFullYear(), local.getMonth(), local.getDate()]).toEqual([
-      2017,
-      0,
-      29,
+      2017, 0, 29,
     ]);
     expect([local.getHours(), local.getMinutes()]).toEqual([0, 0]);
   });

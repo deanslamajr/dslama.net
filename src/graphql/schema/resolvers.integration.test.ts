@@ -22,11 +22,11 @@ let ipCounter = 0;
 // Each context gets its own client IP, so the login limiter never carries over.
 const createContext = (): ContextInterface => {
   ipCounter += 1;
-  const req = ({
+  const req = {
     headers: {},
     socket: { remoteAddress: `192.0.2.${ipCounter}` },
     session: null,
-  } as unknown) as IncomingMessageWithSession;
+  } as unknown as IncomingMessageWithSession;
   return resolveContext({ req });
 };
 
@@ -290,7 +290,7 @@ describe('posts page', () => {
     const result = await run(context, UPDATE_POSTS, {
       input: {
         summary: 's',
-        posts: [post('a', ('2020-01-01' as unknown) as number)],
+        posts: [post('a', '2020-01-01' as unknown as number)],
       },
     });
     expect(result.errors?.[0].message).toMatch(/Invalid Date value/);

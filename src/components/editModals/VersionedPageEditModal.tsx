@@ -110,7 +110,7 @@ export const toFormValues = (
       pageFields.map(({ name }) => [name, (page[name] as string) || ''])
     ),
     existingItems: items.map(item => itemToForm(config.list.fields, item)),
-    newItems: (consoleItems as unknown) as FormItem[],
+    newItems: consoleItems as unknown as FormItem[],
   };
 };
 
@@ -123,10 +123,9 @@ export const toMutationInput = (
     ...Object.fromEntries(
       pageFields.map(({ name }) => [name, values[name] || ''])
     ),
-    [config.list.name]: [
-      ...values.existingItems,
-      ...values.newItems,
-    ].map(item => itemToInput(config.list.fields, item)),
+    [config.list.name]: [...values.existingItems, ...values.newItems].map(
+      item => itemToInput(config.list.fields, item)
+    ),
   };
 };
 

@@ -2,5 +2,7 @@
 const gql = require('graphql-tag');
 
 module.exports = {
-  process: source => `module.exports = ${JSON.stringify(gql(source))};`,
+  process: source => ({
+    code: `module.exports = ${JSON.stringify(gql(source))};`,
+  }),
 };

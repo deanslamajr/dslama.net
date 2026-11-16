@@ -22,17 +22,21 @@ const input = { username: 'owner', password: 'test-only-password' };
 
 const viewer = (value: { id: string; username: string } | null) => ({
   request: { query: FetchViewerDocument },
-  result: { data: { viewer: value } },
+  result: {
+    data: { viewer: value && { __typename: 'Viewer', ...value } },
+  },
 });
 
 const login = (wasSuccessful: boolean): MockedResponse => ({
   request: { query: AttemptLoginDocument, variables: { input } },
-  result: { data: { attemptLogin: { wasSuccessful } } },
+  result: {
+    data: { attemptLogin: { __typename: 'LoginResult', wasSuccessful } },
+  },
 });
 
 const renderLogin = (mocks: MockedResponse[]) =>
   render(
-    <MockedProvider mocks={mocks} addTypename={false}>
+    <MockedProvider mocks={mocks}>
       <Grommet>
         <LoginPage />
       </Grommet>

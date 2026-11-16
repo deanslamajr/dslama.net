@@ -7,7 +7,7 @@ import { RouterContext } from 'next/dist/shared/lib/router-context';
 
 import { Provider as EditModeProvider } from '../src/contexts/EditModeState';
 
-const router = ({ query: {} } as unknown) as NextRouter;
+const router = { query: {} } as unknown as NextRouter;
 
 // Without mocks, any mutation the modal sends fails and shows a
 // "Save failed" alert.
@@ -17,7 +17,7 @@ export const renderEditModal = (
 ) =>
   render(
     <RouterContext.Provider value={router}>
-      <MockedProvider mocks={mocks} addTypename={false}>
+      <MockedProvider mocks={mocks}>
         <Grommet>
           <EditModeProvider>{modal}</EditModeProvider>
         </Grommet>

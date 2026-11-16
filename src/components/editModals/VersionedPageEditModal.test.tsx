@@ -88,6 +88,7 @@ describe('toFormValues and toMutationInput', () => {
 });
 
 const post = {
+  __typename: 'Post' as const,
   id: 'p1',
   url: 'https://example.com/a',
   originalPublishDate: DAY,
@@ -97,7 +98,13 @@ const post = {
 
 it('saves the posts page with the edited summary', async () => {
   const newData = jest.fn(() => ({
-    data: { updatePostsPage: { summary: 'new', posts: [post] } },
+    data: {
+      updatePostsPage: {
+        __typename: 'PostsPage',
+        summary: 'new',
+        posts: [post],
+      },
+    },
   }));
   renderEditModal(
     <PostsPageEditModal initialValues={{ summary: 'old', posts: [post] }} />,
@@ -119,7 +126,7 @@ it('saves the posts page with the edited summary', async () => {
             },
           },
         },
-        newData,
+        result: newData,
       },
     ]
   );
@@ -136,10 +143,16 @@ it('saves the posts page with the edited summary', async () => {
 });
 
 it('saves the about page with links and the fields after them', async () => {
-  const link = { id: 'l1', name: 'github', url: 'https://github.com/x' };
+  const link = {
+    __typename: 'Link' as const,
+    id: 'l1',
+    name: 'github',
+    url: 'https://github.com/x',
+  };
   const newData = jest.fn(() => ({
     data: {
       updateAboutPage: {
+        __typename: 'AboutPage',
         version: 2,
         title: 't',
         bio: 'new bio',
@@ -173,7 +186,7 @@ it('saves the about page with links and the fields after them', async () => {
             },
           },
         },
-        newData,
+        result: newData,
       },
     ]
   );

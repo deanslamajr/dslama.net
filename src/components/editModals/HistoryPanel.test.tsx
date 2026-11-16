@@ -20,8 +20,16 @@ const list: MockedResponse = {
   result: {
     data: {
       pageVersions: [
-        { version: 3, createdAt: Date.UTC(2026, 10, 3) },
-        { version: 2, createdAt: Date.UTC(2026, 10, 2) },
+        {
+          __typename: 'PageVersion',
+          version: 3,
+          createdAt: Date.UTC(2026, 10, 3),
+        },
+        {
+          __typename: 'PageVersion',
+          version: 2,
+          createdAt: Date.UTC(2026, 10, 2),
+        },
       ],
     },
   },
@@ -34,14 +42,16 @@ const restoreRequest = {
 
 const refetchPosts: MockedResponse = {
   request: { query: FetchPostsDocument },
-  result: { data: { postsPage: { summary: 's', posts: [] } } },
+  result: {
+    data: { postsPage: { __typename: 'PostsPage', summary: 's', posts: [] } },
+  },
 };
 
 const renderPanel = (mocks: MockedResponse[]) => {
   const onRestored = jest.fn();
   const onNeedsLogin = jest.fn();
   render(
-    <MockedProvider mocks={mocks} addTypename={false}>
+    <MockedProvider mocks={mocks}>
       <Grommet>
         <HistoryPanel
           pageType={PageType.Posts}
@@ -67,11 +77,19 @@ const openAndConfirm = async () => {
 
 it('restores a version only after confirmation', async () => {
   const newData = jest.fn(() => ({
-    data: { restorePageVersion: { version: 4, createdAt: 0 } },
+    data: {
+      restorePageVersion: {
+        __typename: 'PageVersion',
+        version: 4,
+        createdAt: 0,
+      },
+    },
   }));
+  // The list loads again when the panel opens the second time.
   const { onRestored } = renderPanel([
     list,
-    { request: restoreRequest, newData },
+    list,
+    { request: restoreRequest, result: newData },
     refetchPosts,
   ]);
 
@@ -95,17 +113,9 @@ it('asks for a login when the restore is unauthenticated', async () => {
       request: restoreRequest,
       result: {
         errors: [
-          new GraphQLError(
-            'Not logged in',
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            {
-              code: 'UNAUTHENTICATED',
-            }
-          ),
+          new GraphQLError('Not logged in', {
+            extensions: { code: 'UNAUTHENTICATED' },
+          }),
         ],
       },
     },

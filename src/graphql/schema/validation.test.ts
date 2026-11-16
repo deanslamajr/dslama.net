@@ -1,4 +1,4 @@
-import { UserInputError } from 'apollo-server-micro';
+import { GraphQLError } from 'graphql';
 
 import { HTTP_PROTOCOLS, LIMITS } from '../../contentPolicy';
 import {
@@ -18,7 +18,7 @@ describe('assertMaxLength', () => {
 
   it('throws BAD_USER_INPUT over the limit', () => {
     expect(() => assertMaxLength('abcd', 3, 'title')).toThrow(
-      new UserInputError('title must be at most 3 characters.')
+      'title must be at most 3 characters.'
     );
   });
 });
@@ -66,13 +66,13 @@ describe('normalizeUrl', () => {
   });
 
   it('marks errors as user input errors', () => {
-    let caught: UserInputError | undefined;
+    let caught: GraphQLError | undefined;
     try {
       normalizeUrl('nope', 'links[2].url', HTTP_PROTOCOLS);
     } catch (error) {
-      caught = error as UserInputError;
+      caught = error as GraphQLError;
     }
-    expect(caught).toBeInstanceOf(UserInputError);
+    expect(caught).toBeInstanceOf(GraphQLError);
     expect(caught?.extensions).toMatchObject({
       code: 'BAD_USER_INPUT',
       field: 'links[2].url',
@@ -88,6 +88,6 @@ describe('normalizeOptionalUrl', () => {
     ).toBe('https://github.com/x');
     expect(() =>
       normalizeOptionalUrl('ftp://x', 'sourceUrl', HTTP_PROTOCOLS)
-    ).toThrow(UserInputError);
+    ).toThrow(GraphQLError);
   });
 });

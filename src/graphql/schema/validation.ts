@@ -1,4 +1,4 @@
-import { UserInputError } from 'apollo-server-micro';
+import { userInputError } from './errors';
 import { LIMITS } from '../../contentPolicy';
 
 export const assertMaxLength = (
@@ -7,7 +7,7 @@ export const assertMaxLength = (
   field: string
 ): string => {
   if (value.length > max) {
-    throw new UserInputError(`${field} must be at most ${max} characters.`, {
+    throw userInputError(`${field} must be at most ${max} characters.`, {
       field,
     });
   }
@@ -16,7 +16,7 @@ export const assertMaxLength = (
 
 export const assertMaxItems = <T>(items: T[], field: string): T[] => {
   if (items.length > LIMITS.items) {
-    throw new UserInputError(
+    throw userInputError(
       `${field} must have at most ${LIMITS.items} entries.`,
       { field }
     );
@@ -35,10 +35,10 @@ export const normalizeUrl = (
   try {
     parsed = new URL(value.trim());
   } catch (error) {
-    throw new UserInputError(`${field} must be a valid URL.`, { field });
+    throw userInputError(`${field} must be a valid URL.`, { field });
   }
   if (protocols.indexOf(parsed.protocol) === -1) {
-    throw new UserInputError(`${field} must use ${protocols.join(' or ')}`, {
+    throw userInputError(`${field} must use ${protocols.join(' or ')}`, {
       field,
     });
   }

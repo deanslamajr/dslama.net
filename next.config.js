@@ -41,6 +41,11 @@ module.exports = phase => {
     poweredByHeader: false,
     // CI runs `npm run lint` with the project's own ESLint setup.
     eslint: { ignoreDuringBuilds: true },
+    // Load packages on the server through require, not import(). With import(),
+    // a module that uses an ES module package (like @graphql-tools/schema)
+    // turns async, and the require of the schema in useApollo.ts gets undefined.
+    // It also keeps one copy of graphql in the process instead of two.
+    experimental: { esmExternals: false },
     async headers() {
       return [
         {

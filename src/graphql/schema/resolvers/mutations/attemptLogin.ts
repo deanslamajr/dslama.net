@@ -1,9 +1,9 @@
 import { randomBytes } from 'crypto';
 import bcrypt from 'bcryptjs';
-import { ApolloError } from 'apollo-server-micro';
 
 import { MutationResolvers } from '../../../generated/graphql';
 import { ContextInterface } from '../../context';
+import { rateLimitedError } from '../../errors';
 import { loginLimiter } from '../../rateLimit';
 import { logger } from '../../../../logger';
 
@@ -24,10 +24,7 @@ export const resolver: Required<
   if (loginLimiter.isLimited(keys)) {
     // The client IP is logged on login failures by owner decision.
     logger.warn({ clientIp: context.clientIp }, 'login rate limit reached');
-    throw new ApolloError(
-      'Too many login attempts. Try again later.',
-      'RATE_LIMITED'
-    );
+    throw rateLimitedError('Too many login attempts. Try again later.');
   }
   const account = await fetchAccount({ username: input.username });
   const isCorrectPassword = await bcrypt.compare(

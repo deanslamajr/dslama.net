@@ -1,10 +1,12 @@
-import { ApolloServer, UserInputError, gql } from 'apollo-server-micro';
+import { ApolloServer } from '@apollo/server';
 
 import { logger } from '../../logger';
+import { ContextInterface } from './context';
+import { userInputError } from './errors';
 import { loggingPlugin } from './loggingPlugin';
 
-const server = new ApolloServer({
-  typeDefs: gql`
+const server = new ApolloServer<ContextInterface>({
+  typeDefs: `
     type Query {
       ok: Boolean
       broken: Boolean
@@ -21,16 +23,20 @@ const server = new ApolloServer({
         throw new Error('database down');
       },
       invalid: () => {
-        throw new UserInputError('bad url');
+        throw userInputError('bad url');
       },
     },
     Mutation: { save: () => true },
   },
-  context: () => ({
-    session: { get: () => ({ accountId: 'account-1' }) },
-  }),
   plugins: [loggingPlugin],
 });
+
+const contextValue = ({
+  session: { get: () => ({ accountId: 'account-1' }) },
+} as unknown) as ContextInterface;
+
+const execute = (query: string) =>
+  server.executeOperation({ query }, { contextValue });
 
 let info: jest.SpyInstance;
 let error: jest.SpyInstance;
@@ -43,7 +49,7 @@ beforeEach(() => {
 afterEach(() => jest.restoreAllMocks());
 
 it('logs one line per query without the account id', async () => {
-  await server.executeOperation({ query: 'query Home { ok }' });
+  await execute('query Home { ok }');
 
   expect(info).toHaveBeenCalledTimes(1);
   const [fields, message] = info.mock.calls[0];
@@ -55,7 +61,7 @@ it('logs one line per query without the account id', async () => {
 });
 
 it('logs the account id on a write', async () => {
-  await server.executeOperation({ query: 'mutation Save { save }' });
+  await execute('mutation Save { save }');
 
   expect(info.mock.calls[0][0]).toMatchObject({
     operationName: 'Save',
@@ -64,11 +70,11 @@ it('logs the account id on a write', async () => {
 });
 
 it('logs unexpected errors, but not user input errors', async () => {
-  await server.executeOperation({ query: '{ invalid }' });
+  await execute('{ invalid }');
   expect(error).not.toHaveBeenCalled();
   expect(info.mock.calls[0][0].errorCodes).toEqual(['BAD_USER_INPUT']);
 
-  await server.executeOperation({ query: '{ broken }' });
+  await execute('{ broken }');
   expect(error).toHaveBeenCalledTimes(1);
   expect(error.mock.calls[0][1]).toBe('database down');
   expect(error.mock.calls[0][0].stack).toContain('database down');

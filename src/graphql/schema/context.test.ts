@@ -3,11 +3,11 @@ import { IncomingMessage } from 'http';
 import { getClientIp } from './context';
 
 const request = (forwardedFor?: string, remoteAddress = '10.0.0.5') =>
-  (({
+  ({
     headers:
       forwardedFor === undefined ? {} : { 'x-forwarded-for': forwardedFor },
     socket: { remoteAddress },
-  } as unknown) as IncomingMessage);
+  }) as unknown as IncomingMessage;
 
 describe('getClientIp', () => {
   it('takes the address that the load balancer appended', () => {

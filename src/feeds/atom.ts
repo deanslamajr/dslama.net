@@ -77,46 +77,40 @@ type FeedSource = {
   load: () => Promise<{ updated: Date; entries: AtomEntry[] } | null>;
 };
 
-export const createFeedHandler = ({
-  title,
-  path,
-  pagePath,
-  load,
-}: FeedSource) => async (
-  req: NextApiRequest,
-  res: NextApiResponse
-): Promise<void> => {
-  if (req.method !== 'GET' && req.method !== 'HEAD') {
-    res.setHeader('Allow', 'GET, HEAD');
-    res.status(405).end();
-    return;
-  }
+export const createFeedHandler =
+  ({ title, path, pagePath, load }: FeedSource) =>
+  async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+    if (req.method !== 'GET' && req.method !== 'HEAD') {
+      res.setHeader('Allow', 'GET, HEAD');
+      res.status(405).end();
+      return;
+    }
 
-  let feed;
-  try {
-    feed = await load();
-  } catch (error) {
-    logger.error(
-      { stack: (error as Error).stack },
-      `feed failed: ${(error as Error).message}`
+    let feed;
+    try {
+      feed = await load();
+    } catch (error) {
+      logger.error(
+        { stack: (error as Error).stack },
+        `feed failed: ${(error as Error).message}`
+      );
+      res.status(503).end();
+      return;
+    }
+
+    const entries = (feed?.entries || [])
+      .slice()
+      .sort((a, b) => b.updated.getTime() - a.updated.getTime());
+
+    res.setHeader('Content-Type', 'application/atom+xml; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    res.status(200).send(
+      buildAtomFeed({
+        title,
+        selfUrl: siteUrl + path,
+        pageUrl: siteUrl + pagePath,
+        updated: feed?.updated || new Date(0),
+        entries,
+      })
     );
-    res.status(503).end();
-    return;
-  }
-
-  const entries = (feed?.entries || [])
-    .slice()
-    .sort((a, b) => b.updated.getTime() - a.updated.getTime());
-
-  res.setHeader('Content-Type', 'application/atom+xml; charset=utf-8');
-  res.setHeader('Cache-Control', 'public, max-age=3600');
-  res.status(200).send(
-    buildAtomFeed({
-      title,
-      selfUrl: siteUrl + path,
-      pageUrl: siteUrl + pagePath,
-      updated: feed?.updated || new Date(0),
-      entries,
-    })
-  );
-};
+  };

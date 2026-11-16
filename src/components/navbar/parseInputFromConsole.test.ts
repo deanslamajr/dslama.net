@@ -35,9 +35,7 @@ describe('parseInputFromConsole', () => {
     const parsed = parseInputFromConsole()?.posts?.[0];
     const local = new Date(parsed?.originalPublishDate || '');
     expect([local.getFullYear(), local.getMonth(), local.getDate()]).toEqual([
-      2017,
-      0,
-      29,
+      2017, 0, 29,
     ]);
   });
 

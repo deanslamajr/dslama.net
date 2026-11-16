@@ -29,24 +29,24 @@ export interface BackgroundImageProps {
 const toCssUrl = (value: string) =>
   value.replace(
     /["'()\\\s]/g,
-    c =>
-      `%${c
-        .charCodeAt(0)
-        .toString(16)
-        .toUpperCase()
-        .padStart(2, '0')}`
+    c => `%${c.charCodeAt(0).toString(16).toUpperCase().padStart(2, '0')}`
   );
 
 export const BackgroundImage = styled.div<BackgroundImageProps>`
-  background-image: url("${props => toCssUrl(props.$imageUrl)}"),
-    url("${props => toCssUrl(props.$imageUrl)}");
-  background-repeat: no-repeat,no-repeat;
+  background-image:
+    url('${props => toCssUrl(props.$imageUrl)}'),
+    url('${props => toCssUrl(props.$imageUrl)}');
+  background-repeat: no-repeat, no-repeat;
   background-color: ${props => normalizeColor('background-front', props.theme)};
   background-blend-mode: color-burn, color-burn;
   height: 100%;
   width: 100%;
-  background-position-x: 24rem, -3rem;
-  background-position-y: -20rem, -5rem;
+  background-position-x:
+    24rem,
+    -3rem;
+  background-position-y:
+    -20rem,
+    -5rem;
   background-size: 70rem, 30rem;
   ${breakpoints.tabletMax`
     background-position-x: 16rem, -3rem;

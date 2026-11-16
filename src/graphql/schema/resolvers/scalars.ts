@@ -7,8 +7,8 @@ const toDate = (value: unknown): Date => {
     value instanceof Date
       ? new Date(value.getTime())
       : typeof value === 'number' && Number.isFinite(value)
-      ? new Date(value)
-      : new Date(NaN);
+        ? new Date(value)
+        : new Date(NaN);
   if (Number.isNaN(date.getTime())) {
     throw userInputError(`Invalid Date value: ${String(value)}`);
   }

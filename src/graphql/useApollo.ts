@@ -16,13 +16,13 @@ export type ResolverContext = {
 function createIsomorphLink(context: ResolverContext = {}) {
   if (typeof window === 'undefined') {
     // Server-only code must stay out of the client bundle, so it loads with require.
-    /* eslint-disable @typescript-eslint/no-var-requires */
+    /* eslint-disable @typescript-eslint/no-require-imports */
     const { SchemaLink } = require('@apollo/client/link/schema');
     const schema = require('./schema').default;
-    /* eslint-enable @typescript-eslint/no-var-requires */
+    /* eslint-enable @typescript-eslint/no-require-imports */
     return new SchemaLink({ schema, context });
   } else {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { HttpLink } = require('@apollo/client');
     return new HttpLink({
       uri: '/api/graphql',
@@ -81,8 +81,9 @@ export const initializeApollo: InitializeApollo = ({
 };
 
 export function useApollo(initialState: any) {
-  const store = useMemo(() => initializeApollo({ initialState }), [
-    initialState,
-  ]);
+  const store = useMemo(
+    () => initializeApollo({ initialState }),
+    [initialState]
+  );
   return store;
 }

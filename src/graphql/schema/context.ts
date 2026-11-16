@@ -98,8 +98,8 @@ export const sessionMiddleware = (
     (req as IncomingMessage & { protocol?: string }).protocol = 'https';
   }
   return getCookieSessionMiddleware()(
-    (req as unknown) as CookieSessionArgs[0],
-    (res as unknown) as CookieSessionArgs[1],
+    req as unknown as CookieSessionArgs[0],
+    res as unknown as CookieSessionArgs[1],
     next as CookieSessionArgs[2]
   );
 };

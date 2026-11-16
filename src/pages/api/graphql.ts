@@ -52,7 +52,7 @@ const apolloHandler = startServerAndCreateNextHandler<
 >(apolloServer, {
   context: async req =>
     resolveContext({
-      req: (req as unknown) as IncomingMessageWithSession,
+      req: req as unknown as IncomingMessageWithSession,
     }),
 });
 

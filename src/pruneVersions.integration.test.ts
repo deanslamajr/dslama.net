@@ -1,6 +1,6 @@
 import { prisma } from './graphql/schema/resolvers/postgresql';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const { parseArgs, prune } = require('../scripts/prune-versions');
 
 const createPostsVersions = async (count: number) => {

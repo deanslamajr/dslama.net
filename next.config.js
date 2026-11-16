@@ -39,6 +39,8 @@ module.exports = phase => {
 
   return {
     poweredByHeader: false,
+    // CI runs `npm run lint` with the project's own ESLint setup.
+    eslint: { ignoreDuringBuilds: true },
     async headers() {
       return [
         {

@@ -21,9 +21,7 @@ const Error: NextPage<ErrorProps> = ({ statusCode }) => (
       <Header
         summary={`Error ${statusCode}: there was an error while processing this page request.`}
       />
-      <Link href="/">
-        <a>Go to the home page</a>
-      </Link>
+      <Link href="/">Go to the home page</Link>
     </Container>
   </>
 );

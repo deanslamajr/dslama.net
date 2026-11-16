@@ -30,10 +30,5 @@ module.exports = {
     ],
     // Same level as before the ESLint 8 upgrade.
     '@typescript-eslint/no-explicit-any': 'warn',
-    // next/link passes href to its <a> child, so only check hrefs that are written.
-    'jsx-a11y/anchor-is-valid': [
-      'error',
-      { components: ['Link'], aspects: ['invalidHref', 'preferButton'] },
-    ],
   },
 };

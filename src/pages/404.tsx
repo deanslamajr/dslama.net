@@ -15,9 +15,7 @@ const ErrorComponent: NextPage = () => (
     />
     <Container>
       <Header summary="Page not found" />
-      <Link href="/">
-        <a>Go to the home page</a>
-      </Link>
+      <Link href="/">Go to the home page</Link>
     </Container>
   </>
 );

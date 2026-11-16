@@ -110,7 +110,13 @@ export const Navbar: React.FC = () => {
               ) : (
                 <Nav direction="row">
                   {MENU_ITEMS.map(item => (
-                    <Link key={item} href={getPathFromItem(item)} passHref>
+                    // Grommet's Anchor renders the <a>, so Link keeps its
+                    // pre-13 behavior and passes href to it.
+                    <Link
+                      key={item}
+                      href={getPathFromItem(item)}
+                      passHref
+                      legacyBehavior>
                       <Anchor
                         label={item}
                         weight={item === activeItem ? 'bold' : 'normal'}

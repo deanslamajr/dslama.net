@@ -5,7 +5,7 @@ import React from 'react';
 import { act, render, screen } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
 import { NextRouter } from 'next/router';
-import { RouterContext } from 'next/dist/shared/lib/router-context';
+import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
 
 import { Provider as EditModeProvider } from '../../contexts/EditModeState';
 import { ThemeModeProvider } from '../../contexts/ThemeMode';

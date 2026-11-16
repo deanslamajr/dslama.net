@@ -2,7 +2,7 @@ import { AppProps } from 'next/app';
 import Head from 'next/head';
 import Router from 'next/router';
 import React from 'react';
-import { ApolloProvider } from '@apollo/client';
+import { ApolloProvider, NormalizedCacheObject } from '@apollo/client';
 import { createGlobalStyle } from 'styled-components';
 
 import { useApollo } from '../graphql/useApollo';
@@ -24,7 +24,10 @@ const ReducedMotion = createGlobalStyle`
   }
 `;
 
-const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
+// Pages without getStaticProps (login, 404) have no Apollo state.
+type PageProps = { initialApolloState?: NormalizedCacheObject | null };
+
+const MyApp: React.FC<AppProps<PageProps>> = ({ Component, pageProps }) => {
   const apolloClient = useApollo(pageProps.initialApolloState);
   const [isChangingRoute, setIsChangingRoute] = React.useState(false);
 

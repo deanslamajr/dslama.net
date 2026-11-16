@@ -1,6 +1,6 @@
 # dslama.net
 
-The personal site of Dean Slama Jr. It has four pages: about, posts, projects, and readings. It is a Next.js 9 app with React 16, TypeScript, and Grommet. A GraphQL API in the same app reads and writes a Postgres database through Prisma 5. Each page has a browser editor that anyone can open. Only a logged-in account can save.
+The personal site of Dean Slama Jr. It has four pages: about, posts, projects, and readings. It is a Next.js 12 app with React 17, TypeScript, and Grommet. A GraphQL API in the same app reads and writes a Postgres database through Prisma 5. Each page has a browser editor that anyone can open. Only a logged-in account can save.
 
 ## Local setup
 

@@ -10,3 +10,5 @@ src/graphql/generated
 
 # secrets
 .env
+# typescript incremental build info
+*.tsbuildinfo

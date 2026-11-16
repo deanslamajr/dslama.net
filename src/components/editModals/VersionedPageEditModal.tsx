@@ -167,14 +167,21 @@ const ItemCard: React.FC<{
     <Card background="light-1" round="x-small" pad="medium">
       {fields.map(field => {
         const props = {
-          key: field.name,
           fieldName: field.name,
           parentFieldName,
           validate: field.validate,
         };
-        if (field.kind === 'date') return <DateInput {...props} />;
-        if (field.kind === 'textarea') return <TextArea {...props} />;
-        return <TextInput {...props} placeholder={field.placeholder || ''} />;
+        if (field.kind === 'date')
+          return <DateInput key={field.name} {...props} />;
+        if (field.kind === 'textarea')
+          return <TextArea key={field.name} {...props} />;
+        return (
+          <TextInput
+            key={field.name}
+            {...props}
+            placeholder={field.placeholder || ''}
+          />
+        );
       })}
       <Button
         secondary

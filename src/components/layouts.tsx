@@ -1,62 +1,35 @@
-import {
-  css,
-  CSSObject,
-  DefaultTheme,
-  Interpolation,
-  InterpolationFunction,
-  SimpleInterpolation,
-  ThemeProps,
-  ThemedStyledProps,
-  FlattenInterpolation,
-} from 'styled-components';
+import { css, Interpolation, RuleSet } from 'styled-components';
 import { normalizeColor } from 'grommet/utils';
 
-// styled-components constrains props with `P extends object`, so these helpers must too.
+// styled-components types props as `object` when a rule set has none of its own.
 // eslint-disable-next-line @typescript-eslint/ban-types
-const tabletMax = <T extends object>(
-  cssRules:
-    | CSSObject
-    | TemplateStringsArray
-    | InterpolationFunction<ThemedStyledProps<T, DefaultTheme>>,
-  ...interpolations:
-    | SimpleInterpolation[]
-    | Array<Interpolation<ThemedStyledProps<T, DefaultTheme>>>
-) => css`
-  @media (max-width: 899px) {
-    ${css(cssRules, ...interpolations)}
+type NoProps = object;
+
+// Used as a tagged template: ${breakpoints.phoneMax`padding: 0;`}
+const maxWidth = (px: number) => (
+  styles: Parameters<typeof css>[0],
+  ...interpolations: Interpolation<NoProps>[]
+): RuleSet<NoProps> => css`
+  @media (max-width: ${px}px) {
+    ${css(styles, ...interpolations)}
   }
 `;
 
-// styled-components constrains props with `P extends object`, so these helpers must too.
-// eslint-disable-next-line @typescript-eslint/ban-types
-const phoneMax = <T extends object>(
-  cssRules:
-    | CSSObject
-    | TemplateStringsArray
-    | InterpolationFunction<ThemedStyledProps<T, DefaultTheme>>,
-  ...interpolations:
-    | SimpleInterpolation[]
-    | Array<Interpolation<ThemedStyledProps<T, DefaultTheme>>>
-) => css`
-  @media (max-width: 599px) {
-    ${css(cssRules, ...interpolations)}
-  }
-`;
+const tabletMax = maxWidth(899);
+const phoneMax = maxWidth(599);
 
 export const breakpoints = {
   tabletMax,
   phoneMax,
 };
 
-export const shadow: () => SimpleInterpolation = () => {
+export const shadow = (): RuleSet<NoProps> => {
   return css`
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16);
   `;
 };
 
-export const card: () => FlattenInterpolation<
-  ThemeProps<DefaultTheme>
-> = () => {
+export const card = (): RuleSet<NoProps> => {
   return css`
     background-color: ${props => normalizeColor('card', props.theme)};
     padding: 1.25rem;

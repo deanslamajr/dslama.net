@@ -36,11 +36,11 @@ const isSafe = (value: string | undefined, protocols: string[]): boolean =>
   (((value as string).startsWith('/') && !(value as string).startsWith('//')) ||
     isAllowedUrl(value as string, protocols));
 
-const SafeLink: React.FC<{ href?: string; title?: string }> = ({
-  href,
-  title,
-  children,
-}) => (
+const SafeLink: React.FC<{
+  href?: string;
+  title?: string;
+  children?: React.ReactNode;
+}> = ({ href, title, children }) => (
   <a
     href={isSafe(href, LINK_PROTOCOLS) ? href : undefined}
     title={title}
@@ -87,7 +87,7 @@ const Home: NextPage = () => {
                 <Header summary={queryResult.aboutPage.title || ''} />
                 <LogoContainer>
                   <BackgroundImage
-                    imageUrl={queryResult.aboutPage.pictureURL || ''}
+                    $imageUrl={queryResult.aboutPage.pictureURL || ''}
                   />
                 </LogoContainer>
                 {queryResult.aboutPage.links.length > 0 && (

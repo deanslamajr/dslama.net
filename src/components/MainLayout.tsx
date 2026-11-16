@@ -6,6 +6,7 @@ import { FullPageLoadSpinner } from './FullPageLoadSpinner';
 
 type MainLayoutProps = {
   isChangingRoute: boolean;
+  children?: React.ReactNode;
 };
 
 export const MainLayout: React.FC<MainLayoutProps> = ({

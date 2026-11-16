@@ -21,7 +21,8 @@ export const LogoContainer = styled.div`
 `;
 
 export interface BackgroundImageProps {
-  imageUrl: string;
+  // The $ prefix keeps styled-components from passing the prop to the div.
+  $imageUrl: string;
 }
 
 // Percent-encode characters that could end the url("...") token.
@@ -37,8 +38,8 @@ const toCssUrl = (value: string) =>
   );
 
 export const BackgroundImage = styled.div<BackgroundImageProps>`
-  background-image: url("${props => toCssUrl(props.imageUrl)}"),
-    url("${props => toCssUrl(props.imageUrl)}");
+  background-image: url("${props => toCssUrl(props.$imageUrl)}"),
+    url("${props => toCssUrl(props.$imageUrl)}");
   background-repeat: no-repeat,no-repeat;
   background-color: ${props => normalizeColor('background-front', props.theme)};
   background-blend-mode: color-burn, color-burn;

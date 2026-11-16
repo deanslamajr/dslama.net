@@ -8,6 +8,7 @@ type ModalProps = {
   onClose: () => void;
   onSaveClick: () => void;
   primaryButtonLabel?: string;
+  children?: React.ReactNode;
 };
 
 export const Modal: React.FC<ModalProps> = ({

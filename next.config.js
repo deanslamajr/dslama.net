@@ -56,7 +56,7 @@ module.exports = phase => {
               ? []
               : [
                   {
-                    key: 'Content-Security-Policy-Report-Only',
+                    key: 'Content-Security-Policy',
                     value: CONTENT_SECURITY_POLICY,
                   },
                 ]),

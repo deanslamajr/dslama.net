@@ -1,5 +1,6 @@
 import { GraphQLScalarType, Kind } from 'graphql';
-import { UserInputError } from 'apollo-server-micro';
+
+import { userInputError } from '../errors';
 
 const toDate = (value: unknown): Date => {
   const date =
@@ -9,7 +10,7 @@ const toDate = (value: unknown): Date => {
       ? new Date(value)
       : new Date(NaN);
   if (Number.isNaN(date.getTime())) {
-    throw new UserInputError(`Invalid Date value: ${String(value)}`);
+    throw userInputError(`Invalid Date value: ${String(value)}`);
   }
   return date;
 };

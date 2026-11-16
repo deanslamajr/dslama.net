@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import { graphql } from 'graphql';
+import { ExecutionResult, graphql } from 'graphql';
 
 import schema from '.';
 import { requireActiveAccount } from './auth';
@@ -34,7 +34,10 @@ const run = (
   context: ContextInterface,
   source: string,
   variableValues?: Record<string, unknown>
-) => graphql({ schema, source, variableValues, contextValue: context });
+  // The tests read fields of the result without a generated type for each operation.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): Promise<ExecutionResult<Record<string, any>>> =>
+  graphql({ schema, source, variableValues, contextValue: context });
 
 const createAccount = (username: string, isActive = true) =>
   prisma.account.create({

@@ -1,8 +1,7 @@
-import { UserInputError } from 'apollo-server-micro';
-
 import { MutationResolvers } from '../../../generated/graphql';
 import { ContextInterface } from '../../context';
 import { requireActiveAccount } from '../../auth';
+import { userInputError } from '../../errors';
 import { pages, toSaveInput } from '../pageVersions';
 
 export const resolver: Required<
@@ -12,7 +11,7 @@ export const resolver: Required<
 
   const stored = await pages[page].fetchVersion(version);
   if (!stored) {
-    throw new UserInputError(`Version ${version} does not exist.`, {
+    throw userInputError(`Version ${version} does not exist.`, {
       field: 'version',
     });
   }

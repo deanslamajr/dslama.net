@@ -1,7 +1,7 @@
-import { AuthenticationError } from 'apollo-server-micro';
 import { QueryResolvers } from '../../../generated/graphql';
 import { ContextInterface } from '../../context';
 import { requireActiveAccount } from '../../auth';
+import { hasErrorCode } from '../../errors';
 
 export const resolver: Required<
   QueryResolvers<ContextInterface>
@@ -10,7 +10,7 @@ export const resolver: Required<
     const account = await requireActiveAccount(context);
     return { id: account.id, username: account.username };
   } catch (error) {
-    if (error instanceof AuthenticationError) {
+    if (hasErrorCode(error, 'UNAUTHENTICATED')) {
       return null;
     }
     throw error;

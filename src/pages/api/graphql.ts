@@ -1,6 +1,8 @@
-import { ApolloServer } from 'apollo-server-micro';
+import { ApolloServer } from '@apollo/server';
+import { ApolloServerPluginLandingPageDisabled } from '@apollo/server/plugin/disabled';
+import { startServerAndCreateNextHandler } from '@as-integrations/next';
 import getConfig from 'next/config';
-import { GraphQLError, GraphQLFormattedError } from 'graphql';
+import { GraphQLFormattedError } from 'graphql';
 import nextConnect from 'next-connect';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -8,6 +10,8 @@ import { graphqlRequestGuard } from '../../graphql/requestGuard';
 import schema from '../../graphql/schema';
 import { maxFieldsRule } from '../../graphql/schema/validationRules';
 import {
+  ContextInterface,
+  IncomingMessageWithSession,
   resolveContext,
   sessionMiddleware,
 } from '../../graphql/schema/context';
@@ -20,28 +24,39 @@ const {
   serverRuntimeConfig: { NODE_ENV },
 } = getConfig();
 
-const formatError = (error: GraphQLError): GraphQLFormattedError => {
+const formatError = (
+  formattedError: GraphQLFormattedError
+): GraphQLFormattedError => {
   if (NODE_ENV !== 'production') {
-    return error;
+    return formattedError;
   }
-  const code = error?.extensions?.code;
-  if (PUBLIC_ERROR_CODES.indexOf(code) !== -1) {
-    return { message: error.message, extensions: { code } };
+  const code = formattedError.extensions?.code;
+  if (PUBLIC_ERROR_CODES.indexOf(code as string) !== -1) {
+    return { message: formattedError.message, extensions: { code } };
   }
   // loggingPlugin already logged the error with its request id.
   return { message: 'Internal server error', extensions: { code } };
 };
 
-const apolloServer = new ApolloServer({
-  context: resolveContext,
+const apolloServer = new ApolloServer<ContextInterface>({
   schema,
   formatError,
-  plugins: [loggingPlugin],
-  // The site never accepts files. This keeps multipart requests away from the upload parser.
-  uploads: false,
+  // The API serves JSON only, never an HTML landing page.
+  plugins: [loggingPlugin, ApolloServerPluginLandingPageDisabled()],
   validationRules: [maxFieldsRule],
 });
 
+const apolloHandler = startServerAndCreateNextHandler<
+  NextApiRequest,
+  ContextInterface
+>(apolloServer, {
+  context: async req =>
+    resolveContext({
+      req: (req as unknown) as IncomingMessageWithSession,
+    }),
+});
+
+// graphqlRequestGuard reads and checks the body, so Next must not parse it.
 export const config = {
   api: {
     bodyParser: false,
@@ -51,4 +66,4 @@ export const config = {
 export default nextConnect<NextApiRequest, NextApiResponse>()
   .use(graphqlRequestGuard)
   .use(sessionMiddleware)
-  .use(apolloServer.createHandler({ path: '/api/graphql' }));
+  .use(apolloHandler);

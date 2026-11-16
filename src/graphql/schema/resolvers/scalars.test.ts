@@ -1,5 +1,5 @@
 import { Kind, ValueNode } from 'graphql';
-import { UserInputError } from 'apollo-server-micro';
+import { GraphQLError } from 'graphql';
 
 import { scalars } from './scalars';
 
@@ -15,19 +15,26 @@ describe('Date scalar', () => {
   it('parses an epoch millisecond variable into a Date', () => {
     const parsed = DateScalar.parseValue(stamp);
     expect(parsed).toBeInstanceOf(Date);
-    expect(parsed.getTime()).toBe(stamp);
+    expect(parsed?.getTime()).toBe(stamp);
   });
 
   it('refuses strings, NaN, and Infinity', () => {
     ['2017-12-04', NaN, Infinity, null, {}].forEach(value => {
-      expect(() => DateScalar.parseValue(value)).toThrow(UserInputError);
+      let caught: unknown;
+      try {
+        DateScalar.parseValue(value);
+      } catch (error) {
+        caught = error;
+      }
+      expect(caught).toBeInstanceOf(GraphQLError);
+      expect((caught as GraphQLError).extensions.code).toBe('BAD_USER_INPUT');
     });
   });
 
   it('parses an integer literal and ignores other literals', () => {
     const intNode: ValueNode = { kind: Kind.INT, value: String(stamp) };
     const stringNode: ValueNode = { kind: Kind.STRING, value: '2017-12-04' };
-    expect(DateScalar.parseLiteral(intNode, {}).getTime()).toBe(stamp);
+    expect(DateScalar.parseLiteral(intNode, {})?.getTime()).toBe(stamp);
     expect(DateScalar.parseLiteral(stringNode, {})).toBeNull();
   });
 });

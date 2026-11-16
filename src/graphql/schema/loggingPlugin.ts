@@ -1,11 +1,14 @@
 import { randomBytes } from 'crypto';
-import { ApolloServerPlugin } from 'apollo-server-plugin-base';
+import { ApolloServerPlugin } from '@apollo/server';
 
 import { logger } from '../../logger';
 import { ContextInterface } from './context';
 
-// Messages for these codes are written by this app and are safe to show.
+// Messages for these codes are written by this app or by Apollo Server's
+// request checks (BAD_REQUEST, for example a blocked cross-site request),
+// and are safe to show.
 export const PUBLIC_ERROR_CODES = [
+  'BAD_REQUEST',
   'BAD_USER_INPUT',
   'UNAUTHENTICATED',
   'RATE_LIMITED',
@@ -20,17 +23,19 @@ const requestIdFrom = (traceHeader?: string | null): string =>
 // One log line per GraphQL operation, and one per unexpected error.
 // Writes (mutations) also log the account id of the session, by owner decision.
 export const loggingPlugin: ApolloServerPlugin<ContextInterface> = {
-  requestDidStart(requestContext) {
+  async requestDidStart(requestContext) {
     const startedAt = Date.now();
     const requestId = requestIdFrom(
       requestContext.request.http?.headers.get('x-cloud-trace-context')
     );
 
     return {
-      didEncounterErrors({ errors, operationName }) {
+      async didEncounterErrors({ errors, operationName }) {
         errors
           .filter(
-            error => PUBLIC_ERROR_CODES.indexOf(error.extensions?.code) === -1
+            error =>
+              PUBLIC_ERROR_CODES.indexOf(error.extensions?.code as string) ===
+              -1
           )
           .forEach(error => {
             logger.error(
@@ -45,7 +50,12 @@ export const loggingPlugin: ApolloServerPlugin<ContextInterface> = {
             );
           });
       },
-      willSendResponse({ context, errors, operation, operationName }) {
+      async willSendResponse({
+        contextValue,
+        errors,
+        operation,
+        operationName,
+      }) {
         const isWrite = operation?.operation === 'mutation';
         logger.info(
           {
@@ -56,7 +66,7 @@ export const loggingPlugin: ApolloServerPlugin<ContextInterface> = {
               ? errors.map(error => error.extensions?.code || null)
               : [],
             ...(isWrite
-              ? { accountId: context.session?.get()?.accountId || null }
+              ? { accountId: contextValue.session?.get()?.accountId || null }
               : {}),
           },
           'graphql operation'

@@ -3,7 +3,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 // Same limit that micro applied before this guard existed.
 const MAX_BODY_BYTES = 1024 * 1024;
 
-type GuardedRequest = IncomingMessage & { filePayload?: unknown };
+type GuardedRequest = IncomingMessage & { body?: unknown };
 type Next = (error?: unknown) => void;
 
 const reject = (res: ServerResponse, status: number, message: string) => {
@@ -63,7 +63,7 @@ export const graphqlRequestGuard = async (
   if (typeof body !== 'object' || body === null) {
     return reject(res, 400, 'Request body must be a JSON object.');
   }
-  // apollo-server-micro reads req.filePayload before it parses the stream itself.
-  req.filePayload = body;
+  // The API route turns off Next's body parser, so the Apollo handler reads this.
+  req.body = body;
   return next();
 };

@@ -48,5 +48,7 @@ jobs:
       - run: $NODE npm run test:integration
       - run: $NODE npm run build
       - run: $NODE npm run check:csp
+      # Starts the built server against the test database and checks that pages hold data.
+      - run: $NODE npm run smoke:server
       - name: npm audit (report only)
         run: $NODE npm audit --audit-level=high || true

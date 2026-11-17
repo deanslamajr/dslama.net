@@ -15,6 +15,7 @@
     "migrate": "node scripts/assert-local-db.js && prisma migrate reset",
     "start": "node server.js",
     "check:csp": "node scripts/check-csp.js",
+    "smoke:server": "node scripts/smoke-server.js",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src",
     "lint:fix": "eslint --fix --ext .js,.jsx,.ts,.tsx src",
     "typecheck": "tsc --noEmit --pretty",

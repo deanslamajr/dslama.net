@@ -10,10 +10,13 @@ generates:
         Date: Date
   src/graphql/generated/ops.ts:
     documents: "src/graphql/ops/**/*.graphql"
+    # typescript-operations writes the input and enum types that the
+    # operations use, so this file does not need the typescript plugin.
     plugins:
-      - "typescript"
       - "typescript-operations"
       - "typescript-react-apollo"
     config:
+      # The app uses PageType as a value (PageType.About), as before.
+      enumType: native-with-string-values
       scalars:
         Date: number

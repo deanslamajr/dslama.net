@@ -26,7 +26,6 @@ import getStaticPropsFactory from '../graphql/getStaticPropsFactory';
 import {
   useFetchAboutQuery,
   FetchAboutQuery,
-  Link,
   FetchAboutDocument,
 } from '../graphql/generated/ops';
 
@@ -92,18 +91,16 @@ const Home: NextPage = () => {
                 </LogoContainer>
                 {queryResult.aboutPage.links.length > 0 && (
                   <LinksContainer>
-                    {(queryResult.aboutPage.links as Link[]).map(
-                      ({ id, name, url }) => (
-                        <LinkItem key={id}>
-                          <LinkAnchor
-                            href={url || ''}
-                            target="_blank"
-                            rel="noopener noreferrer">
-                            {name}
-                          </LinkAnchor>
-                        </LinkItem>
-                      )
-                    )}
+                    {queryResult.aboutPage.links.map(({ id, name, url }) => (
+                      <LinkItem key={id}>
+                        <LinkAnchor
+                          href={url || ''}
+                          target="_blank"
+                          rel="noopener noreferrer">
+                          {name}
+                        </LinkAnchor>
+                      </LinkItem>
+                    ))}
                   </LinksContainer>
                 )}
                 <BioCard>

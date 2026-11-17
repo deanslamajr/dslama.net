@@ -27,6 +27,23 @@ const CONTENT_SECURITY_POLICY = [
 module.exports = phase => {
   return {
     poweredByHeader: false,
+    // The image copies .next/standalone, which holds only the files the server
+    // loads, instead of all production dependencies. The image replaces the
+    // generated server.js with ours, which loads env-config.js and dotenv.
+    output: 'standalone',
+    outputFileTracingIncludes: {
+      '/*': ['./node_modules/dotenv/**'],
+    },
+    // Next's own server traces these for image optimization and TypeScript
+    // config files, which this app does not use. The key '*' also matches
+    // 'next-server'.
+    outputFileTracingExcludes: {
+      '*': [
+        '**/node_modules/@img/**/*',
+        '**/node_modules/sharp/**/*',
+        '**/node_modules/typescript/**/*',
+      ],
+    },
     // SSR class names and display names, which babel-plugin-styled-components added before.
     compiler: { styledComponents: true },
     // CI runs `npm run lint` with the project's own ESLint setup.

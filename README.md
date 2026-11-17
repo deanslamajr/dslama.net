@@ -95,3 +95,5 @@ Never put a remote database URL in `.env`. To migrate production, follow the ope
 2. Run `npm run publish:patch` (or `publish:minor`, `publish:major`). It runs the build, bumps the version with a commit and a tag, and pushes the image tagged with `git describe`.
 3. Push the commit and the tag: `git push origin master "$(git describe)"`
 4. Point the Kubernetes manifest in the deployment repository at the new tag and apply it.
+
+The image holds `.next/standalone`, the files that the server loads, which `next build` traces from the code. It does not hold all production dependencies. The image replaces the generated `server.js` with the repository's `server.js` and adds `env-config.js`, `.next/static`, and `public`. To test that layout locally after a build, copy it the same way into a directory, then run `node scripts/smoke-server.js <directory>`.

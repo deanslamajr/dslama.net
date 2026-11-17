@@ -3,6 +3,7 @@
 // page or the API serves no data. Unit and integration tests import the schema
 // directly, so they miss a server bundle that cannot load it. Run it after
 // `npm run build`. It empties the test database from test/database.js.
+// Usage: node scripts/smoke-server.js [directory that holds server.js]
 const crypto = require('crypto');
 const { execSync, spawn } = require('child_process');
 const path = require('path');
@@ -14,6 +15,7 @@ const BASE = `http://127.0.0.1:${PORT}`;
 const READY_TIMEOUT_MS = 90000;
 const MARKER = `smoke-${crypto.randomBytes(4).toString('hex')}`;
 const PAGES = ['/', '/posts', '/projects', '/readings'];
+const SERVER_DIR = path.resolve(process.argv[2] || path.join(__dirname, '..'));
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -66,7 +68,7 @@ const seed = async () => {
 
 const startServer = () =>
   spawn('node', ['server.js'], {
-    cwd: path.join(__dirname, '..'),
+    cwd: SERVER_DIR,
     env: {
       ...process.env,
       ...parts,

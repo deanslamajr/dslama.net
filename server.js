@@ -16,8 +16,10 @@ process.env.__NEXT_PRIVATE_STANDALONE_CONFIG = JSON.stringify(config);
 const next = require('next');
 
 const port = parseInt(process.env.PORT || '8080', 10);
-const DRAIN_DELAY_MS = 5000; // let the load balancer stop sending new requests
-const FORCE_EXIT_MS = 20000; // below terminationGracePeriodSeconds (30)
+// The pod's 45 second preStop sleep comes before SIGTERM, so the load
+// balancer already stopped sending new requests. This delay is a margin.
+const DRAIN_DELAY_MS = 5000;
+const FORCE_EXIT_MS = 20000; // 45 + 5 + 20 stays below terminationGracePeriodSeconds (90)
 const STATIC_PAGES = ['/', '/posts', '/projects', '/readings'];
 const WARMUP_ATTEMPTS = 20;
 const WARMUP_INTERVAL_MS = 1500; // longer than the 1 second revalidate of a built page

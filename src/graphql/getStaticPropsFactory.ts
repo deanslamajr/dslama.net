@@ -1,6 +1,10 @@
 import { DocumentNode } from '@apollo/client';
+import { SchemaLink } from '@apollo/client/link/schema';
 import { GetStaticProps } from 'next';
 import { PHASE_PRODUCTION_BUILD } from 'next/constants';
+// Next removes getStaticProps and the imports that only it uses from the
+// browser bundle, so the schema and the resolvers stay on the server.
+import schema from './schema';
 import { initializeApollo } from './useApollo';
 
 // A visitor sees a save after at most this many seconds.
@@ -15,7 +19,11 @@ const factory = (queryDocument: DocumentNode): GetStaticProps => {
       return { props: { initialApolloState: null }, revalidate: 1 };
     }
 
-    const apolloClient = initializeApollo({});
+    // The query runs against the schema in this process, with no HTTP call.
+    // Page queries do not depend on the viewer, so the context is empty.
+    const apolloClient = initializeApollo({
+      serverLink: new SchemaLink({ schema, context: {} }),
+    });
 
     await apolloClient.query({
       query: queryDocument,

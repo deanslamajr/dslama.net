@@ -50,7 +50,10 @@ type Props = { children: ReactNode; theme: ThemeType };
 
 // The server always renders light, because it cannot know the visitor's
 // choice. The browser switches in an effect, so hydration matches.
-export const ThemeModeProvider = ({ children, theme }: Props): JSX.Element => {
+export const ThemeModeProvider = ({
+  children,
+  theme,
+}: Props): React.JSX.Element => {
   const [mode, setMode] = useState<ThemeMode>('light');
 
   useEffect(() => {

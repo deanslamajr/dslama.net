@@ -3,10 +3,10 @@ import { Spinner } from 'grommet';
 
 interface LoadingErrorOrRenderProps<T> {
   error?: ApolloError;
-  errorRender?: (error: ApolloError) => JSX.Element;
+  errorRender?: (error: ApolloError) => React.JSX.Element;
   isLoading: boolean;
   queryResult: T | undefined | null;
-  render: (props: { queryResult: T }) => JSX.Element;
+  render: (props: { queryResult: T }) => React.JSX.Element;
 }
 
 export const LoadingErrorOrRender = <T,>({

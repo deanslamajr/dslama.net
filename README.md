@@ -1,6 +1,6 @@
 # dslama.net
 
-The personal site of Dean Slama Jr. It has four pages: about, posts, projects, and readings. It is a Next.js 14 app with React 18, TypeScript, and Grommet. A GraphQL API in the same app reads and writes a Postgres database through Prisma 5. Each page has a browser editor that anyone can open. Only a logged-in account can save.
+The personal site of Dean Slama Jr. It has four pages: about, posts, projects, and readings. It is a Next.js 15 app with React 18, TypeScript, and Grommet. A GraphQL API in the same app reads and writes a Postgres database through Prisma 5. Each page has a browser editor that anyone can open. Only a logged-in account can save.
 
 ## Local setup
 
@@ -29,6 +29,7 @@ You need Node 22.23.4 (see `.nvmrc`), nvm, and Docker.
 | Integration tests against the local Postgres | `npm run test:integration` |
 | Production build | `npm run build` |
 | Check the built pages against the Content Security Policy | `npm run check:csp` |
+| Start the built server against the test database and check that pages hold data | `npm run smoke:server` |
 | Serve the production build on port 8080 | `npm start` |
 | Prisma Studio on port 5555 | `npm run studio` |
 | Drop the local database and replay all migrations | `npm run migrate` |

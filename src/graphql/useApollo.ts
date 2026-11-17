@@ -1,40 +1,31 @@
-import { IncomingMessage, ServerResponse } from 'http';
 import { useMemo } from 'react';
 import {
   ApolloClient,
+  ApolloLink,
+  HttpLink,
   InMemoryCache,
   NormalizedCacheObject,
 } from '@apollo/client';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
-export type ResolverContext = {
-  req?: IncomingMessage;
-  res?: ServerResponse;
-};
-
-function createIsomorphLink(context: ResolverContext = {}) {
+// getStaticProps passes a SchemaLink. The server render of a page only reads
+// the cache that getStaticProps filled, so it gets a link that sends nothing.
+// The browser fetches through the API.
+function createLink(serverLink?: ApolloLink): ApolloLink {
   if (typeof window === 'undefined') {
-    // Server-only code must stay out of the client bundle, so it loads with require.
-    /* eslint-disable @typescript-eslint/no-require-imports */
-    const { SchemaLink } = require('@apollo/client/link/schema');
-    const schema = require('./schema').default;
-    /* eslint-enable @typescript-eslint/no-require-imports */
-    return new SchemaLink({ schema, context });
-  } else {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const { HttpLink } = require('@apollo/client');
-    return new HttpLink({
-      uri: '/api/graphql',
-      credentials: 'same-origin',
-    });
+    return serverLink ?? ApolloLink.empty();
   }
+  return new HttpLink({
+    uri: '/api/graphql',
+    credentials: 'same-origin',
+  });
 }
 
-function createApolloClient(context?: ResolverContext) {
+function createApolloClient(serverLink?: ApolloLink) {
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
-    link: createIsomorphLink(context),
+    link: createLink(serverLink),
     cache: new InMemoryCache({
       typePolicies: {
         AboutPage: {
@@ -55,17 +46,15 @@ function createApolloClient(context?: ResolverContext) {
 }
 
 type InitializeApollo = (params: {
-  context?: ResolverContext;
+  serverLink?: ApolloLink;
   initialState?: any;
 }) => ApolloClient<NormalizedCacheObject>;
 
 export const initializeApollo: InitializeApollo = ({
   initialState = null,
-  // Pages with Next.js data fetching methods, like `getStaticProps`, can send
-  // a custom context which will be used by `SchemaLink` to server render pages
-  context,
+  serverLink,
 }) => {
-  const _apolloClient = apolloClient ?? createApolloClient(context);
+  const _apolloClient = apolloClient ?? createApolloClient(serverLink);
 
   // If your page has Next.js data fetching methods that use Apollo Client, the initial state
   // get hydrated here

@@ -46,11 +46,6 @@ module.exports = phase => {
     },
     // SSR class names and display names, which babel-plugin-styled-components added before.
     compiler: { styledComponents: true },
-    // Load packages on the server through require, not import(). With import(),
-    // a module that uses an ES module package (like @graphql-tools/schema)
-    // turns async, and the require of the schema in useApollo.ts gets undefined.
-    // It also keeps one copy of graphql in the process instead of two.
-    experimental: { esmExternals: false },
     async headers() {
       return [
         {
@@ -77,7 +72,8 @@ module.exports = phase => {
       ];
     },
     // next dev and next build use Turbopack by default. The scripts pass
-    // --webpack, because Turbopack ignores this function and esmExternals.
+    // --webpack. A Turbopack build adds an inline script to every page, with a
+    // hash that changes per build, so the policy above would block it.
     webpack(config) {
       config.module.rules.push({
         test: /\.graphql$/,

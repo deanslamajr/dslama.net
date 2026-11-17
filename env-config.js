@@ -1,22 +1,8 @@
-// environment variables
-const dotenv = require('dotenv').config()
-
-const fromProcessEnv = name => {
-  return process.env[name];
-};
-
-const clientEnvironment = {};
-
-const serverSecrets = {
-  NODE_ENV: fromProcessEnv('NODE_ENV'),
-  SESSION_COOKIE_SECRET: fromProcessEnv('SESSION_COOKIE_SECRET'),
-  DB_USER: fromProcessEnv('DB_USER'),
-  DB_PASS: fromProcessEnv('DB_PASS'),
-  DB_HOST: fromProcessEnv('DB_HOST'),
-  DB_NAME: fromProcessEnv('DB_NAME'),
-};
-
-const serverEnvironment = Object.assign({}, clientEnvironment, serverSecrets);
+// Server settings come from process.env: DB_USER, DB_PASS, DB_HOST, DB_NAME,
+// SESSION_COOKIE_SECRET, and NODE_ENV. In production the pod sets them.
+// Locally, this file loads .env for server.js. next dev and next build load
+// .env themselves. Add a new variable to .env.example.
+require('dotenv').config();
 
 const MIN_SESSION_SECRET_LENGTH = 32;
 const PLACEHOLDER_SESSION_SECRET = 'CHANGE_ME_32_RANDOM_BYTES';
@@ -33,9 +19,4 @@ const assertSessionSecret = secret => {
   }
 };
 
-module.exports = {
-  serverEnvironment,
-  serverSecrets,
-  clientEnvironment,
-  assertSessionSecret,
-};
+module.exports = { assertSessionSecret };

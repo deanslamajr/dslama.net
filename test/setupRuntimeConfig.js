@@ -1,16 +1,12 @@
 // Tests spy on the logger. Real log lines would only add noise.
 process.env.LOG_LEVEL = 'silent';
 
-// Next fills next/config at startup. Tests fill it here instead of reading .env.
+// The server reads its settings from process.env. Tests set them here instead
+// of reading .env. Jest sets NODE_ENV to 'test'.
 const { parts } = require('./database');
 
-require('next/config').setConfig({
-  publicRuntimeConfig: {},
-  serverRuntimeConfig: {
-    ...parts,
-    SESSION_COOKIE_SECRET: 'test-only-session-secret-with-32-characters',
-    NODE_ENV: 'test',
-  },
+Object.assign(process.env, parts, {
+  SESSION_COOKIE_SECRET: 'test-only-session-secret-with-32-characters',
 });
 
 // Some components use JSX without importing React, which Next's Babel allows.

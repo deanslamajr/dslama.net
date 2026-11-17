@@ -1,10 +1,7 @@
 import { IncomingMessage, ServerResponse } from 'http';
 import cookieSession from 'cookie-session';
-import getConfig from 'next/config';
 
-const {
-  serverRuntimeConfig: { SESSION_COOKIE_SECRET, NODE_ENV },
-} = getConfig();
+const { SESSION_COOKIE_SECRET, NODE_ENV } = process.env;
 
 const isProduction = NODE_ENV === 'production';
 export const SESSION_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000;

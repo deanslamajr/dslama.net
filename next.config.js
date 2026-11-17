@@ -46,8 +46,6 @@ module.exports = phase => {
     },
     // SSR class names and display names, which babel-plugin-styled-components added before.
     compiler: { styledComponents: true },
-    // CI runs `npm run lint` with the project's own ESLint setup.
-    eslint: { ignoreDuringBuilds: true },
     // Load packages on the server through require, not import(). With import(),
     // a module that uses an ES module package (like @graphql-tools/schema)
     // turns async, and the require of the schema in useApollo.ts gets undefined.
@@ -78,6 +76,8 @@ module.exports = phase => {
         },
       ];
     },
+    // next dev and next build use Turbopack by default. The scripts pass
+    // --webpack, because Turbopack ignores this function and esmExternals.
     webpack(config) {
       config.module.rules.push({
         test: /\.graphql$/,

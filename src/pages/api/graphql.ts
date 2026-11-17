@@ -1,7 +1,6 @@
 import { ApolloServer } from '@apollo/server';
 import { ApolloServerPluginLandingPageDisabled } from '@apollo/server/plugin/disabled';
 import { startServerAndCreateNextHandler } from '@as-integrations/next';
-import getConfig from 'next/config';
 import { GraphQLFormattedError } from 'graphql';
 import nextConnect from 'next-connect';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -20,9 +19,7 @@ import {
   PUBLIC_ERROR_CODES,
 } from '../../graphql/schema/loggingPlugin';
 
-const {
-  serverRuntimeConfig: { NODE_ENV },
-} = getConfig();
+const { NODE_ENV } = process.env;
 
 const formatError = (
   formattedError: GraphQLFormattedError

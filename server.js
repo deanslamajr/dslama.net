@@ -3,6 +3,16 @@
 process.env.NODE_ENV = process.env.NODE_ENV || 'production';
 
 const http = require('http');
+const { assertSessionSecret } = require('./env-config');
+
+assertSessionSecret(process.env.SESSION_COOKIE_SECRET);
+
+// next build writes the resolved next.config.js here. Next's own standalone
+// server passes it the same way, because loading next.config.js at runtime
+// needs packages that only the build has.
+const { config } = require('./.next/required-server-files.json');
+process.env.__NEXT_PRIVATE_STANDALONE_CONFIG = JSON.stringify(config);
+
 const next = require('next');
 
 const port = parseInt(process.env.PORT || '8080', 10);

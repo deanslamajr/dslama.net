@@ -1,9 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import getConfig from 'next/config';
 
-const {
-  serverRuntimeConfig: { DB_USER, DB_PASS, DB_HOST, DB_NAME, NODE_ENV },
-} = getConfig();
+const { DB_USER, DB_PASS, DB_HOST, DB_NAME, NODE_ENV } = process.env;
 
 // The user, password, and database name can hold reserved URL characters
 // such as "@", "/", "#", "%", "?", and ":". DB_HOST holds "host:port" and stays as is.

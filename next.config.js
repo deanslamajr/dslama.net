@@ -1,13 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const {
-  PHASE_DEVELOPMENT_SERVER,
-  PHASE_PRODUCTION_SERVER,
-} = require('next/constants');
-const {
-  clientEnvironment,
-  serverEnvironment,
-  assertSessionSecret,
-} = require('./env-config');
+const { PHASE_DEVELOPMENT_SERVER } = require('next/constants');
 
 // The pages are static, so a per-request nonce cannot work. Inline scripts are
 // allowed by hash instead. Add 'sha256-...' entries here when a page needs one;
@@ -30,13 +22,9 @@ const CONTENT_SECURITY_POLICY = [
   "frame-ancestors 'none'",
 ].join('; ');
 
+// server.js does not load this file. It uses the copy that next build writes
+// to .next/required-server-files.json, and it checks the session secret.
 module.exports = phase => {
-  // `next start` loads this file in the production server phase.
-  // `next build` uses a different phase, so the image build does not need the secret.
-  if (phase === PHASE_PRODUCTION_SERVER) {
-    assertSessionSecret(serverEnvironment.SESSION_COOKIE_SECRET);
-  }
-
   return {
     poweredByHeader: false,
     // SSR class names and display names, which babel-plugin-styled-components added before.
@@ -81,9 +69,5 @@ module.exports = phase => {
       });
       return config;
     },
-    // Only available on the server side
-    serverRuntimeConfig: serverEnvironment,
-    // Available on both server and client
-    publicRuntimeConfig: clientEnvironment,
   };
 };
